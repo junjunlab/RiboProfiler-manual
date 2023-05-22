@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 1 About | RiboProfiler Reference Book</title>
+<meta name="author" content="Jun Zhang">
+<meta name="description" content="This is a detailed documentation of RiboProfiler package.">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Chapter 1 About | RiboProfiler Reference Book">
+<meta property="og:type" content="book">
+<meta property="og:description" content="This is a detailed documentation of RiboProfiler package.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 1 About | RiboProfiler Reference Book">
+<meta name="twitter:description" content="This is a detailed documentation of RiboProfiler package.">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">RiboProfiler Reference Book</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="active" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="" href="workflow.html"><span class="header-section-number">2</span> Workflow</a></li>
+<li><a class="" href="align-on-genome.html"><span class="header-section-number">3</span> Align on genome</a></li>
+<li><a class="" href="align-on-transcriptome.html"><span class="header-section-number">4</span> Align on transcriptome</a></li>
+<li><a class="" href="selective-ribosome-profiling.html"><span class="header-section-number">5</span> Selective ribosome profiling</a></li>
+<li><a class="" href="serp-data-analysis.html"><span class="header-section-number">6</span> SeRP data analysis</a></li>
+<li><a class="" href="running-on-linux.html"><span class="header-section-number">7</span> Running on linux</a></li>
+<li><a class="" href="track_plot-supplement.html"><span class="header-section-number">8</span> Track_plot supplement</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><!--bookdown:title:end--><!--bookdown:title:start--><div id="about" class="section level1" number="1">
+<h1>
+<span class="header-section-number">1</span> About<a class="anchor" aria-label="anchor" href="#about"><i class="fas fa-link"></i></a>
+</h1>
+<p><strong>Ribo-Seq</strong>, short for <strong><em>Ribosome profiling sequencing</em></strong>, is a high-throughput sequencing technology used to study the protein composition and translational efficiency of transcripts in cells. This technique utilizes chemical or biological methods to covalently link ribosomes with the mRNA they are translating at the moment of translation, allowing for only the mRNA bound to ribosomes to be sequenced. This enables the quantitative analysis of the translation levels and positions of each transcript.</p>
+<p>There are some tools available for analyzing Ribo-seq sequencing data, which focus on either upstream data processing or downstream data visualization. However, these tools often require users to write shell commands in a Unix system to process raw data and then switch to another IDE to visualize the processed data, which can be quite inconvenient.</p>
+<p>For R users, it is more convenient to perform all the necessary tasks within the same environment. Using R functions such as <strong>system</strong> or <strong>system2</strong> allows you to execute shell commands in R, enabling you to call Linux software directly from R. However, it is important to note that many bioinformatics software programs cannot run on Windows.</p>
+<p>If you’re using Windows, an alternative option is to use a Windows version of the software built using <strong>MinGW</strong> tools. Additionally, there are several R-based software programs available to complete the upstream steps, such as <strong>Rbowtie2</strong>, <strong>Rhisat2</strong>, and <strong>Rsubread</strong>.</p>
+<p><strong>RiboProfiler</strong> integrates the upstream raw data analysis and downstream data visualization. All the steps can be done in R environment. You can also analysis the common ribo-seq and <strong>SeRP-seq(Selective ribosome profiling)</strong>.</p>
+<hr>
+<p><strong>Citation:</strong> <strong><em>Jun Zhang (2023). RiboProfiler: Integrating Ribo-SEQ Upstream and Downstream Analysis. <a href="https://github.com/junjunlab/RiboProfiler" class="uri">https://github.com/junjunlab/RiboProfiler</a></em></strong></p>
+<hr>
+<p>Make sure you have isntalled <a href="https://julialang.org/">julia</a> and <a href="https://www.python.org/">python</a>. You can install the development version of RiboProfiler:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"junjunlab/RiboProfiler"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># or</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"junjunlab/RiboProfiler"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">RiboProfiler</span><span class="op">)</span></span></code></pre></div>
+<hr>
+<div class="inline-figure"><img src="local_images/cover.png" style="width:500px;border:2px solid black;"></div>
+
+</div>
+  <div class="chapter-nav">
+<div class="empty"></div>
+<div class="next"><a href="workflow.html"><span class="header-section-number">2</span> Workflow</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav"><li><a class="nav-link" href="#about"><span class="header-section-number">1</span> About</a></li></ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>RiboProfiler Reference Book</strong>" was written by Jun Zhang. It was last built on 2023-05-22.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

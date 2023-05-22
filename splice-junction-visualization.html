@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 8 Splice junction visualization | RiboProfiler Reference Book</title>
+<meta name="author" content="Jun Zhang">
+<meta name="description" content="There have been some visualization tools for RNA different types of splice and junction events. The most popular tool is called sashimiplot with embeded into multiple splice-analysis tools. It is...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Chapter 8 Splice junction visualization | RiboProfiler Reference Book">
+<meta property="og:type" content="book">
+<meta property="og:description" content="There have been some visualization tools for RNA different types of splice and junction events. The most popular tool is called sashimiplot with embeded into multiple splice-analysis tools. It is...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 8 Splice junction visualization | RiboProfiler Reference Book">
+<meta name="twitter:description" content="There have been some visualization tools for RNA different types of splice and junction events. The most popular tool is called sashimiplot with embeded into multiple splice-analysis tools. It is...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">RiboProfiler Reference Book</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="" href="extract-sequence.html"><span class="header-section-number">2</span> Extract sequence</a></li>
+<li><a class="" href="draw-chromosome-ideograms.html"><span class="header-section-number">3</span> Draw chromosome ideograms</a></li>
+<li><a class="" href="track-data-input.html"><span class="header-section-number">4</span> Track data input</a></li>
+<li><a class="" href="basic-visualization.html"><span class="header-section-number">5</span> Basic visualization</a></li>
+<li><a class="" href="loops-visualization.html"><span class="header-section-number">6</span> Loops visualization</a></li>
+<li><a class="" href="hic-heatmap-visualization.html"><span class="header-section-number">7</span> Hic heatmap visualization</a></li>
+<li><a class="active" href="splice-junction-visualization.html"><span class="header-section-number">8</span> Splice junction visualization</a></li>
+<li><a class="" href="other-funs.html"><span class="header-section-number">9</span> Other funs</a></li>
+<li><a class="" href="frequntlly-asked-questions.html"><span class="header-section-number">10</span> Frequntlly asked questions</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="splice-junction-visualization" class="section level1" number="8">
+<h1>
+<span class="header-section-number">8</span> Splice junction visualization<a class="anchor" aria-label="anchor" href="#splice-junction-visualization"><i class="fas fa-link"></i></a>
+</h1>
+<p>There have been some visualization tools for RNA different types of splice and junction events.
+The most popular tool is called <strong>sashimiplot</strong> with embeded into multiple splice-analysis
+tools. It is still not convenient to visualize the splice data with your own bigwig format
+data with significant differential splice sites information which produced from other softwares.
+The <strong>trackVisProMax</strong> also allows you plot the RNA splice and junctions data with your own
+data.</p>
+<div id="data-pareparation" class="section level2" number="8.1">
+<h2>
+<span class="header-section-number">8.1</span> Data pareparation<a class="anchor" aria-label="anchor" href="#data-pareparation"><i class="fas fa-link"></i></a>
+</h2>
+<p>Here we use RNA-seq as example data, first we extract all junctions from <strong>bam</strong>
+files:</p>
+<div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bam_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"F:/junc-test/"</span>,</span>
+<span>                       pattern <span class="op">=</span> <span class="st">".bam$"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">bam_file</span></span>
+<span><span class="co"># [1] "F:/junc-test/C1.sorted.bam" "F:/junc-test/WT.sorted.bam"</span></span>
+<span></span>
+<span><span class="va">junc_df</span> <span class="op">&lt;-</span> <span class="fu">loadJunction</span><span class="op">(</span>data_path <span class="op">=</span> <span class="va">bam_file</span>,</span>
+<span>                        file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"C1"</span>,<span class="st">"WT"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">junc_df</span> <span class="op">&lt;-</span> <span class="va">junc_df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">score</span> <span class="op">&gt;=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">junc_df</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#   seqnames   start     end score fileName</span></span>
+<span><span class="co"># 1        1 3154117 3159706     1       C1</span></span>
+<span><span class="co"># 2        1 3207318 3213608     1       C1</span></span>
+<span><span class="co"># 3        1 4492669 4493099     8       C1</span></span></code></pre></div>
+<p>Load bigwig files:</p>
+<div class="sourceCode" id="cb126"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># gtf</span></span>
+<span><span class="va">gtf</span> <span class="op">&lt;-</span> <span class="fu">rtracklayer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rtracklayer/man/GFFFile-class.html">import.gff</a></span><span class="op">(</span><span class="st">"Mus_musculus.GRCm38.102.gtf"</span>,format <span class="op">=</span> <span class="st">"gtf"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># load bigwig files</span></span>
+<span><span class="va">bw_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"F:/junc-test/"</span>,pattern <span class="op">=</span> <span class="st">'.bw'</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">bw_file</span></span>
+<span><span class="co"># [1] "F:/junc-test/C1.BPM.bw" "F:/junc-test/WT.BPM.bw"</span></span>
+<span></span>
+<span><span class="co"># select some chromosomes for test</span></span>
+<span><span class="va">bw</span> <span class="op">&lt;-</span> <span class="fu">loadBigWig</span><span class="op">(</span>bw_file <span class="op">=</span> <span class="va">bw_file</span>,file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"C1"</span>,<span class="st">"WT"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">bw2</span> <span class="op">&lt;-</span> <span class="fu">loadBigWig</span><span class="op">(</span>bw_file <span class="op">=</span> <span class="va">bw_file</span>,file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"C1_BW"</span>,<span class="st">"WT_BW"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="visualization" class="section level2" number="8.2">
+<h2>
+<span class="header-section-number">8.2</span> Visualization<a class="anchor" aria-label="anchor" href="#visualization"><i class="fas fa-link"></i></a>
+</h2>
+<p>Single gene test:</p>
+<div class="sourceCode" id="cb127"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               Input_bw <span class="op">=</span> <span class="va">bw2</span>,</span>
+<span>               Input_junction <span class="op">=</span> <span class="va">junc_df</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               Input_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Actb"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="section" class="section level2" number="8.3">
+<h2>
+<span class="header-section-number">8.3</span> <img src="./local_images/t81.png" style="width:100.0%"><a class="anchor" aria-label="anchor" href="#section"><i class="fas fa-link"></i></a>
+</h2>
+<blockquote>
+<p><strong>Note:</strong> The junction curve will be drawn together with siganal track if your
+junction <strong>fileName’s</strong> are same as bigwig files and <strong>junc_layer_combined</strong>
+should be setted to <strong>TRUE</strong>.</p>
+</blockquote>
+<div class="sourceCode" id="cb128"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               Input_bw <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>               junc_layer_combined <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               Input_junction <span class="op">=</span> <span class="va">junc_df</span>,</span>
+<span>               Input_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Pou5f1"</span>,<span class="st">"Gnpda2"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="./local_images/t82.png" style="width:100.0%"><strong>signal_layer_junction_params</strong> and <strong>signal_layer_junction_label_params</strong> control
+the curve graphics and text label graphics. Here we change the linewidth and
+label size:</p>
+<div class="sourceCode" id="cb129"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               Input_bw <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>               junc_layer_combined <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               Input_junction <span class="op">=</span> <span class="va">junc_df</span>,</span>
+<span>               Input_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Pou5f1"</span>,<span class="st">"Gnpda2"</span><span class="op">)</span>,</span>
+<span>               signal_layer_junction_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>               signal_layer_junction_label_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t83.png" style="width:100.0%"></div>
+<p>Drawing the junctions track separately and we can turn the curve style into
+band-curve style with <strong>add_band_line=TRUE</strong>. The width of line is relatted
+with the junction counts which means using the <strong>score</strong> column:</p>
+<div class="sourceCode" id="cb130"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               Input_bw <span class="op">=</span> <span class="va">bw2</span>,</span>
+<span>               Input_junction <span class="op">=</span> <span class="va">junc_df</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               add_band_line <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               signal_range_pos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">0.9</span><span class="op">)</span>,</span>
+<span>               Input_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Pou5f1"</span>,<span class="st">"Gnpda2"</span><span class="op">)</span>,</span>
+<span>               sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"C1_BW"</span>,<span class="st">"C1"</span>,<span class="st">"WT_BW"</span>,<span class="st">"WT"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t84.png" style="width:100.0%"></div>
+<p>Reversing the junction tracks. <strong>band_width</strong> controls the curve witdth:</p>
+<div class="sourceCode" id="cb131"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               Input_bw <span class="op">=</span> <span class="va">bw2</span>,</span>
+<span>               Input_junction <span class="op">=</span> <span class="va">junc_df</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               add_band_line <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               signal_range_pos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">0.9</span><span class="op">)</span>,</span>
+<span>               Input_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Pou5f1"</span>,<span class="st">"Gnpda2"</span><span class="op">)</span>,</span>
+<span>               sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"C1_BW"</span>,<span class="st">"C1"</span>,<span class="st">"WT_BW"</span>,<span class="st">"WT"</span><span class="op">)</span>,</span>
+<span>               band_width <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>               reverse_y_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"C1"</span>,<span class="st">"WT"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t85.png" style="width:100.0%"></div>
+<p>Combining the signal tracks and junction tracks:</p>
+<div class="sourceCode" id="cb132"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               Input_bw <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>               junc_layer_combined <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               Input_junction <span class="op">=</span> <span class="va">junc_df</span>,</span>
+<span>               signal_range_pos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">0.9</span><span class="op">)</span>,</span>
+<span>               add_band_line <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               Input_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Pou5f1"</span>,<span class="st">"Gnpda2"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t86.png" style="width:100.0%"></div>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="hic-heatmap-visualization.html"><span class="header-section-number">7</span> Hic heatmap visualization</a></div>
+<div class="next"><a href="other-funs.html"><span class="header-section-number">9</span> Other funs</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#splice-junction-visualization"><span class="header-section-number">8</span> Splice junction visualization</a></li>
+<li><a class="nav-link" href="#data-pareparation"><span class="header-section-number">8.1</span> Data pareparation</a></li>
+<li><a class="nav-link" href="#visualization"><span class="header-section-number">8.2</span> Visualization</a></li>
+<li><a class="nav-link" href="#section"><span class="header-section-number">8.3</span></a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>RiboProfiler Reference Book</strong>" was written by Jun Zhang. It was last built on 2023-05-19.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

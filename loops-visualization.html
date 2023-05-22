@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 6 Loops visualization | RiboProfiler Reference Book</title>
+<meta name="author" content="Jun Zhang">
+<meta name="description" content="For Hi-C, HiChIP and ChIA-PET sequencing technologies, them aim to catch the three dimension interaction of chromosomes. Finding interaction sites and visualize them which are on demand. Usually...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Chapter 6 Loops visualization | RiboProfiler Reference Book">
+<meta property="og:type" content="book">
+<meta property="og:description" content="For Hi-C, HiChIP and ChIA-PET sequencing technologies, them aim to catch the three dimension interaction of chromosomes. Finding interaction sites and visualize them which are on demand. Usually...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 6 Loops visualization | RiboProfiler Reference Book">
+<meta name="twitter:description" content="For Hi-C, HiChIP and ChIA-PET sequencing technologies, them aim to catch the three dimension interaction of chromosomes. Finding interaction sites and visualize them which are on demand. Usually...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">RiboProfiler Reference Book</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="" href="extract-sequence.html"><span class="header-section-number">2</span> Extract sequence</a></li>
+<li><a class="" href="draw-chromosome-ideograms.html"><span class="header-section-number">3</span> Draw chromosome ideograms</a></li>
+<li><a class="" href="track-data-input.html"><span class="header-section-number">4</span> Track data input</a></li>
+<li><a class="" href="basic-visualization.html"><span class="header-section-number">5</span> Basic visualization</a></li>
+<li><a class="active" href="loops-visualization.html"><span class="header-section-number">6</span> Loops visualization</a></li>
+<li><a class="" href="hic-heatmap-visualization.html"><span class="header-section-number">7</span> Hic heatmap visualization</a></li>
+<li><a class="" href="splice-junction-visualization.html"><span class="header-section-number">8</span> Splice junction visualization</a></li>
+<li><a class="" href="other-funs.html"><span class="header-section-number">9</span> Other funs</a></li>
+<li><a class="" href="frequntlly-asked-questions.html"><span class="header-section-number">10</span> Frequntlly asked questions</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="loops-visualization" class="section level1" number="6">
+<h1>
+<span class="header-section-number">6</span> Loops visualization<a class="anchor" aria-label="anchor" href="#loops-visualization"><i class="fas fa-link"></i></a>
+</h1>
+<p>For <strong>Hi-C</strong>, <strong>HiChIP</strong> and <strong>ChIA-PET</strong> sequencing technologies, them aim to
+catch the three dimension interaction of chromosomes. Finding interaction sites
+and visualize them which are on demand. Usually we use arch links to represent the
+interaction information.</p>
+<div id="input-data-prepration" class="section level2" number="6.1">
+<h2>
+<span class="header-section-number">6.1</span> Input data prepration<a class="anchor" aria-label="anchor" href="#input-data-prepration"><i class="fas fa-link"></i></a>
+</h2>
+<blockquote>
+<p>Test data can be fetched on <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE200165"><strong>GSE200165</strong></a>.</p>
+</blockquote>
+<p>We can use <strong>loadloops</strong> function to load the interaction sites data:</p>
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">loop_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"test-bw2/"</span>,pattern <span class="op">=</span> <span class="st">".bedpe$"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">loop_file</span></span>
+<span><span class="co"># [1] "test-bw2/C1-CTCF.bedpe"    "test-bw2/C1-H3K27ac.bedpe" "test-bw2/M1-CTCF.bedpe"   </span></span>
+<span><span class="co"># [4] "test-bw2/M1-H3K27ac.bedpe"</span></span>
+<span></span>
+<span><span class="va">file_name</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"C1-CTCF"</span>,<span class="st">"C1-H3K27ac"</span>,<span class="st">"M1-CTCF"</span>,<span class="st">"M1-H3K27ac"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># test code</span></span>
+<span><span class="va">loop_data</span> <span class="op">&lt;-</span> <span class="fu">loadloops</span><span class="op">(</span>loop_file <span class="op">=</span> <span class="va">loop_file</span>,file_name <span class="op">=</span> <span class="va">file_name</span>,</span>
+<span>                       sep <span class="op">=</span> <span class="st">" "</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">loop_data</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#   seqnames     start       end    score fileName</span></span>
+<span><span class="co"># 1    chr10 100002774 100022436 0.021354  C1-CTCF</span></span>
+<span><span class="co"># 2    chr10 100002774 100069170 0.068404  C1-CTCF</span></span>
+<span><span class="co"># 3    chr10 100002774 100185646 0.184670  C1-CTCF</span></span></code></pre></div>
+<hr>
+<blockquote>
+<p>Test data can be fetched on <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE200160"><strong>GSE200160</strong></a>.</p>
+</blockquote>
+<p>Here we also load bigwig data:</p>
+<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># bigwig</span></span>
+<span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"test-bw2/"</span>,pattern <span class="op">=</span> <span class="st">'.bw'</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="co"># [1] "test-bw2/ChIP-CTCF-MYC1.bw"    "test-bw2/ChIP-H3K27ac-MYC1.bw" "test-bw2/ChIP-Input-MYC1.bw"  </span></span>
+<span><span class="co"># [4] "test-bw2/ChIP-MYC-MYC1.bw"</span></span>
+<span></span>
+<span><span class="va">bw</span> <span class="op">&lt;-</span> <span class="fu">loadBigWig</span><span class="op">(</span>bw_file <span class="op">=</span> <span class="va">file</span>,chrom <span class="op">=</span> <span class="st">"8"</span><span class="op">)</span></span>
+<span><span class="va">bw</span><span class="op">$</span><span class="va">seqnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"chr"</span>,<span class="va">bw</span><span class="op">$</span><span class="va">seqnames</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># gtf</span></span>
+<span><span class="va">gtf</span> <span class="op">&lt;-</span> <span class="fu">rtracklayer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rtracklayer/man/GFFFile-class.html">import.gff</a></span><span class="op">(</span><span class="st">"test-bw2/hg19.ncbiRefSeq.gtf.gz"</span>,format <span class="op">=</span> <span class="st">"gtf"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
+</div>
+<div id="basic-loops-visualization" class="section level2" number="6.2">
+<h2>
+<span class="header-section-number">6.2</span> Basic loops visualization<a class="anchor" aria-label="anchor" href="#basic-loops-visualization"><i class="fas fa-link"></i></a>
+</h2>
+<p>The legend <strong>score</strong> means the distance across two interaction sites. The higher score,
+the longer distance:</p>
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr8"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fl">100010290</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fl">101157229</span><span class="op">)</span>,</span>
+<span>               Input_loop <span class="op">=</span> <span class="va">loop_data</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t55.png" style="width:100.0%"></div>
+<p><strong>loops_col</strong> controls the color or links:</p>
+<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr8"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fl">100010290</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fl">101157229</span><span class="op">)</span>,</span>
+<span>               Input_loop <span class="op">=</span> <span class="va">loop_data</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               loops_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>,<span class="st">"blue"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t56.png" style="width:100.0%"></div>
+<p><strong>signal_layer_loop_params</strong> accepts a named list to control the links layer,
+For more details, please check <strong>ggbio::geom_arch</strong>. Here we turn off the legend:</p>
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr8"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fl">100010290</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fl">101157229</span><span class="op">)</span>,</span>
+<span>               Input_loop <span class="op">=</span> <span class="va">loop_data</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               loops_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>,<span class="st">"blue"</span><span class="op">)</span>,</span>
+<span>               signal_layer_loop_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>show.legend <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t57.png" style="width:100.0%"></div>
+<p><strong>max.height</strong> can make the links panel height to be same:</p>
+<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr8"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fl">100010290</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fl">101157229</span><span class="op">)</span>,</span>
+<span>               Input_loop <span class="op">=</span> <span class="va">loop_data</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               signal_layer_loop_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>max.height <span class="op">=</span> <span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t58.png" style="width:100.0%"></div>
+<p><strong>linewidth</strong> changes the links linewidth:</p>
+<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr8"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fl">100010290</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fl">101157229</span><span class="op">)</span>,</span>
+<span>               Input_loop <span class="op">=</span> <span class="va">loop_data</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               signal_layer_loop_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t59.png" style="width:100.0%"></div>
+<p>We can arrange the sample order:</p>
+<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr8"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fl">100010290</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fl">101157229</span><span class="op">)</span>,</span>
+<span>               Input_loop <span class="op">=</span> <span class="va">loop_data</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M1-CTCF"</span>,<span class="st">"ChIP-CTCF-MYC1"</span>,</span>
+<span>                                <span class="st">"C1-CTCF"</span>,<span class="st">"ChIP-MYC-MYC1"</span>,</span>
+<span>                                <span class="st">"M1-H3K27ac"</span>,<span class="st">"ChIP-H3K27ac-MYC1"</span>,</span>
+<span>                                <span class="st">"C1-H3K27ac"</span>,<span class="st">"ChIP-Input-MYC1"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t60.png" style="width:100.0%"></div>
+</div>
+<div id="reverse-y-axis" class="section level2" number="6.3">
+<h2>
+<span class="header-section-number">6.3</span> Reverse Y axis<a class="anchor" aria-label="anchor" href="#reverse-y-axis"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>reverse_y_vars</strong> allows you to reverse the Y axis for any signal track,
+you only need to give a track character name:</p>
+<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr8"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fl">100010290</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fl">101157229</span><span class="op">)</span>,</span>
+<span>               Input_loop <span class="op">=</span> <span class="va">loop_data</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ChIP-CTCF-MYC1"</span>,<span class="st">"M1-CTCF"</span>,</span>
+<span>                                <span class="st">"ChIP-MYC-MYC1"</span>,<span class="st">"C1-CTCF"</span>,</span>
+<span>                                <span class="st">"ChIP-H3K27ac-MYC1"</span>,<span class="st">"M1-H3K27ac"</span>,</span>
+<span>                                <span class="st">"ChIP-Input-MYC1"</span>,<span class="st">"C1-H3K27ac"</span><span class="op">)</span>,</span>
+<span>               reverse_y_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M1-CTCF"</span>,<span class="st">"C1-CTCF"</span>,</span>
+<span>                                  <span class="st">"M1-H3K27ac"</span>,<span class="st">"C1-H3K27ac"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t61.png" style="width:100.0%"></div>
+<p>Or you can reverse the bigwig track Y axis:</p>
+<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr8"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fl">100010290</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fl">101157229</span><span class="op">)</span>,</span>
+<span>               Input_loop <span class="op">=</span> <span class="va">loop_data</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M1-CTCF"</span>,<span class="st">"ChIP-CTCF-MYC1"</span>,</span>
+<span>                                <span class="st">"C1-CTCF"</span>,<span class="st">"ChIP-MYC-MYC1"</span>,</span>
+<span>                                <span class="st">"M1-H3K27ac"</span>,<span class="st">"ChIP-H3K27ac-MYC1"</span>,</span>
+<span>                                <span class="st">"C1-H3K27ac"</span>,<span class="st">"ChIP-Input-MYC1"</span><span class="op">)</span>,</span>
+<span>               reverse_y_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ChIP-CTCF-MYC1"</span>,<span class="st">"ChIP-MYC-MYC1"</span>,</span>
+<span>                                  <span class="st">"ChIP-H3K27ac-MYC1"</span>,<span class="st">"ChIP-Input-MYC1"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t62.png" style="width:100.0%"></div>
+<p>Let’s draw multiple genomic regions:</p>
+<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr8"</span>,<span class="st">"chr8"</span><span class="op">)</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100010290</span>,<span class="fl">65831189</span><span class="op">)</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">101157229</span>,<span class="fl">67351272</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               Input_loop <span class="op">=</span> <span class="va">loop_data</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ChIP-CTCF-MYC1"</span>,<span class="st">"M1-CTCF"</span>,</span>
+<span>                                <span class="st">"ChIP-MYC-MYC1"</span>,<span class="st">"C1-CTCF"</span>,</span>
+<span>                                <span class="st">"ChIP-H3K27ac-MYC1"</span>,<span class="st">"M1-H3K27ac"</span>,</span>
+<span>                                <span class="st">"ChIP-Input-MYC1"</span>,<span class="st">"C1-H3K27ac"</span><span class="op">)</span>,</span>
+<span>               reverse_y_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M1-CTCF"</span>,<span class="st">"C1-CTCF"</span>,</span>
+<span>                                  <span class="st">"M1-H3K27ac"</span>,<span class="st">"C1-H3K27ac"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t63.png" style="width:100.0%"></div>
+</div>
+<div id="combing-with-chromosome-track" class="section level2" number="6.4">
+<h2>
+<span class="header-section-number">6.4</span> Combing with chromosome track<a class="anchor" aria-label="anchor" href="#combing-with-chromosome-track"><i class="fas fa-link"></i></a>
+</h2>
+<p>Adding chromosome tracks:</p>
+<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"hg19_obj"</span><span class="op">)</span></span>
+<span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr8"</span>,<span class="st">"chr8"</span><span class="op">)</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100010290</span>,<span class="fl">65831189</span><span class="op">)</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">101157229</span>,<span class="fl">67351272</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               Input_loop <span class="op">=</span> <span class="va">loop_data</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ChIP-CTCF-MYC1"</span>,<span class="st">"M1-CTCF"</span>,</span>
+<span>                                <span class="st">"ChIP-MYC-MYC1"</span>,<span class="st">"C1-CTCF"</span>,</span>
+<span>                                <span class="st">"ChIP-H3K27ac-MYC1"</span>,<span class="st">"M1-H3K27ac"</span>,</span>
+<span>                                <span class="st">"ChIP-Input-MYC1"</span>,<span class="st">"C1-H3K27ac"</span><span class="op">)</span>,</span>
+<span>               reverse_y_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M1-CTCF"</span>,<span class="st">"C1-CTCF"</span>,</span>
+<span>                                  <span class="st">"M1-H3K27ac"</span>,<span class="st">"C1-H3K27ac"</span><span class="op">)</span>,</span>
+<span>               draw_chromosome <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               draw_chromosome_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg19_obj</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t64.png" style="width:100.0%"></div>
+<p>Adding group information:</p>
+<div class="sourceCode" id="cb108"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr8"</span>,<span class="st">"chr8"</span><span class="op">)</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100010290</span>,<span class="fl">65831189</span><span class="op">)</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">101157229</span>,<span class="fl">67351272</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               Input_loop <span class="op">=</span> <span class="va">loop_data</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ChIP-CTCF-MYC1"</span>,<span class="st">"M1-CTCF"</span>,</span>
+<span>                                <span class="st">"ChIP-MYC-MYC1"</span>,<span class="st">"C1-CTCF"</span>,</span>
+<span>                                <span class="st">"ChIP-H3K27ac-MYC1"</span>,<span class="st">"M1-H3K27ac"</span>,</span>
+<span>                                <span class="st">"ChIP-Input-MYC1"</span>,<span class="st">"C1-H3K27ac"</span><span class="op">)</span>,</span>
+<span>               reverse_y_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M1-CTCF"</span>,<span class="st">"C1-CTCF"</span>,</span>
+<span>                                  <span class="st">"M1-H3K27ac"</span>,<span class="st">"C1-H3K27ac"</span><span class="op">)</span>,</span>
+<span>               draw_chromosome <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               draw_chromosome_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg19_obj</span><span class="op">)</span>,</span>
+<span>               sample_group_info <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>state1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ChIP-CTCF-MYC1"</span>,<span class="st">"M1-CTCF"</span><span class="op">)</span>,</span>
+<span>                                        state2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ChIP-MYC-MYC1"</span>,<span class="st">"C1-CTCF"</span><span class="op">)</span>,</span>
+<span>                                        histoneMarker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ChIP-H3K27ac-MYC1"</span>,<span class="st">"M1-H3K27ac"</span><span class="op">)</span>,</span>
+<span>                                        inputControl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ChIP-Input-MYC1"</span>,<span class="st">"C1-H3K27ac"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               panel.spacing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.2</span>,<span class="fl">0.2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t65.png" style="width:100.0%"></div>
+</div>
+<div id="higlight-regions" class="section level2" number="6.5">
+<h2>
+<span class="header-section-number">6.5</span> Higlight regions<a class="anchor" aria-label="anchor" href="#higlight-regions"><i class="fas fa-link"></i></a>
+</h2>
+<p>Adding highlight regions:</p>
+<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">higlight_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"chr8:100010290-101157229"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100310290</span><span class="op">)</span>,</span>
+<span>                                                          end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100457229</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                        <span class="st">"chr8:65831189-67351272"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">65931189</span>,<span class="fl">66231189</span><span class="op">)</span>,</span>
+<span>                                                        end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">66051272</span>,<span class="fl">66351272</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">higlight_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Actb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"purple"</span><span class="op">)</span>,</span>
+<span>                     Myc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"yellow"</span>,<span class="st">"green"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr8"</span>,<span class="st">"chr8"</span><span class="op">)</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100010290</span>,<span class="fl">65831189</span><span class="op">)</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">101157229</span>,<span class="fl">67351272</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               Input_loop <span class="op">=</span> <span class="va">loop_data</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ChIP-CTCF-MYC1"</span>,<span class="st">"M1-CTCF"</span>,</span>
+<span>                                <span class="st">"ChIP-MYC-MYC1"</span>,<span class="st">"C1-CTCF"</span>,</span>
+<span>                                <span class="st">"ChIP-H3K27ac-MYC1"</span>,<span class="st">"M1-H3K27ac"</span>,</span>
+<span>                                <span class="st">"ChIP-Input-MYC1"</span>,<span class="st">"C1-H3K27ac"</span><span class="op">)</span>,</span>
+<span>               reverse_y_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M1-CTCF"</span>,<span class="st">"C1-CTCF"</span>,</span>
+<span>                                  <span class="st">"M1-H3K27ac"</span>,<span class="st">"C1-H3K27ac"</span><span class="op">)</span>,</span>
+<span>               draw_chromosome <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               draw_chromosome_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg19_obj</span><span class="op">)</span>,</span>
+<span>               sample_group_info <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>state1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ChIP-CTCF-MYC1"</span>,<span class="st">"M1-CTCF"</span><span class="op">)</span>,</span>
+<span>                                        state2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ChIP-MYC-MYC1"</span>,<span class="st">"C1-CTCF"</span><span class="op">)</span>,</span>
+<span>                                        histoneMarker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ChIP-H3K27ac-MYC1"</span>,<span class="st">"M1-H3K27ac"</span><span class="op">)</span>,</span>
+<span>                                        inputControl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ChIP-Input-MYC1"</span>,<span class="st">"C1-H3K27ac"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               panel.spacing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.2</span>,<span class="fl">0.2</span><span class="op">)</span>,</span>
+<span>               higlight_region <span class="op">=</span> <span class="va">higlight_region</span>,</span>
+<span>               higlight_col <span class="op">=</span> <span class="va">higlight_col</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t66.png" style="width:100.0%"></div>
+</div>
+<div id="drawing-only-loop-tracks" class="section level2" number="6.6">
+<h2>
+<span class="header-section-number">6.6</span> Drawing only loop tracks<a class="anchor" aria-label="anchor" href="#drawing-only-loop-tracks"><i class="fas fa-link"></i></a>
+</h2>
+<p>We can only plot loops graph without bigwig track:</p>
+<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr8"</span>,<span class="st">"chr8"</span><span class="op">)</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100010290</span>,<span class="fl">65831189</span><span class="op">)</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">101157229</span>,<span class="fl">67351272</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               Input_loop <span class="op">=</span> <span class="va">loop_data</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               draw_chromosome <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               draw_chromosome_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg19_obj</span><span class="op">)</span>,</span>
+<span>               sample_group_info <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>state1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"C1-CTCF"</span>,<span class="st">"M1-CTCF"</span><span class="op">)</span>,</span>
+<span>                                        state2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M1-H3K27ac"</span>,<span class="st">"C1-H3K27ac"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               panel.spacing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.2</span>,<span class="fl">0.2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t67.png" style="width:100.0%"></div>
+</div>
+<div id="curve-geoms-choosing" class="section level2" number="6.7">
+<h2>
+<span class="header-section-number">6.7</span> Curve geoms choosing<a class="anchor" aria-label="anchor" href="#curve-geoms-choosing"><i class="fas fa-link"></i></a>
+</h2>
+<p>The curves are generated based on <strong>ggbio::geom_arch</strong> function. The curves are
+a little strange which means the arcs are much oblate. Here we can choose another
+geom layer <strong>jjPlot::geom_arch2</strong> for better visualization. Setting
+<strong>Loop_curve_geom = “geom_arch2”</strong>:</p>
+<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr8"</span>,<span class="st">"chr8"</span><span class="op">)</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100010290</span>,<span class="fl">65831189</span><span class="op">)</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">101157229</span>,<span class="fl">67351272</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               Input_loop <span class="op">=</span> <span class="va">loop_data</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               draw_chromosome <span class="op">=</span> <span class="cn">T</span>,Loop_curve_geom <span class="op">=</span> <span class="st">"geom_arch2"</span>,</span>
+<span>               draw_chromosome_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg19_obj</span><span class="op">)</span>,</span>
+<span>               sample_group_info <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>state1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"C1-CTCF"</span>,<span class="st">"M1-CTCF"</span><span class="op">)</span>,</span>
+<span>                                        state2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"M1-H3K27ac"</span>,<span class="st">"C1-H3K27ac"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               panel.spacing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.2</span>,<span class="fl">0.2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t67_1.png" style="width:100.0%"></div>
+<p>You can just choose suitable style what you like.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="basic-visualization.html"><span class="header-section-number">5</span> Basic visualization</a></div>
+<div class="next"><a href="hic-heatmap-visualization.html"><span class="header-section-number">7</span> Hic heatmap visualization</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#loops-visualization"><span class="header-section-number">6</span> Loops visualization</a></li>
+<li><a class="nav-link" href="#input-data-prepration"><span class="header-section-number">6.1</span> Input data prepration</a></li>
+<li><a class="nav-link" href="#basic-loops-visualization"><span class="header-section-number">6.2</span> Basic loops visualization</a></li>
+<li><a class="nav-link" href="#reverse-y-axis"><span class="header-section-number">6.3</span> Reverse Y axis</a></li>
+<li><a class="nav-link" href="#combing-with-chromosome-track"><span class="header-section-number">6.4</span> Combing with chromosome track</a></li>
+<li><a class="nav-link" href="#higlight-regions"><span class="header-section-number">6.5</span> Higlight regions</a></li>
+<li><a class="nav-link" href="#drawing-only-loop-tracks"><span class="header-section-number">6.6</span> Drawing only loop tracks</a></li>
+<li><a class="nav-link" href="#curve-geoms-choosing"><span class="header-section-number">6.7</span> Curve geoms choosing</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>RiboProfiler Reference Book</strong>" was written by Jun Zhang. It was last built on 2023-05-19.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

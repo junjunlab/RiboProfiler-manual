@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 3 Align on genome | RiboProfiler Reference Book</title>
+<meta name="author" content="Jun Zhang">
+<meta name="description" content="This chapter we will describe the total ribo-seq workflow with aligning reads on genome. The test dataset is from GSE157519(Adaptive translational pausing is a hallmark of the cellular response to...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Chapter 3 Align on genome | RiboProfiler Reference Book">
+<meta property="og:type" content="book">
+<meta property="og:description" content="This chapter we will describe the total ribo-seq workflow with aligning reads on genome. The test dataset is from GSE157519(Adaptive translational pausing is a hallmark of the cellular response to...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 3 Align on genome | RiboProfiler Reference Book">
+<meta name="twitter:description" content="This chapter we will describe the total ribo-seq workflow with aligning reads on genome. The test dataset is from GSE157519(Adaptive translational pausing is a hallmark of the cellular response to...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">RiboProfiler Reference Book</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="" href="workflow.html"><span class="header-section-number">2</span> Workflow</a></li>
+<li><a class="active" href="align-on-genome.html"><span class="header-section-number">3</span> Align on genome</a></li>
+<li><a class="" href="align-on-transcriptome.html"><span class="header-section-number">4</span> Align on transcriptome</a></li>
+<li><a class="" href="selective-ribosome-profiling.html"><span class="header-section-number">5</span> Selective ribosome profiling</a></li>
+<li><a class="" href="serp-data-analysis.html"><span class="header-section-number">6</span> SeRP data analysis</a></li>
+<li><a class="" href="running-on-linux.html"><span class="header-section-number">7</span> Running on linux</a></li>
+<li><a class="" href="track_plot-supplement.html"><span class="header-section-number">8</span> Track_plot supplement</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="align-on-genome" class="section level1" number="3">
+<h1>
+<span class="header-section-number">3</span> Align on genome<a class="anchor" aria-label="anchor" href="#align-on-genome"><i class="fas fa-link"></i></a>
+</h1>
+<p>This chapter we will describe the total ribo-seq workflow with aligning reads on genome. The test dataset is
+from <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE157519">GSE157519(<strong><em>Adaptive translational pausing is a hallmark of the cellular response to severe environmental stress</em></strong>)</a>. You can download raw fastq files to
+follow this analysis flow.</p>
+<hr>
+<div id="check-papers-data-processing" class="section level2" number="3.1">
+<h2>
+<span class="header-section-number">3.1</span> Check papers data processing<a class="anchor" aria-label="anchor" href="#check-papers-data-processing"><i class="fas fa-link"></i></a>
+</h2>
+<p>The RNA-seq data was generated using paired-end sequencing, while the Ribo-seq data was generated using single-end sequencing. For convenience, we used the read1 of the RNA-seq data as input for our analysis.
+The follows are details of paper’s data processing:</p>
+<div class="inline-figure"><img src="local_images/g1.png" style="width:100.0%"></div>
+</div>
+<div id="trim-adaptors" class="section level2" number="3.2">
+<h2>
+<span class="header-section-number">3.2</span> Trim adaptors<a class="anchor" aria-label="anchor" href="#trim-adaptors"><i class="fas fa-link"></i></a>
+</h2>
+<p>Here are the raw fastq files:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">RiboProfiler</span><span class="op">)</span></span>
+<span><span class="co"># ┌────────────────────────────────────────────────────────────────┐</span></span>
+<span><span class="co"># │                                                                │</span></span>
+<span><span class="co"># │   Welcome to use RiboProfiler package for Ribo-seq analysis.   │</span></span>
+<span><span class="co"># │                                                                │</span></span>
+<span><span class="co"># └────────────────────────────────────────────────────────────────┘</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># The version of RiboProfiler: 0.0.5 </span></span>
+<span><span class="co"># Any advice or suggestions please contact with me: 3219030654@stu.cpu.edu.cn.</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"1.raw-data/"</span>,<span class="st">"*.gz"</span><span class="op">)</span></span>
+<span><span class="co"># [1] "SRR12594201.fastq.gz"   "SRR12594205.fastq.gz"   "SRR12594209.fastq.gz"  </span></span>
+<span><span class="co"># [4] "SRR12594210.fastq.gz"   "SRR12594214.fastq.gz"   "SRR12594218.fastq.gz"  </span></span>
+<span><span class="co"># [7] "SRR12594219_1.fastq.gz" "SRR12594223_1.fastq.gz" "SRR12594227_1.fastq.gz"</span></span>
+<span><span class="co"># [10] "SRR12594228_1.fastq.gz" "SRR12594232_1.fastq.gz" "SRR12594236_1.fastq.gz"</span></span></code></pre></div>
+<p>First we trim the adapters for Ribo-seq using <strong>batch_adpator_remove</strong> function:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"2.trim-data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># test function</span></span>
+<span><span class="va">fq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"1.raw-data/"</span>,pattern <span class="op">=</span> <span class="st">".gz"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rmd1</span> <span class="op">&lt;-</span> <span class="fu">batch_adpator_remove</span><span class="op">(</span>fastq_file1 <span class="op">=</span> <span class="va">fq</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span>,</span>
+<span>                             output_dir <span class="op">=</span> <span class="st">"2.trim-data/"</span>,</span>
+<span>                             output_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"tmp_"</span>,<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">fq</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span>,split <span class="op">=</span> <span class="st">"\\.|/"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">3</span><span class="op">)</span>,</span>
+<span>                                                 sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
+<span>                             fastp_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>minReadLength <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>                                                 adapterSequenceRead1 <span class="op">=</span> <span class="st">"CTGTAGGCACCATCAAT"</span>,</span>
+<span>                                                 thread <span class="op">=</span> <span class="fl">24</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># ▶ tmp_SRR12594201 has been processed!</span></span>
+<span><span class="co"># ▶ tmp_SRR12594205 has been processed!</span></span>
+<span><span class="co"># ▶ tmp_SRR12594209 has been processed!</span></span>
+<span><span class="co"># ▶ tmp_SRR12594210 has been processed!</span></span>
+<span><span class="co"># ▶ tmp_SRR12594214 has been processed!</span></span>
+<span><span class="co"># ▶ tmp_SRR12594218 has been processed!</span></span></code></pre></div>
+<p>Then we trim the left and right bases for remaing reads:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># trim bases form left and right</span></span>
+<span><span class="va">rmd2</span> <span class="op">&lt;-</span> <span class="fu">batch_adpator_remove</span><span class="op">(</span>fastq_file1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"2.trim-data/"</span>,pattern <span class="op">=</span> <span class="st">".gz"</span>,</span>
+<span>                                                      full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,</span>
+<span>                             output_dir <span class="op">=</span> <span class="st">"2.trim-data/"</span>,</span>
+<span>                             output_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">fq</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span>,split <span class="op">=</span> <span class="st">"\\.|/"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">3</span><span class="op">)</span>,</span>
+<span>                             fastp_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>trimFrontRead1 <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>                                                 trimTailRead1 <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>                                                 adapterTrimming <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                                                 thread <span class="op">=</span> <span class="fl">16</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ▶ SRR12594201 has been processed!</span></span>
+<span><span class="co"># ▶ SRR12594205 has been processed!</span></span>
+<span><span class="co"># ▶ SRR12594209 has been processed!</span></span>
+<span><span class="co"># ▶ SRR12594210 has been processed!</span></span>
+<span><span class="co"># ▶ SRR12594214 has been processed!</span></span>
+<span><span class="co"># ▶ SRR12594218 has been processed!</span></span>
+<span></span>
+<span><span class="co"># remove tmp</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"2.trim-data/"</span>,pattern <span class="op">=</span> <span class="st">"^tmp"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Finally we trim adapters for RNA-seq:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># trim rna adapters</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="va">rmd3</span> <span class="op">&lt;-</span> <span class="fu">batch_adpator_remove</span><span class="op">(</span>fastq_file1 <span class="op">=</span> <span class="va">fq</span><span class="op">[</span><span class="fl">7</span><span class="op">:</span><span class="fl">12</span><span class="op">]</span>,</span>
+<span>                             output_dir <span class="op">=</span> <span class="st">"2.trim-data/"</span>,</span>
+<span>                             output_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">fq</span><span class="op">[</span><span class="fl">7</span><span class="op">:</span><span class="fl">12</span><span class="op">]</span>,split <span class="op">=</span> <span class="st">"\\.|/"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">3</span><span class="op">)</span>,</span>
+<span>                             fastp_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>minReadLength <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>                                                 trimFrontRead1 <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>                                                 adapterSequenceRead1 <span class="op">=</span> <span class="st">"AGATCGGAAGAG"</span>,</span>
+<span>                                                 trimTailRead1 <span class="op">=</span> <span class="fl">90</span>,</span>
+<span>                                                 thread <span class="op">=</span> <span class="fl">16</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ▶ SRR12594219_1 has been processed!</span></span>
+<span><span class="co"># ▶ SRR12594223_1 has been processed!</span></span>
+<span><span class="co"># ▶ SRR12594227_1 has been processed!</span></span>
+<span><span class="co"># ▶ SRR12594228_1 has been processed!</span></span>
+<span><span class="co"># ▶ SRR12594232_1 has been processed!</span></span>
+<span><span class="co"># ▶ SRR12594236_1 has been processed!</span></span></code></pre></div>
+</div>
+<div id="build-index" class="section level2" number="3.3">
+<h2>
+<span class="header-section-number">3.3</span> Build index<a class="anchor" aria-label="anchor" href="#build-index"><i class="fas fa-link"></i></a>
+</h2>
+<div id="build-index-for-trna-and-rrna" class="section level3" number="3.3.1">
+<h3>
+<span class="header-section-number">3.3.1</span> Build index for tRNA and rRNA<a class="anchor" aria-label="anchor" href="#build-index-for-trna-and-rrna"><i class="fas fa-link"></i></a>
+</h3>
+<hr>
+<p><strong>fetch_trRNA_from_NCBI</strong> function can download rRNA and tRNA sequences from NCBI, just supplying with your
+own species:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># download mouse rRNA and tRNA</span></span>
+<span><span class="fu">fetch_trRNA_from_NCBI</span><span class="op">(</span>species <span class="op">=</span> <span class="st">"Mus musculus"</span><span class="op">)</span></span>
+<span><span class="co"># ┌──────────────────────────────────────────────────────────────┐</span></span>
+<span><span class="co"># │                                                              │</span></span>
+<span><span class="co"># │   Download tRNA and rRNA sequences from NCBI has finished!   │</span></span>
+<span><span class="co"># │                                                              │</span></span>
+<span><span class="co"># └──────────────────────────────────────────────────────────────┘</span></span>
+<span><span class="co"># ▶ Here are some common species Latin names:</span></span>
+<span><span class="co">#   </span></span>
+<span><span class="co">#   人类(Homo sapiens), 大鼠(Rattus norvegicus), 小鼠(Mus musculus),</span></span>
+<span><span class="co"># 斑马鱼(Danio rerio), 红毛猩猩(Pan troglodytes), 家犬(Canis familiaris),</span></span>
+<span><span class="co"># 草履虫(Dictyostelium discoideum), 猴子(Macaca mulatta), 红松鼠(Tamiasciurus hudsonicus),</span></span>
+<span><span class="co"># 家兔(Oryctolagus cuniculus), 黄鼠狼(Cricetulus griseus), 南方豹猫(Prionailurus rubiginosus),</span></span>
+<span><span class="co"># 畜牛(Bos taurus), 绿猴(Chlorocebus sabaeus), 绵羊(Ovis aries),</span></span>
+<span><span class="co"># 猪(Sus scrofa), 验血鸟(Taeniopygia guttata), 萨摩耶犬(Canis lupus familiaris),</span></span>
+<span><span class="co"># 膜骨鱼(Takifugu rubripes), 猫(Felis catus), 银狐(Vulpes vulpes),</span></span>
+<span><span class="co"># 水稻(Oryza sativa), 吸血蝙蝠(Desmodus rotundus), 巴西三带蚊(Aedes aegypti),</span></span>
+<span><span class="co"># 印度大象(Elephas maximus), 狼(Canis lupus), 仓鼠(Cricetulus griseus),</span></span>
+<span><span class="co"># 刺参(Strongylocentrotus purpuratus), 山羊(Capra hircus), 兔子(Oryctolagus cuniculus),</span></span>
+<span><span class="co"># 黄猴(Macaca fascicularis), 石斑鱼(Epinephelus coioides), 柴犬(Canis lupus familiaris),</span></span>
+<span><span class="co"># 蚯蚓(Eisenia fetida), 小萤火虫(Luciola cruciata), 白化病毒(White spot syndrome virus),</span></span>
+<span><span class="co"># 河北地蜂(Apis cerana), 喜马拉雅兔(Ochotona curzoniae), 裸鼠(Heterocephalus glaber),</span></span>
+<span><span class="co"># 马(Equus caballus), 胡萝卜野生种(Daucus carota subsp. carota), 水牛(Bubalus bubalis),</span></span>
+<span><span class="co"># 歌鸲(Erithacus rubecula), 美国黑熊(Ursus americanus), 鲨鱼(Callorhinchus milii),</span></span>
+<span><span class="co"># 大黄蜂(Vespa mandarinia), 蜡螟(Galleria mellonella), 黄斑蝶(Papilio xuthus),</span></span>
+<span><span class="co"># 皇家企鹅(Aptenodytes forsteri), 银河野猪(Sus scrofa)</span></span></code></pre></div>
+<p>We can check the sequence:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span><span class="op">(</span><span class="st">"head Mus_musculus_trRNA.fa"</span><span class="op">)</span></span>
+<span><span class="co"># &gt;NR_003278.3 Mus musculus 18S ribosomal RNA (Rn18s), ribosomal RNA</span></span>
+<span><span class="co"># ACCTGGTTGATCCTGCCAGGTAGCATATGCTTGTCTCAAAGATTAAGCCATGCATGTCTAAGTACGCACGGCCGGTACAG</span></span>
+<span><span class="co"># TGAAACTGCGAATGGCTCATTAAATCAGTTATGGTTCCTTTGGTCGCTCGCTCCTCTCCTACTTGGATAACTGTGGTAAT</span></span>
+<span><span class="co"># TCTAGAGCTAATACATGCCGACGGGCGCTGACCCCCCTTCCCGGGGGGGGATGCGTGCATTTATCAGATCAAAACCAACC</span></span>
+<span><span class="co"># CGGTGAGCTCCCTCCCGGCTCCGGCCGGGGGTCGGGCGCCGGCGGCTTGGTGACTCTAGATAACCTCGGGCCGATCGCAC</span></span>
+<span><span class="co"># GCCCCCCGTGGCGGCGACGACCCATTCGAACGTCTGCCCTATCAACTTTCGATGGTAGTCGCCGTGCCTACCATGGTGAC</span></span>
+<span><span class="co"># CACGGGTGACGGGGAATCAGGGTTCGATTCCGGAGAGGGAGCCTGAGAAACGGCTACCACATCCAAGGAAGGCAGCAGGC</span></span>
+<span><span class="co"># GCGCAAATTACCCACTCCCGACCCGGGGAGGTAGTGACGAAAAATAACAATACAGGACTCTTTCGAGGCCCTGTAATTGG</span></span>
+<span><span class="co"># AATGAGTCCACTTTAAATCCTTTAACGAGGATCCATTGGAGGGCAAGTCTGGTGCCAGCAGCCGCGGTAATTCCAGCTCC</span></span>
+<span><span class="co"># AATAGCGTATATTAAAGTTGCTGCAGTTAAAAAGCTCGTAGTTGGATCTTGGGAGCGGGCGGGCGGTCCGCCGCGAGGCG</span></span>
+<span><span class="co"># [1] 0</span></span></code></pre></div>
+<p><strong>trRNA_index_build</strong> is used to build index based on <strong>bowtie2</strong> software:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># buid index for tRNA and tRNA</span></span>
+<span><span class="fu">trRNA_index_build</span><span class="op">(</span>trRNA_file <span class="op">=</span> <span class="st">"Mus_musculus_trRNA.fa"</span>,</span>
+<span>                  prefix <span class="op">=</span> <span class="st">"GRCm38_trRNA"</span><span class="op">)</span></span>
+<span><span class="co"># ┌────────────────────────────────────────────────────┐</span></span>
+<span><span class="co"># │                                                    │</span></span>
+<span><span class="co"># │   Building index for tRNA and rRNA has finished!   │</span></span>
+<span><span class="co"># │                                                    │</span></span>
+<span><span class="co"># └────────────────────────────────────────────────────┘</span></span></code></pre></div>
+<hr>
+</div>
+<div id="build-index-for-genome" class="section level3" number="3.3.2">
+<h3>
+<span class="header-section-number">3.3.2</span> Build index for genome<a class="anchor" aria-label="anchor" href="#build-index-for-genome"><i class="fas fa-link"></i></a>
+</h3>
+<hr>
+<p>Genome sequence can be downloaded from some database like <strong>ensembl</strong>, <strong>UCSC</strong>, <strong>gencode</strong>. Here we use
+mouse GRCm38 genome sequence from ensembl. <strong>reference_index_build</strong> is used to build index based on <strong>Rhisat2</strong> software:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">reference_index_build</span><span class="op">(</span>reference_file <span class="op">=</span> <span class="st">"Mus_musculus.GRCm38.dna.primary_assembly.fa"</span>,</span>
+<span>                      prefix <span class="op">=</span> <span class="st">"GRCm38_ref"</span>,</span>
+<span>                      threads <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
+<span><span class="co"># ┌────────────────────────────────────────────────────┐</span></span>
+<span><span class="co"># │                                                    │</span></span>
+<span><span class="co"># │   Building index for reference has finished!       │</span></span>
+<span><span class="co"># │                                                    │</span></span>
+<span><span class="co"># └────────────────────────────────────────────────────┘</span></span></code></pre></div>
+<hr>
+</div>
+</div>
+<div id="check-index-files" class="section level2" number="3.4">
+<h2>
+<span class="header-section-number">3.4</span> Check index files<a class="anchor" aria-label="anchor" href="#check-index-files"><i class="fas fa-link"></i></a>
+</h2>
+<p>The index files have been save in <strong>0.index-data/</strong> directory:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"0.index-data/"</span>,recursive <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="co"># [1] "ref-index/GRCm38_ref.1.ht2"         "ref-index/GRCm38_ref.2.ht2"</span></span>
+<span><span class="co"># [3] "ref-index/GRCm38_ref.3.ht2"         "ref-index/GRCm38_ref.4.ht2"</span></span>
+<span><span class="co"># [5] "ref-index/GRCm38_ref.5.ht2"         "ref-index/GRCm38_ref.6.ht2"</span></span>
+<span><span class="co"># [7] "ref-index/GRCm38_ref.7.ht2"         "ref-index/GRCm38_ref.8.ht2"</span></span>
+<span><span class="co"># [9] "rtRNA-index/GRCm38_trRNA.1.bt2"     "rtRNA-index/GRCm38_trRNA.2.bt2"</span></span>
+<span><span class="co"># [11] "rtRNA-index/GRCm38_trRNA.3.bt2"     "rtRNA-index/GRCm38_trRNA.4.bt2"</span></span>
+<span><span class="co"># [13] "rtRNA-index/GRCm38_trRNA.rev.1.bt2" "rtRNA-index/GRCm38_trRNA.rev.2.bt2"</span></span></code></pre></div>
+</div>
+<div id="remove-rrna-and-trna-contamination" class="section level2" number="3.5">
+<h2>
+<span class="header-section-number">3.5</span> Remove rRNA and tRNA contamination<a class="anchor" aria-label="anchor" href="#remove-rrna-and-trna-contamination"><i class="fas fa-link"></i></a>
+</h2>
+<p>The RNA content in a prokaryotic or an eukaryotic cell consists of <strong>80–90% rRNA</strong>, 10–15% transfer RNA (tRNA) and 3–7% messenger RNA (mRNA) and regulatory ncRNA.The presence of abundant rRNA can introduce substantial bias to transcriptome data. A number of protein coding genes contain some rRNA-like sequence segments, so their expression levels can be strongly overestimated unless the rRNA reads are removed. Furthermore, rRNA removal can greatly reduce the data size for downstream analysis and accelerate the entire workflow. Here we align the reads on tRNA and rRNA sequences to remove reads which come from tRNA and rRNA.</p>
+<p><strong>bowtie2_align</strong> will try download <strong><em>windows executable bowtie2</em></strong> software from <a href="https://github.com/BenLangmead/bowtie2/releases">bowtie2</a>. You can download it by yourself if this failed. Making sure the software is in parent directory:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"bowtie2-2.5.1-mingw-x86_64/"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># [1] "bowtie2-2.5.1-mingw-x86_64/AUTHORS"              </span></span>
+<span><span class="co"># [2] "bowtie2-2.5.1-mingw-x86_64/bowtie2"              </span></span>
+<span><span class="co"># [3] "bowtie2-2.5.1-mingw-x86_64/bowtie2-align-l"      </span></span>
+<span><span class="co"># [4] "bowtie2-2.5.1-mingw-x86_64/bowtie2-align-l-debug"</span></span>
+<span><span class="co"># [5] "bowtie2-2.5.1-mingw-x86_64/bowtie2-align-s"      </span></span>
+<span><span class="co"># [6] "bowtie2-2.5.1-mingw-x86_64/bowtie2-align-s-debug"</span></span></code></pre></div>
+<p>Now remove the tRNA and rRNA sequences using bowtie2:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># remove trRNA sequence</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"3.rmtrRNA-data"</span><span class="op">)</span></span>
+<span><span class="co"># loop for remove trRNA sequence</span></span>
+<span><span class="va">clean_fq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"2.trim-data/"</span>,pattern <span class="op">=</span> <span class="st">".fastq.gz"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">clean_fq</span></span>
+<span><span class="co"># [1] "2.trim-data/SRR12594201_R1.fastq.gz"   "2.trim-data/SRR12594205_R1.fastq.gz"  </span></span>
+<span><span class="co"># [3] "2.trim-data/SRR12594209_R1.fastq.gz"   "2.trim-data/SRR12594210_R1.fastq.gz"  </span></span>
+<span><span class="co"># [5] "2.trim-data/SRR12594214_R1.fastq.gz"   "2.trim-data/SRR12594218_R1.fastq.gz"  </span></span>
+<span><span class="co"># [7] "2.trim-data/SRR12594219_1_R1.fastq.gz" "2.trim-data/SRR12594223_1_R1.fastq.gz"</span></span>
+<span><span class="co"># [9] "2.trim-data/SRR12594227_1_R1.fastq.gz" "2.trim-data/SRR12594228_1_R1.fastq.gz"</span></span>
+<span><span class="co"># [11] "2.trim-data/SRR12594232_1_R1.fastq.gz" "2.trim-data/SRR12594236_1_R1.fastq.gz"</span></span>
+<span><span class="va">output_sam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"3.rmtrRNA-data/"</span>,<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">clean_fq</span>,split <span class="op">=</span> <span class="st">"\\.|/"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">3</span><span class="op">)</span>,</span>
+<span>                    <span class="st">".sam"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span><span class="va">output_sam</span></span>
+<span><span class="co"># [1] "3.rmtrRNA-data/SRR12594201_R1.sam"   "3.rmtrRNA-data/SRR12594205_R1.sam"  </span></span>
+<span><span class="co"># [3] "3.rmtrRNA-data/SRR12594209_R1.sam"   "3.rmtrRNA-data/SRR12594210_R1.sam"  </span></span>
+<span><span class="co"># [5] "3.rmtrRNA-data/SRR12594214_R1.sam"   "3.rmtrRNA-data/SRR12594218_R1.sam"  </span></span>
+<span><span class="co"># [7] "3.rmtrRNA-data/SRR12594219_1_R1.sam" "3.rmtrRNA-data/SRR12594223_1_R1.sam"</span></span>
+<span><span class="co"># [9] "3.rmtrRNA-data/SRR12594227_1_R1.sam" "3.rmtrRNA-data/SRR12594228_1_R1.sam"</span></span>
+<span><span class="co"># [11] "3.rmtrRNA-data/SRR12594232_1_R1.sam" "3.rmtrRNA-data/SRR12594236_1_R1.sam"</span></span>
+<span><span class="va">rm_trRNAfq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"3.rmtrRNA-data/"</span>,<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">clean_fq</span>,split <span class="op">=</span> <span class="st">"\\.|/"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">3</span><span class="op">)</span>,</span>
+<span>                    <span class="st">"_rmtrRNA.fq"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span><span class="co"># [1] "3.rmtrRNA-data/SRR12594201_R1_rmtrRNA.fq"   "3.rmtrRNA-data/SRR12594205_R1_rmtrRNA.fq"  </span></span>
+<span><span class="co"># [3] "3.rmtrRNA-data/SRR12594209_R1_rmtrRNA.fq"   "3.rmtrRNA-data/SRR12594210_R1_rmtrRNA.fq"  </span></span>
+<span><span class="co"># [5] "3.rmtrRNA-data/SRR12594214_R1_rmtrRNA.fq"   "3.rmtrRNA-data/SRR12594218_R1_rmtrRNA.fq"  </span></span>
+<span><span class="co"># [7] "3.rmtrRNA-data/SRR12594219_1_R1_rmtrRNA.fq" "3.rmtrRNA-data/SRR12594223_1_R1_rmtrRNA.fq"</span></span>
+<span><span class="co"># [9] "3.rmtrRNA-data/SRR12594227_1_R1_rmtrRNA.fq" "3.rmtrRNA-data/SRR12594228_1_R1_rmtrRNA.fq"</span></span>
+<span><span class="co"># [11] "3.rmtrRNA-data/SRR12594232_1_R1_rmtrRNA.fq" "3.rmtrRNA-data/SRR12594236_1_R1_rmtrRNA.fq"</span></span>
+<span></span>
+<span><span class="co"># batch align</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">clean_fq</span><span class="op">)</span>,<span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="fu">bowtie2_align</span><span class="op">(</span>index <span class="op">=</span> <span class="st">"0.index-data/rtRNA-index/GRCm38_trRNA"</span>,</span>
+<span>                fq_file1 <span class="op">=</span> <span class="va">clean_fq</span><span class="op">[</span><span class="va">x</span><span class="op">]</span>,</span>
+<span>                output_file <span class="op">=</span> <span class="va">output_sam</span><span class="op">[</span><span class="va">x</span><span class="op">]</span>,</span>
+<span>                threads <span class="op">=</span> <span class="fl">24</span>,</span>
+<span>                bowtie2_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"--un "</span>,<span class="va">rm_trRNAfq</span><span class="op">[</span><span class="va">x</span><span class="op">]</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">tmp</span></span>
+<span></span>
+<span><span class="co"># ▶ 3.rmtrRNA-data/SRR12594201_R1.sam has been processed!</span></span>
+<span><span class="co"># ▶ 3.rmtrRNA-data/SRR12594205_R1.sam has been processed!</span></span>
+<span><span class="co"># ▶ 3.rmtrRNA-data/SRR12594209_R1.sam has been processed!</span></span>
+<span><span class="co"># ...</span></span>
+<span></span>
+<span><span class="co"># remove tmp sam</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"3.rmtrRNA-data/"</span>,pattern <span class="op">=</span> <span class="st">".sam$"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div id="mapping-info-visualization" class="section level3" number="3.5.1">
+<h3>
+<span class="header-section-number">3.5.1</span> mapping info visualization<a class="anchor" aria-label="anchor" href="#mapping-info-visualization"><i class="fas fa-link"></i></a>
+</h3>
+<hr>
+<p><strong>plot_mapinfo</strong> allows you plot the details of mapping:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># plot</span></span>
+<span><span class="va">map_info</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"3.rmtrRNA-data/"</span>,pattern <span class="op">=</span> <span class="st">"mapinfo.txt"</span>,full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># barplot</span></span>
+<span><span class="fu">plot_mapinfo</span><span class="op">(</span>mapinfo_file <span class="op">=</span> <span class="va">map_info</span>,</span>
+<span>             file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">clean_fq</span>,split <span class="op">=</span> <span class="st">"\\.|/|_"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/g2.png" style="width:100.0%"></div>
+<p>Or plot a table:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># table</span></span>
+<span><span class="fu">plot_mapinfo</span><span class="op">(</span>mapinfo_file <span class="op">=</span> <span class="va">map_info</span>,</span>
+<span>             file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">clean_fq</span>,split <span class="op">=</span> <span class="st">"\\.|/|_"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">3</span><span class="op">)</span>,</span>
+<span>             plot_type <span class="op">=</span> <span class="st">"table"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/g3.png" style="width:100.0%"></div>
+<hr>
+</div>
+</div>
+<div id="map-to-genome" class="section level2" number="3.6">
+<h2>
+<span class="header-section-number">3.6</span> Map to genome<a class="anchor" aria-label="anchor" href="#map-to-genome"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>batch_hisat_align</strong> uses <strong>Rhisat2</strong> to align reads on genome:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># map to genome</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"4.map-data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># batch map to genome</span></span>
+<span><span class="va">fq_file1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"3.rmtrRNA-data/"</span>,pattern <span class="op">=</span> <span class="st">".fq$"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">output_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ribo_nromal_rep1"</span>,<span class="st">"ribo_700_2h_rep1"</span>,<span class="st">"ribo_700_2h_r2h_rep1"</span>,</span>
+<span>                 <span class="st">"ribo_nromal_rep2"</span>,<span class="st">"ribo_700_2h_rep2"</span>,<span class="st">"ribo_700_2h_r2h_rep2"</span>,</span>
+<span>                 <span class="st">"rna_nromal_rep1"</span>,<span class="st">"rna_700_2h_rep1"</span>,<span class="st">"rna_700_2h_r2h_rep1"</span>,</span>
+<span>                 <span class="st">"rna_nromal_rep2"</span>,<span class="st">"rna_700_2h_rep2"</span>,<span class="st">"rna_700_2h_r2h_rep2"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">batch_hisat_align</span><span class="op">(</span>index <span class="op">=</span> <span class="st">"0.index-data/ref-index/GRCm38_ref"</span>,</span>
+<span>                  fq_file1 <span class="op">=</span> <span class="va">fq_file1</span>,</span>
+<span>                  output_dir <span class="op">=</span> <span class="st">"4.map-data/"</span>,</span>
+<span>                  output_file <span class="op">=</span> <span class="va">output_file</span>,</span>
+<span>                  threads <span class="op">=</span> <span class="fl">24</span>,hisat2_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>k <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ▶ ribo_nromal_rep1 has been processed!</span></span>
+<span><span class="co"># ▶ ribo_700_2h_rep1 has been processed!</span></span>
+<span><span class="co"># ▶ ribo_700_2h_r2h_rep1 has been processed!</span></span>
+<span><span class="co"># ...</span></span></code></pre></div>
+<p>Plot mapinfo barplot:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">map_info_geome</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"4.map-data/"</span>,pattern <span class="op">=</span> <span class="st">"mapinfo.txt"</span>,full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># barplot</span></span>
+<span><span class="fu">plot_mapinfo</span><span class="op">(</span>mapinfo_file <span class="op">=</span> <span class="va">map_info_geome</span>,</span>
+<span>             file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">map_info_geome</span>,split <span class="op">=</span> <span class="st">"_mapinfo.txt|/"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/g4.png" style="width:100.0%"></div>
+<p>Plot with a table:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># table</span></span>
+<span><span class="fu">plot_mapinfo</span><span class="op">(</span>mapinfo_file <span class="op">=</span> <span class="va">map_info_geome</span>,</span>
+<span>             file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">map_info_geome</span>,split <span class="op">=</span> <span class="st">"_mapinfo.txt|/"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">2</span><span class="op">)</span>,</span>
+<span>             plot_type <span class="op">=</span> <span class="st">"table"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/g5.png" style="width:100.0%"></div>
+</div>
+<div id="sam-to-bam" class="section level2" number="3.7">
+<h2>
+<span class="header-section-number">3.7</span> Sam to bam<a class="anchor" aria-label="anchor" href="#sam-to-bam"><i class="fas fa-link"></i></a>
+</h2>
+<p>Covert the sam files into bam format:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># sam to bam</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"4.map-data/bam-data"</span>,recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># convert sam to bam</span></span>
+<span><span class="fu">batch_sam2bam</span><span class="op">(</span>sam_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"4.map-data/"</span>,<span class="va">output_file</span>,<span class="st">".sam"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
+<span>              bam_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"4.map-data/bam-data/"</span>,<span class="va">output_file</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># [bam_sort_core] merging from 3 files and 1 in-memory blocks...</span></span>
+<span><span class="co"># ▶ 4.map-data/ribo_nromal_rep1.sam has been processed!</span></span>
+<span><span class="co">#   [bam_sort_core] merging from 1 files and 1 in-memory blocks...</span></span>
+<span><span class="co"># ▶ 4.map-data/ribo_700_2h_rep1.sam has been processed!</span></span>
+<span><span class="co">#   [bam_sort_core] merging from 2 files and 1 in-memory blocks...</span></span>
+<span><span class="co"># ▶ 4.map-data/ribo_700_2h_r2h_rep1.sam has been processed!</span></span>
+<span><span class="co">#   [bam_sort_core] merging from 3 files and 1 in-memory blocks...</span></span>
+<span><span class="co"># ...</span></span></code></pre></div>
+</div>
+<div id="ribo-seq-qc-check" class="section level2" number="3.8">
+<h2>
+<span class="header-section-number">3.8</span> Ribo-seq QC check<a class="anchor" aria-label="anchor" href="#ribo-seq-qc-check"><i class="fas fa-link"></i></a>
+</h2>
+<div id="prepare-longest-transcript" class="section level3" number="3.8.1">
+<h3>
+<span class="header-section-number">3.8.1</span> prepare longest transcript<a class="anchor" aria-label="anchor" href="#prepare-longest-transcript"><i class="fas fa-link"></i></a>
+</h3>
+<p>First we should prepare the longest transcript for each protein gene with gene annotation file:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"5.analysis-data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"5.analysis-data"</span><span class="op">)</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># 1_prepare gene annotation file</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="fu">pre_longest_trans_info</span><span class="op">(</span>gtf_file <span class="op">=</span> <span class="st">"../Mus_musculus.GRCm38.102.gtf.gz"</span>,</span>
+<span>                       out_file <span class="op">=</span> <span class="st">"longest_info.txt"</span><span class="op">)</span></span>
+<span><span class="co"># ================================ job finished.</span></span></code></pre></div>
+</div>
+<div id="prepare-qc-data" class="section level3" number="3.8.2">
+<h3>
+<span class="header-section-number">3.8.2</span> prepare QC data<a class="anchor" aria-label="anchor" href="#prepare-qc-data"><i class="fas fa-link"></i></a>
+</h3>
+<p><strong>pre_qc_data</strong> will produce QC data for ribo-seq sam files:</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># 2_prepare Ribo QC data</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="va">sam_file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"../4.map-data/"</span>,pattern <span class="op">=</span> <span class="st">"^ribo.*sam$"</span>,full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">sam_file</span></span>
+<span><span class="co"># [1] "../4.map-data/ribo_700_2h_r2h_rep1.sam" "../4.map-data/ribo_700_2h_r2h_rep2.sam"</span></span>
+<span><span class="co"># [3] "../4.map-data/ribo_700_2h_rep1.sam"     "../4.map-data/ribo_700_2h_rep2.sam"</span></span>
+<span><span class="co"># [5] "../4.map-data/ribo_nromal_rep1.sam"     "../4.map-data/ribo_nromal_rep2.sam"</span></span>
+<span></span>
+<span><span class="va">sample_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"../4.map-data/"</span>,pattern <span class="op">=</span> <span class="st">"^ribo.*sam$"</span><span class="op">)</span>,</span>
+<span>                               split <span class="op">=</span> <span class="st">".sam"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">sample_name</span></span>
+<span><span class="co"># [1] "ribo_700_2h_r2h_rep1" "ribo_700_2h_r2h_rep2" "ribo_700_2h_rep1"</span></span>
+<span><span class="co"># [4] "ribo_700_2h_rep2"     "ribo_nromal_rep1"     "ribo_nromal_rep2"</span></span>
+<span></span>
+<span><span class="co"># run</span></span>
+<span><span class="fu">pre_qc_data</span><span class="op">(</span>longest_trans_file <span class="op">=</span> <span class="st">"longest_info.txt"</span>,</span>
+<span>            sam_file <span class="op">=</span> <span class="va">sam_file</span>,</span>
+<span>            out_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">sample_name</span>,<span class="st">".qc.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
+<span>            mapping_type <span class="op">=</span> <span class="st">"genome"</span>,</span>
+<span>            seq_type <span class="op">=</span> <span class="st">"singleEnd"</span><span class="op">)</span></span>
+<span><span class="co"># "Transforming genomic positions into transcriptome positions has been done successfully."</span></span>
+<span><span class="co">#</span></span>
+<span><span class="co"># "Processing sam files..."</span></span>
+<span><span class="co">#</span></span>
+<span><span class="co"># "../4.map-data/ribo_700_2h_r2h_rep1.sam has been processed."</span></span>
+<span><span class="co">#</span></span>
+<span><span class="co"># "../4.map-data/ribo_700_2h_r2h_rep2.sam has been processed."</span></span>
+<span><span class="co">#</span></span>
+<span><span class="co"># "../4.map-data/ribo_700_2h_rep1.sam has been processed."</span></span>
+<span><span class="co"># ...</span></span></code></pre></div>
+</div>
+<div id="load-qc-data" class="section level3" number="3.8.3">
+<h3>
+<span class="header-section-number">3.8.3</span> load qc data<a class="anchor" aria-label="anchor" href="#load-qc-data"><i class="fas fa-link"></i></a>
+</h3>
+<p><strong>load_qc_data</strong> will read all the qc data into R and return a data frame:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># load qc data</span></span>
+<span><span class="va">qc_df</span> <span class="op">&lt;-</span> <span class="fu">load_qc_data</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># QC input files:</span></span>
+<span><span class="co"># ribo_700_2h_r2h_rep1.qc.txt</span></span>
+<span><span class="co"># ribo_700_2h_r2h_rep2.qc.txt</span></span>
+<span><span class="co"># ribo_700_2h_rep1.qc.txt</span></span>
+<span><span class="co"># ribo_700_2h_rep2.qc.txt</span></span>
+<span><span class="co"># ribo_nromal_rep1.qc.txt</span></span>
+<span><span class="co"># ribo_nromal_rep2.qc.txt</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">qc_df</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#   length framest relst framesp relsp feature counts               sample group</span></span>
+<span><span class="co"># 1     30       2  1988       1  -118       3      1 ribo_700_2h_r2h_rep1    NA</span></span>
+<span><span class="co"># 2     28       1   988       2 -2060       3      1 ribo_700_2h_r2h_rep1    NA</span></span>
+<span><span class="co"># 3     25       1  1042       2  -374       3      1 ribo_700_2h_r2h_rep1    NA</span></span>
+<span></span>
+<span><span class="va">qc_df</span><span class="op">$</span><span class="va">length</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">qc_df</span><span class="op">$</span><span class="va">length</span><span class="op">)</span></span>
+<span><span class="va">qc_df</span><span class="op">$</span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">qc_df</span><span class="op">$</span><span class="va">sample</span>,</span>
+<span>                       levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ribo_nromal_rep1"</span>,<span class="st">"ribo_700_2h_rep1"</span>,<span class="st">"ribo_700_2h_r2h_rep1"</span>,</span>
+<span>                                  <span class="st">"ribo_nromal_rep2"</span>,<span class="st">"ribo_700_2h_rep2"</span>,<span class="st">"ribo_700_2h_r2h_rep2"</span><span class="op">)</span></span>
+<span>                       <span class="op">)</span></span></code></pre></div>
+</div>
+<div id="qc-visualization" class="section level3" number="3.8.4">
+<h3>
+<span class="header-section-number">3.8.4</span> qc visualization<a class="anchor" aria-label="anchor" href="#qc-visualization"><i class="fas fa-link"></i></a>
+</h3>
+<hr>
+<p>Now plot the qc data with multiple kinds of graph, first check the length distribution of fragments:</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># length distribution</span></span>
+<span><span class="fu">qc_plot</span><span class="op">(</span>qc_data <span class="op">=</span> <span class="va">qc_df</span>,type <span class="op">=</span> <span class="st">"length"</span>,facet_wrap_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/g6.png" style="width:100.0%"></div>
+<p>Frames with length distribution:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># length with frame</span></span>
+<span><span class="fu">qc_plot</span><span class="op">(</span>qc_data <span class="op">=</span> <span class="va">qc_df</span>,type <span class="op">=</span> <span class="st">"length_frame"</span>,facet_wrap_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/g7.png" style="width:100.0%"></div>
+<p>Different region features:</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># region features</span></span>
+<span><span class="fu">qc_plot</span><span class="op">(</span>qc_data <span class="op">=</span> <span class="va">qc_df</span>,type <span class="op">=</span> <span class="st">"feature"</span>,facet_wrap_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/g8.png" style="width:100.0%"></div>
+<p>All frames ratio:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># all frames</span></span>
+<span><span class="fu">qc_plot</span><span class="op">(</span>qc_data <span class="op">=</span> <span class="va">qc_df</span>,type <span class="op">=</span> <span class="st">"frame"</span>,facet_wrap_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/g9.png" style="width:100.0%"></div>
+<p>Realtive to start codon with periodicity:</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># relative to start/stop site 5x10</span></span>
+<span><span class="fu">rel_to_start_stop</span><span class="op">(</span>qc_data <span class="op">=</span> <span class="va">qc_df</span>,type <span class="op">=</span> <span class="st">"relst"</span>,</span>
+<span>                  facet_wrap_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">3</span>,scales <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/g10.png" style="width:100.0%"></div>
+<p>You can zoom the distance:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">rel_to_start_stop</span><span class="op">(</span>qc_data <span class="op">=</span> <span class="va">qc_df</span>,type <span class="op">=</span> <span class="st">"relst"</span>,</span>
+<span>                  dist_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">20</span>,<span class="fl">60</span><span class="op">)</span>,</span>
+<span>                  facet_wrap_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">3</span>,scales <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/g11.png" style="width:100.0%"></div>
+<p>Realtive to stop codon with periodicity:</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">rel_to_start_stop</span><span class="op">(</span>qc_data <span class="op">=</span> <span class="va">qc_df</span>,type <span class="op">=</span> <span class="st">"relsp"</span>,</span>
+<span>                  facet_wrap_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">3</span>,scales <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/g12.png" style="width:100.0%"></div>
+<p>Here is the origin paper’s figure:</p>
+</div>
+</div>
+<div id="section" class="section level2" number="3.9">
+<h2>
+<span class="header-section-number">3.9</span> <img src="local_images/g13.png" style="width:100.0%"><a class="anchor" aria-label="anchor" href="#section"><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="calculate-ribo-density-and-rna-coverage" class="section level2" number="3.10">
+<h2>
+<span class="header-section-number">3.10</span> Calculate Ribo density and RNA coverage<a class="anchor" aria-label="anchor" href="#calculate-ribo-density-and-rna-coverage"><i class="fas fa-link"></i></a>
+</h2>
+<p>This step will produce each ribosome density and RNA coverage on genomic positions:</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># 3_prepare Ribo density and RNA coverage data</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># calculate Ribo density</span></span>
+<span><span class="fu">pre_ribo_density_data</span><span class="op">(</span>sam_file <span class="op">=</span> <span class="va">sam_file</span>,</span>
+<span>                      out_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">sample_name</span>,<span class="st">".density.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ../4.map-data/ribo_700_2h_r2h_rep1.sam has been processed!</span></span>
+<span><span class="co"># ../4.map-data/ribo_700_2h_r2h_rep2.sam has been processed!</span></span>
+<span><span class="co"># ../4.map-data/ribo_700_2h_rep1.sam has been processed!</span></span>
+<span><span class="co"># ../4.map-data/ribo_700_2h_rep2.sam has been processed!</span></span>
+<span><span class="co"># ../4.map-data/ribo_nromal_rep1.sam has been processed!</span></span>
+<span><span class="co"># ../4.map-data/ribo_nromal_rep2.sam has been processed!</span></span>
+<span><span class="co"># NULL</span></span>
+<span></span>
+<span><span class="co"># calculate RNA coverage</span></span>
+<span><span class="va">bam_file_rna</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"../4.map-data/bam-data/"</span>,pattern <span class="op">=</span> <span class="st">"^rna.*bam$"</span>,full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">bam_file_rna</span></span>
+<span><span class="co"># [1] "../4.map-data/bam-data/rna_700_2h_r2h_rep1.bam" "../4.map-data/bam-data/rna_700_2h_r2h_rep2.bam"</span></span>
+<span><span class="co"># [3] "../4.map-data/bam-data/rna_700_2h_rep1.bam"     "../4.map-data/bam-data/rna_700_2h_rep2.bam"</span></span>
+<span><span class="co"># [5] "../4.map-data/bam-data/rna_nromal_rep1.bam"     "../4.map-data/bam-data/rna_nromal_rep2.bam"</span></span>
+<span></span>
+<span><span class="va">sample_name_rna</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"../4.map-data/bam-data/"</span>,pattern <span class="op">=</span> <span class="st">"^rna.*bam$"</span><span class="op">)</span>,</span>
+<span>                               split <span class="op">=</span> <span class="st">".bam"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">sample_name_rna</span></span>
+<span><span class="co"># [1] "rna_700_2h_r2h_rep1" "rna_700_2h_r2h_rep2" "rna_700_2h_rep1"     "rna_700_2h_rep2"</span></span>
+<span><span class="co"># [5] "rna_nromal_rep1"     "rna_nromal_rep2"</span></span>
+<span></span>
+<span><span class="fu">pre_rna_coverage_data</span><span class="op">(</span>bam_file <span class="op">=</span> <span class="va">bam_file_rna</span>,</span>
+<span>                      out_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">sample_name_rna</span>,<span class="st">".coverage.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ../4.map-data/bam-data/rna_700_2h_r2h_rep1.bam has been processed!</span></span>
+<span><span class="co"># ../4.map-data/bam-data/rna_700_2h_r2h_rep2.bam has been processed!</span></span>
+<span><span class="co"># ../4.map-data/bam-data/rna_700_2h_rep1.bam has been processed!</span></span>
+<span><span class="co"># ../4.map-data/bam-data/rna_700_2h_rep2.bam has been processed!</span></span>
+<span><span class="co"># ../4.map-data/bam-data/rna_nromal_rep1.bam has been processed!</span></span>
+<span><span class="co"># ../4.map-data/bam-data/rna_nromal_rep2.bam has been processed!</span></span></code></pre></div>
+</div>
+<div id="coordinate-transformation" class="section level2" number="3.11">
+<h2>
+<span class="header-section-number">3.11</span> Coordinate transformation<a class="anchor" aria-label="anchor" href="#coordinate-transformation"><i class="fas fa-link"></i></a>
+</h2>
+<p>Now we need to transform the genomic coordinates into transcriptomic coordinates according to the
+longest transcript file prepared before:</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># 4_transform genomic coordinate into transcriotomic coordinate</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="fu">pre_gene_trans_density</span><span class="op">(</span>gene_anno <span class="op">=</span> <span class="st">"longest_info.txt"</span>,</span>
+<span>                       density_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">sample_name</span>,<span class="st">".density.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
+<span>                                        <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">sample_name_rna</span>,<span class="st">".coverage.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                       out_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">sample_name</span>,<span class="st">".trans.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
+<span>                                    <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">sample_name_rna</span>,<span class="st">".trans.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 2.density-data/ribo_700_2h_r2h_rep1.density.txt  has been processed!</span></span>
+<span><span class="co"># 2.density-data/ribo_700_2h_r2h_rep2.density.txt  has been processed!</span></span>
+<span><span class="co"># ...</span></span></code></pre></div>
+</div>
+<div id="track-plot" class="section level2" number="3.12">
+<h2>
+<span class="header-section-number">3.12</span> Track plot<a class="anchor" aria-label="anchor" href="#track-plot"><i class="fas fa-link"></i></a>
+</h2>
+<p>Once if we have ribo density and RNA coverage files, we can use <strong>load_track_data</strong> to load the data and
+<strong>track_plot</strong> to visualize data:</p>
+<div id="load-track-data" class="section level3" number="3.12.1">
+<h3>
+<span class="header-section-number">3.12.1</span> load track data<a class="anchor" aria-label="anchor" href="#load-track-data"><i class="fas fa-link"></i></a>
+</h3>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># 5_load denisty and coverage data for specific gene</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="va">track_df</span> <span class="op">&lt;-</span> <span class="fu">load_track_data</span><span class="op">(</span>ribo_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">sample_name</span>,<span class="st">".trans.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
+<span>                            rna_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">sample_name_rna</span>,<span class="st">".trans.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
+<span>                            sample_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"700_2h_r2h"</span>,<span class="st">"700_2h"</span>,<span class="st">"normal"</span><span class="op">)</span>,each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
+<span>                                                <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"_rep1"</span>,<span class="st">"_rep2"</span><span class="op">)</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
+<span>                            gene_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Ndufb3"</span>,<span class="st">"Ndufb6"</span>,<span class="st">"Rps7"</span>,<span class="st">"Uqcrfs1"</span>,<span class="st">"Ndufv1"</span>,<span class="st">"Sat1"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">track_df</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#   gene_name           trans_id transpos density type     sample</span></span>
+<span><span class="co"># 1    Ndufb3 ENSMUST00000027193        1       0 ribo 700_2h_r2h</span></span>
+<span><span class="co"># 2    Ndufb3 ENSMUST00000027193        2       0 ribo 700_2h_r2h</span></span>
+<span><span class="co"># 3    Ndufb3 ENSMUST00000027193        3       0 ribo 700_2h_r2h</span></span></code></pre></div>
+</div>
+<div id="plot-tracks" class="section level3" number="3.12.2">
+<h3>
+<span class="header-section-number">3.12.2</span> plot tracks<a class="anchor" aria-label="anchor" href="#plot-tracks"><i class="fas fa-link"></i></a>
+</h3>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># 6x12</span></span>
+<span><span class="fu">track_plot</span><span class="op">(</span>signal_data <span class="op">=</span> <span class="va">track_df</span>,</span>
+<span>           gene_anno <span class="op">=</span> <span class="st">"longest_info.txt"</span>,</span>
+<span>           sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"normal_rep1"</span>,<span class="st">"normal_rep2"</span>,<span class="st">"700_2h_rep1"</span>,<span class="st">"700_2h_rep2"</span>,</span>
+<span>                            <span class="st">"700_2h_r2h_rep1"</span>,<span class="st">"700_2h_r2h_rep2"</span><span class="op">)</span>,</span>
+<span>           remove_trans_panel_border <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>           range_pos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.75</span>,<span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/g14.png" style="width:100.0%"></div>
+<p>You can not reverse the RNA coverage track:</p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">track_plot</span><span class="op">(</span>signal_data <span class="op">=</span> <span class="va">track_df</span>,</span>
+<span>           gene_anno <span class="op">=</span> <span class="st">"longest_info.txt"</span>,</span>
+<span>           sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"normal_rep1"</span>,<span class="st">"normal_rep2"</span>,<span class="st">"700_2h_rep1"</span>,<span class="st">"700_2h_rep2"</span>,</span>
+<span>                            <span class="st">"700_2h_r2h_rep1"</span>,<span class="st">"700_2h_r2h_rep2"</span><span class="op">)</span>,</span>
+<span>           remove_trans_panel_border <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>           reverse_rna <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>           signal_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ribo"</span> <span class="op">=</span> <span class="st">"red"</span>,<span class="st">"rna"</span> <span class="op">=</span> <span class="st">"grey80"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/g15.png" style="width:100.0%"></div>
+<p>Sometimes the range of RNA coverage is much than ribo density, you can use <strong>rna_signal_scale</strong> the rescale the RNA coverage range:</p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">track_plot</span><span class="op">(</span>signal_data <span class="op">=</span> <span class="va">track_df</span>,</span>
+<span>           gene_anno <span class="op">=</span> <span class="st">"longest_info.txt"</span>,</span>
+<span>           sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"normal_rep1"</span>,<span class="st">"normal_rep2"</span>,<span class="st">"700_2h_rep1"</span>,<span class="st">"700_2h_rep2"</span>,</span>
+<span>                            <span class="st">"700_2h_r2h_rep1"</span>,<span class="st">"700_2h_r2h_rep2"</span><span class="op">)</span>,</span>
+<span>           remove_trans_panel_border <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>           reverse_rna <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>           signal_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ribo"</span> <span class="op">=</span> <span class="st">"red"</span>,<span class="st">"rna"</span> <span class="op">=</span> <span class="st">"grey80"</span><span class="op">)</span>,</span>
+<span>           rna_signal_scale <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/g16.png" style="width:100.0%"></div>
+<p>The reversed RNA track with rescaled coverage:</p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">track_plot</span><span class="op">(</span>signal_data <span class="op">=</span> <span class="va">track_df</span>,</span>
+<span>           gene_anno <span class="op">=</span> <span class="st">"longest_info.txt"</span>,</span>
+<span>           sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"normal_rep1"</span>,<span class="st">"normal_rep2"</span>,<span class="st">"700_2h_rep1"</span>,<span class="st">"700_2h_rep2"</span>,</span>
+<span>                            <span class="st">"700_2h_r2h_rep1"</span>,<span class="st">"700_2h_r2h_rep2"</span><span class="op">)</span>,</span>
+<span>           remove_trans_panel_border <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>           signal_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ribo"</span> <span class="op">=</span> <span class="st">"red"</span>,<span class="st">"rna"</span> <span class="op">=</span> <span class="st">"grey80"</span><span class="op">)</span>,</span>
+<span>           rna_signal_scale <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/g17.png" style="width:100.0%"></div>
+<p><strong>show_ribo_only</strong> can be setted to show only ribo tracks:</p>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">track_plot</span><span class="op">(</span>signal_data <span class="op">=</span> <span class="va">track_df</span>,</span>
+<span>           gene_anno <span class="op">=</span> <span class="st">"longest_info.txt"</span>,</span>
+<span>           sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"normal_rep1"</span>,<span class="st">"normal_rep2"</span>,<span class="st">"700_2h_rep1"</span>,<span class="st">"700_2h_rep2"</span>,</span>
+<span>                            <span class="st">"700_2h_r2h_rep1"</span>,<span class="st">"700_2h_r2h_rep2"</span><span class="op">)</span>,</span>
+<span>           remove_trans_panel_border <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>           show_ribo_only <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/g18.png" style="width:100.0%"></div>
+</div>
+</div>
+<div id="quantification" class="section level2" number="3.13">
+<h2>
+<span class="header-section-number">3.13</span> Quantification<a class="anchor" aria-label="anchor" href="#quantification"><i class="fas fa-link"></i></a>
+</h2>
+<p>You can use <strong>Rsubread</strong> <strong><em>featureCounts</em></strong> function to get count matrix:</p>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">Rsubread</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu">featureCounts</span><span class="op">(</span>files <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"../4.map-data/bam-data/"</span>,pattern <span class="op">=</span> <span class="st">".bam$"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,</span>
+<span>                     annot.ext <span class="op">=</span> <span class="st">"../Mus_musculus.GRCm38.102.gtf.gz"</span>,</span>
+<span>                     isGTFAnnotationFile <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>                     GTF.featureType <span class="op">=</span> <span class="st">"exon"</span>,</span>
+<span>                     GTF.attrType <span class="op">=</span> <span class="st">"gene_id"</span>,</span>
+<span>                     GTF.attrType.extra <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"gene_name"</span>,<span class="st">"gene_biotype"</span><span class="op">)</span>,</span>
+<span>                     isPairedEnd <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                     nthreads <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">counts</span> <span class="op">&lt;-</span> <span class="va">exp</span><span class="op">$</span><span class="va">counts</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">counts</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#                    ribo_700_2h_r2h_rep1.bam ribo_700_2h_r2h_rep2.bam ribo_700_2h_rep1.bam</span></span>
+<span><span class="co"># ENSMUSG00000102693                        0                        0                    0</span></span>
+<span><span class="co"># ENSMUSG00000064842                        0                        2                    0</span></span>
+<span><span class="co"># ENSMUSG00000051951                        0                        0                    0</span></span>
+<span></span>
+<span><span class="va">tpm</span> <span class="op">&lt;-</span> <span class="fu">count_to_tpm</span><span class="op">(</span>fc_obj <span class="op">=</span> <span class="va">exp</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">tpm</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#              gene_id ribo_700_2h_r2h_rep1.bam ribo_700_2h_r2h_rep2.bam</span></span>
+<span><span class="co"># 1 ENSMUSG00000000001                 35.70944                 35.37493</span></span>
+<span><span class="co"># 2 ENSMUSG00000000003                  0.00000                  0.00000</span></span>
+<span><span class="co"># 3 ENSMUSG00000000028                 11.93136                 11.52324</span></span></code></pre></div>
+<p>You can do other related analysis with other tools based on these matrix data.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="workflow.html"><span class="header-section-number">2</span> Workflow</a></div>
+<div class="next"><a href="align-on-transcriptome.html"><span class="header-section-number">4</span> Align on transcriptome</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#align-on-genome"><span class="header-section-number">3</span> Align on genome</a></li>
+<li><a class="nav-link" href="#check-papers-data-processing"><span class="header-section-number">3.1</span> Check papers data processing</a></li>
+<li><a class="nav-link" href="#trim-adaptors"><span class="header-section-number">3.2</span> Trim adaptors</a></li>
+<li>
+<a class="nav-link" href="#build-index"><span class="header-section-number">3.3</span> Build index</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#build-index-for-trna-and-rrna"><span class="header-section-number">3.3.1</span> Build index for tRNA and rRNA</a></li>
+<li><a class="nav-link" href="#build-index-for-genome"><span class="header-section-number">3.3.2</span> Build index for genome</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#check-index-files"><span class="header-section-number">3.4</span> Check index files</a></li>
+<li>
+<a class="nav-link" href="#remove-rrna-and-trna-contamination"><span class="header-section-number">3.5</span> Remove rRNA and tRNA contamination</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#mapping-info-visualization"><span class="header-section-number">3.5.1</span> mapping info visualization</a></li></ul>
+</li>
+<li><a class="nav-link" href="#map-to-genome"><span class="header-section-number">3.6</span> Map to genome</a></li>
+<li><a class="nav-link" href="#sam-to-bam"><span class="header-section-number">3.7</span> Sam to bam</a></li>
+<li>
+<a class="nav-link" href="#ribo-seq-qc-check"><span class="header-section-number">3.8</span> Ribo-seq QC check</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#prepare-longest-transcript"><span class="header-section-number">3.8.1</span> prepare longest transcript</a></li>
+<li><a class="nav-link" href="#prepare-qc-data"><span class="header-section-number">3.8.2</span> prepare QC data</a></li>
+<li><a class="nav-link" href="#load-qc-data"><span class="header-section-number">3.8.3</span> load qc data</a></li>
+<li><a class="nav-link" href="#qc-visualization"><span class="header-section-number">3.8.4</span> qc visualization</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#section"><span class="header-section-number">3.9</span></a></li>
+<li><a class="nav-link" href="#calculate-ribo-density-and-rna-coverage"><span class="header-section-number">3.10</span> Calculate Ribo density and RNA coverage</a></li>
+<li><a class="nav-link" href="#coordinate-transformation"><span class="header-section-number">3.11</span> Coordinate transformation</a></li>
+<li>
+<a class="nav-link" href="#track-plot"><span class="header-section-number">3.12</span> Track plot</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#load-track-data"><span class="header-section-number">3.12.1</span> load track data</a></li>
+<li><a class="nav-link" href="#plot-tracks"><span class="header-section-number">3.12.2</span> plot tracks</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#quantification"><span class="header-section-number">3.13</span> Quantification</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>RiboProfiler Reference Book</strong>" was written by Jun Zhang. It was last built on 2023-05-22.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

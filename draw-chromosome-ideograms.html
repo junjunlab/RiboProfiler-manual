@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 3 Draw chromosome ideograms | RiboProfiler Reference Book</title>
+<meta name="author" content="Jun Zhang">
+<meta name="description" content="A chromosomal ideogram is an idealized graphic representation of chromosomes. The common different shades of color positions on chromosome represent densities of gene. Here is a simple...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Chapter 3 Draw chromosome ideograms | RiboProfiler Reference Book">
+<meta property="og:type" content="book">
+<meta property="og:description" content="A chromosomal ideogram is an idealized graphic representation of chromosomes. The common different shades of color positions on chromosome represent densities of gene. Here is a simple...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 3 Draw chromosome ideograms | RiboProfiler Reference Book">
+<meta name="twitter:description" content="A chromosomal ideogram is an idealized graphic representation of chromosomes. The common different shades of color positions on chromosome represent densities of gene. Here is a simple...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">RiboProfiler Reference Book</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="" href="extract-sequence.html"><span class="header-section-number">2</span> Extract sequence</a></li>
+<li><a class="active" href="draw-chromosome-ideograms.html"><span class="header-section-number">3</span> Draw chromosome ideograms</a></li>
+<li><a class="" href="track-data-input.html"><span class="header-section-number">4</span> Track data input</a></li>
+<li><a class="" href="basic-visualization.html"><span class="header-section-number">5</span> Basic visualization</a></li>
+<li><a class="" href="loops-visualization.html"><span class="header-section-number">6</span> Loops visualization</a></li>
+<li><a class="" href="hic-heatmap-visualization.html"><span class="header-section-number">7</span> Hic heatmap visualization</a></li>
+<li><a class="" href="splice-junction-visualization.html"><span class="header-section-number">8</span> Splice junction visualization</a></li>
+<li><a class="" href="other-funs.html"><span class="header-section-number">9</span> Other funs</a></li>
+<li><a class="" href="frequntlly-asked-questions.html"><span class="header-section-number">10</span> Frequntlly asked questions</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="draw-chromosome-ideograms" class="section level1" number="3">
+<h1>
+<span class="header-section-number">3</span> Draw chromosome ideograms<a class="anchor" aria-label="anchor" href="#draw-chromosome-ideograms"><i class="fas fa-link"></i></a>
+</h1>
+<p>A chromosomal ideogram is an idealized graphic representation of chromosomes. The
+common different shades of color positions on chromosome represent densities of
+gene. Here is a simple illustration:</p>
+<blockquote>
+<ul>
+<li>
+<strong>“gneg”</strong> refers to a chromosomal band that stains lightly with Giemsa stain.</li>
+<li>
+<strong>“gpos25”</strong>, <strong>“gpos50”</strong>, <strong>“gpos75”</strong>, and <strong>“gpos100”</strong> refer to chromosomal bands that stain progressively darker with Giemsa stain. These terms represent increasing proportions of GC-rich DNA in the band.</li>
+<li>
+<strong>“acen”</strong> refers to the centromere or the specialized region of a chromosome that plays a role in cell division.</li>
+<li>
+<strong>“gvar”</strong> refers to a chromosomal band that has structural variation compared to the reference genome.</li>
+<li>
+<strong>“stalk”</strong> can have different meanings depending on the context, but in cytogenetics, it refers to a short arm protrusion that extends from the centromere.</li>
+</ul>
+</blockquote>
+<div id="downloading-related-data" class="section level2" number="3.1">
+<h2>
+<span class="header-section-number">3.1</span> Downloading related data<a class="anchor" aria-label="anchor" href="#downloading-related-data"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>mm10</strong>, <strong>hg38</strong> and <strong>hg19</strong> related ideogram data have been downloaded and
+saved in <strong>BioSeqUtils</strong>. You can use <strong>catchIdeoData</strong> function to download
+other species data. Here is the data strcuture of “hg38_obj” object:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"hg38_obj"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">hg38_obj</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># List of 3</span></span>
+<span><span class="co">#  $ plot_df     :'data.frame': 814 obs. of  6 variables:</span></span>
+<span><span class="co">#   ..$ chr        : chr [1:814] "chr1" "chr1" "chr1" "chr1" ...</span></span>
+<span><span class="co">#   ..$ chromStart : num [1:814] 0 2300000 5300000 7100000 9100000 12500000 15900000 20100000 23600000 27600000 ...</span></span>
+<span><span class="co">#   ..$ chromEnd   : num [1:814] 2300000 5300000 7100000 9100000 12500000 15900000 20100000 23600000 27600000 29900000 ...</span></span>
+<span><span class="co">#   ..$ name       : chr [1:814] "p36.33" "p36.32" "p36.31" "p36.23" ...</span></span>
+<span><span class="co">#   ..$ gieStain   : chr [1:814] "gneg" "gpos25" "gneg" "gpos25" ...</span></span>
+<span><span class="co">#   ..$ gieStainCol: chr [1:814] "white" "gray75" "white" "gray75" ...</span></span>
+<span><span class="co">#  $ border_df   : gropd_df [48 × 4] (S3: grouped_df/tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#   ..$ chr : chr [1:48] "chr1" "chr1" "chr10" "chr10" ...</span></span>
+<span><span class="co">#   ..$ pos : chr [1:48] "left" "right" "left" "right" ...</span></span>
+<span><span class="co">#   ..$ xmin: num [1:48] 0.00 1.25e+08 0.00 4.16e+07 0.00 ...</span></span>
+<span><span class="co">#   ..$ xmax: num [1:48] 1.22e+08 2.49e+08 3.80e+07 1.34e+08 5.10e+07 ...</span></span>
+<span><span class="co">#   ..- attr(*, "groups")= tibble [24 × 2] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#   .. ..$ chr  : chr [1:24] "chr1" "chr10" "chr11" "chr12" ...</span></span>
+<span><span class="co">#   .. ..$ .rows: list&lt;int&gt; [1:24]</span></span>
+<span><span class="co">#   .. .. ..$ : int [1:2] 1 2</span></span>
+<span><span class="co">#   .. .. ..$ : int [1:2] 3 4</span></span>
+<span><span class="co">#   ...</span></span>
+<span><span class="co">#   .. .. ..@ ptype: int(0)</span></span>
+<span><span class="co">#   .. ..- attr(*, ".drop")= logi TRUE</span></span>
+<span><span class="co">#  $ acen_plot_df:'data.frame': 96000 obs. of  4 variables:</span></span>
+<span><span class="co">#   ..$ xpos: num [1:96000] 1.25e+08 1.25e+08 1.25e+08 1.25e+08 1.25e+08 ...</span></span>
+<span><span class="co">#   ..$ ypos: num [1:96000] 0 0.00025 0.000501 0.000751 0.001002 ...</span></span>
+<span><span class="co">#   ..$ type: num [1:96000] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span><span class="co">#   ..$ chr : chr [1:96000] "chr1" "chr1" "chr1" "chr1" ...</span></span></code></pre></div>
+<p>If we download “mm10” related ideogram data online:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mm10_obj</span> <span class="op">&lt;-</span> <span class="fu">catchIdeoData</span><span class="op">(</span>genome <span class="op">=</span> <span class="st">"mm10"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="making-plot" class="section level2" number="3.2">
+<h2>
+<span class="header-section-number">3.2</span> Making plot<a class="anchor" aria-label="anchor" href="#making-plot"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>drawChromosome</strong> function allows you to plot chromosome ideogram structure:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">drawChromosome</span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg38_obj</span>,</span>
+<span>               chromosomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">hg38_obj</span><span class="op">$</span><span class="va">plot_df</span><span class="op">$</span><span class="va">chr</span><span class="op">)</span>,</span>
+<span>               facet_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>scales <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/chr1.png" style="width:100.0%"></div>
+<p>Selecting some chromosomes:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">drawChromosome</span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg38_obj</span>,</span>
+<span>               chromosomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr1"</span>,<span class="st">"chr2"</span>,<span class="st">"chr3"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/chr2.png" style="width:100.0%"></div>
+<p>Zooming a region on chromosomes with a genomic position:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">drawChromosome</span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg38_obj</span>,</span>
+<span>               chromosomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr1"</span>,<span class="st">"chr2"</span>,<span class="st">"chr3"</span><span class="op">)</span>,</span>
+<span>               zoom_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span><span class="op">^</span><span class="fl">8</span>,<span class="fl">10</span><span class="op">^</span><span class="fl">8</span><span class="op">+</span><span class="fl">300000</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/chr3.png" style="width:100.0%"></div>
+<p>Multiple regions are also accepted:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"mm10_obj"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">drawChromosome</span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">mm10_obj</span>,</span>
+<span>               chromosomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr1"</span>,<span class="st">"chr2"</span>,<span class="st">"chr3"</span><span class="op">)</span>,</span>
+<span>               zoom_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>chr1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span><span class="op">^</span><span class="fl">8</span>,<span class="fl">10</span><span class="op">^</span><span class="fl">8</span><span class="op">+</span><span class="fl">300000</span><span class="op">)</span>,</span>
+<span>                                  chr2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.6</span><span class="op">*</span><span class="fl">10</span><span class="op">^</span><span class="fl">8</span> <span class="op">+</span> <span class="fl">300000</span>,<span class="fl">0.6</span><span class="op">*</span><span class="fl">10</span><span class="op">^</span><span class="fl">8</span><span class="op">+</span><span class="fl">900000</span><span class="op">)</span>,</span>
+<span>                                  chr3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">*</span><span class="fl">10</span><span class="op">^</span><span class="fl">8</span>,<span class="fl">0.1</span><span class="op">*</span><span class="fl">10</span><span class="op">^</span><span class="fl">8</span><span class="op">+</span><span class="fl">450000</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               facet_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>strip.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span>,</span>
+<span>               zoom_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>,<span class="st">"#82CD47"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/chr4.png" style="width:100.0%"></div>
+</div>
+<div id="drawing-gene-density-manually" class="section level2" number="3.3">
+<h2>
+<span class="header-section-number">3.3</span> Drawing gene density manually<a class="anchor" aria-label="anchor" href="#drawing-gene-density-manually"><i class="fas fa-link"></i></a>
+</h2>
+<p>If you want to calculate and plot gene densities by manual, please refer to
+<a href="https://mp.weixin.qq.com/s?__biz=MzkyMTI1MTYxNA==&amp;mid=2247508733&amp;idx=1&amp;sn=4dc7927ac4b1c065f230a6bf934ed8f3&amp;chksm=c184988cf6f3119aaaabcca868ddbe6dd33bf3040917b9aac6919020590ecd032130371319f5&amp;token=1698519075&amp;lang=zh_CN#rd"><strong>手把手教你绘制染色体结构图</strong></a>.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="extract-sequence.html"><span class="header-section-number">2</span> Extract sequence</a></div>
+<div class="next"><a href="track-data-input.html"><span class="header-section-number">4</span> Track data input</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#draw-chromosome-ideograms"><span class="header-section-number">3</span> Draw chromosome ideograms</a></li>
+<li><a class="nav-link" href="#downloading-related-data"><span class="header-section-number">3.1</span> Downloading related data</a></li>
+<li><a class="nav-link" href="#making-plot"><span class="header-section-number">3.2</span> Making plot</a></li>
+<li><a class="nav-link" href="#drawing-gene-density-manually"><span class="header-section-number">3.3</span> Drawing gene density manually</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>RiboProfiler Reference Book</strong>" was written by Jun Zhang. It was last built on 2023-05-19.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

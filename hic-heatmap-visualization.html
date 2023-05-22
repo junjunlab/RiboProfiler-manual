@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 7 Hic heatmap visualization | RiboProfiler Reference Book</title>
+<meta name="author" content="Jun Zhang">
+<meta name="description" content="The related Hic data for input we have discussed before. prepareHic function will be used in the data preparation step. Here we use the test data in plotgardenerData package as examples. Package...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Chapter 7 Hic heatmap visualization | RiboProfiler Reference Book">
+<meta property="og:type" content="book">
+<meta property="og:description" content="The related Hic data for input we have discussed before. prepareHic function will be used in the data preparation step. Here we use the test data in plotgardenerData package as examples. Package...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 7 Hic heatmap visualization | RiboProfiler Reference Book">
+<meta name="twitter:description" content="The related Hic data for input we have discussed before. prepareHic function will be used in the data preparation step. Here we use the test data in plotgardenerData package as examples. Package...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">RiboProfiler Reference Book</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="" href="extract-sequence.html"><span class="header-section-number">2</span> Extract sequence</a></li>
+<li><a class="" href="draw-chromosome-ideograms.html"><span class="header-section-number">3</span> Draw chromosome ideograms</a></li>
+<li><a class="" href="track-data-input.html"><span class="header-section-number">4</span> Track data input</a></li>
+<li><a class="" href="basic-visualization.html"><span class="header-section-number">5</span> Basic visualization</a></li>
+<li><a class="" href="loops-visualization.html"><span class="header-section-number">6</span> Loops visualization</a></li>
+<li><a class="active" href="hic-heatmap-visualization.html"><span class="header-section-number">7</span> Hic heatmap visualization</a></li>
+<li><a class="" href="splice-junction-visualization.html"><span class="header-section-number">8</span> Splice junction visualization</a></li>
+<li><a class="" href="other-funs.html"><span class="header-section-number">9</span> Other funs</a></li>
+<li><a class="" href="frequntlly-asked-questions.html"><span class="header-section-number">10</span> Frequntlly asked questions</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="hic-heatmap-visualization" class="section level1" number="7">
+<h1>
+<span class="header-section-number">7</span> Hic heatmap visualization<a class="anchor" aria-label="anchor" href="#hic-heatmap-visualization"><i class="fas fa-link"></i></a>
+</h1>
+<p>The related Hic data for input we have discussed before. <strong>prepareHic</strong> function
+will be used in the data preparation step. Here we use the test data in
+<strong>plotgardenerData</strong> package as examples. Package <strong>plotgardener</strong> will outputs
+the following results:</p>
+<div class="inline-figure"><img src="./local_images/t68.png" style="width:100.0%"></div>
+<p>Let’s use <strong>trackVisProMax</strong> to finish it.</p>
+<div id="data-preperation" class="section level2" number="7.1">
+<h2>
+<span class="header-section-number">7.1</span> Data preperation<a class="anchor" aria-label="anchor" href="#data-preperation"><i class="fas fa-link"></i></a>
+</h2>
+<p>Load Hic data:</p>
+<div class="sourceCode" id="cb112"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">plotgardenerData</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">plotgardener</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"GM12878_HiC_10kb"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"IMR90_HiC_10kb"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"GM12878_ChIP_CTCF_signal"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"IMR90_ChIP_CTCF_signal"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"GM12878_ChIP_H3K27ac_signal"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"IMR90_ChIP_H3K27ac_signal"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># prepare hic data</span></span>
+<span><span class="va">data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">GM12878_HiC_10kb</span>,<span class="va">IMR90_HiC_10kb</span><span class="op">)</span></span>
+<span><span class="va">file_name</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GM12878_HiC"</span>,<span class="st">"IMR90_HiC"</span><span class="op">)</span></span>
+<span><span class="va">chrom</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"21"</span>,<span class="st">"21"</span><span class="op">)</span></span>
+<span><span class="va">resolution</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10000</span>,<span class="fl">10000</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">input_hic</span> <span class="op">&lt;-</span> <span class="fu">prepareHic</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">GM12878_HiC_10kb</span>,<span class="va">IMR90_HiC_10kb</span><span class="op">)</span>,</span>
+<span>                        file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GM12878_HiC"</span>,<span class="st">"IMR90_HiC"</span><span class="op">)</span>,</span>
+<span>                        chrom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"21"</span>,<span class="st">"21"</span><span class="op">)</span>,</span>
+<span>                        resolution <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10000</span>,<span class="fl">10000</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Load bigwig data:</p>
+<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># prepare data</span></span>
+<span><span class="va">hic_bw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">GM12878_ChIP_CTCF_signal</span>,<span class="va">IMR90_ChIP_CTCF_signal</span>,</span>
+<span>                <span class="va">GM12878_ChIP_H3K27ac_signal</span>,<span class="va">IMR90_ChIP_H3K27ac_signal</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">hic_bw</span><span class="op">$</span><span class="va">fileName</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CTCF_signal"</span>,<span class="st">"IMR90_CTCF_signal"</span>,</span>
+<span>                         <span class="st">"H3K27ac_signal"</span>,<span class="st">"IMR90_H3K27ac_signal"</span><span class="op">)</span>,</span>
+<span>                       <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">GM12878_ChIP_CTCF_signal</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">IMR90_ChIP_CTCF_signal</span><span class="op">)</span>,</span>
+<span>                         <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">GM12878_ChIP_H3K27ac_signal</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">IMR90_ChIP_H3K27ac_signal</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">hic_bw</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"seqnames"</span></span>
+<span></span>
+<span><span class="co"># gtf</span></span>
+<span><span class="va">gtf</span> <span class="op">&lt;-</span> <span class="fu">rtracklayer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rtracklayer/man/GFFFile-class.html">import.gff</a></span><span class="op">(</span><span class="st">"test-bw2/hg19.ncbiRefSeq.gtf.gz"</span>,format <span class="op">=</span> <span class="st">"gtf"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
+</div>
+<div id="basic-plot-1" class="section level2" number="7.2">
+<h2>
+<span class="header-section-number">7.2</span> Basic plot<a class="anchor" aria-label="anchor" href="#basic-plot-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>Let’s see the bigwig track data first:</p>
+<div class="sourceCode" id="cb114"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># plot</span></span>
+<span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">hic_bw</span> <span class="op">%&gt;%</span></span>
+<span>                 <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fileName</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CTCF_signal"</span>,<span class="st">"H3K27ac_signal"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr21"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fl">27995000</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fl">30305000</span><span class="op">)</span>,</span>
+<span>               draw_chromosome <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               draw_chromosome_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg19_obj</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t69.png" style="width:100.0%"></div>
+<p>Adding heatmap track:</p>
+<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># plot</span></span>
+<span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">hic_bw</span> <span class="op">%&gt;%</span></span>
+<span>                 <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fileName</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CTCF_signal"</span>,<span class="st">"H3K27ac_signal"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr21"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fl">27995000</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fl">30305000</span><span class="op">)</span>,</span>
+<span>               draw_chromosome <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               draw_chromosome_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg19_obj</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t70.png" style="width:100.0%"></div>
+<p>Let’s zoom the heatmap and see details:</p>
+<div class="inline-figure"><img src="./local_images/t71.png" style="width:100.0%"></div>
+<p>Removing the legend:</p>
+<div class="sourceCode" id="cb116"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># plot</span></span>
+<span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">hic_bw</span> <span class="op">%&gt;%</span></span>
+<span>                 <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fileName</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CTCF_signal"</span>,<span class="st">"H3K27ac_signal"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               Input_hic <span class="op">=</span> <span class="va">input_hic</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fileName</span> <span class="op">==</span> <span class="st">"GM12878_HiC"</span><span class="op">)</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr21"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fl">27995000</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fl">30305000</span><span class="op">)</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               draw_chromosome <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               draw_chromosome_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg19_obj</span><span class="op">)</span>,</span>
+<span>               sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GM12878_HiC"</span>,<span class="st">"CTCF_signal"</span>,<span class="st">"H3K27ac_signal"</span><span class="op">)</span>,</span>
+<span>               signal_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"chr21:27995000-30305000"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>CTCF_signal <span class="op">=</span> <span class="fl">117</span>,H3K27ac_signal <span class="op">=</span> <span class="fl">117</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               signal_layer_heatmap_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>show.legend <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t72.png" style="width:100.0%"></div>
+<p>Seeing another example track on the right:</p>
+<div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># add contact heatmap</span></span>
+<span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">hic_bw</span> <span class="op">%&gt;%</span> </span>
+<span>                 <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fileName</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"IMR90_CTCF_signal"</span>,<span class="st">"IMR90_H3K27ac_signal"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               Input_hic <span class="op">=</span> <span class="va">input_hic</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fileName</span> <span class="op">==</span> <span class="st">"IMR90_HiC"</span><span class="op">)</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr21"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fl">27995000</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fl">30305000</span><span class="op">)</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               draw_chromosome <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               draw_chromosome_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg19_obj</span><span class="op">)</span>,</span>
+<span>               sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"IMR90_HiC"</span>,<span class="st">"IMR90_CTCF_signal"</span>,<span class="st">"IMR90_H3K27ac_signal"</span><span class="op">)</span>,</span>
+<span>               signal_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"chr21:27995000-30305000"</span> <span class="op">=</span> </span>
+<span>                                     <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>IMR90_CTCF_signal <span class="op">=</span> <span class="fl">77</span>,IMR90_H3K27ac_signal <span class="op">=</span> <span class="fl">77</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t73.png" style="width:100.0%"></div>
+<p><strong>heatmap_fill_col</strong> controls the heatmap colors, here we use same colors corresponding
+to the example:</p>
+<div class="sourceCode" id="cb118"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">hic_bw</span> <span class="op">%&gt;%</span> </span>
+<span>                 <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fileName</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"IMR90_CTCF_signal"</span>,<span class="st">"IMR90_H3K27ac_signal"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               Input_hic <span class="op">=</span> <span class="va">input_hic</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fileName</span> <span class="op">==</span> <span class="st">"IMR90_HiC"</span><span class="op">)</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr21"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fl">27995000</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fl">30305000</span><span class="op">)</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               draw_chromosome <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               draw_chromosome_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg19_obj</span><span class="op">)</span>,</span>
+<span>               sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"IMR90_HiC"</span>,<span class="st">"IMR90_CTCF_signal"</span>,<span class="st">"IMR90_H3K27ac_signal"</span><span class="op">)</span>,</span>
+<span>               signal_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"chr21:27995000-30305000"</span> <span class="op">=</span> </span>
+<span>                                     <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>IMR90_CTCF_signal <span class="op">=</span> <span class="fl">77</span>,IMR90_H3K27ac_signal <span class="op">=</span> <span class="fl">77</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               heatmap_fill_col <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">9</span>, <span class="st">"YlGnBu"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t74.png" style="width:100.0%"></div>
+<p>Reverting the heatmap:</p>
+<div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">hic_bw</span> <span class="op">%&gt;%</span> </span>
+<span>                 <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fileName</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"IMR90_CTCF_signal"</span>,<span class="st">"IMR90_H3K27ac_signal"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               Input_hic <span class="op">=</span> <span class="va">input_hic</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fileName</span> <span class="op">==</span> <span class="st">"IMR90_HiC"</span><span class="op">)</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr21"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fl">27995000</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fl">30305000</span><span class="op">)</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               draw_chromosome <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               draw_chromosome_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg19_obj</span><span class="op">)</span>,</span>
+<span>               sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"IMR90_CTCF_signal"</span>,<span class="st">"IMR90_HiC"</span>,<span class="st">"IMR90_H3K27ac_signal"</span><span class="op">)</span>,</span>
+<span>               signal_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"chr21:27995000-30305000"</span> <span class="op">=</span> </span>
+<span>                                     <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>IMR90_CTCF_signal <span class="op">=</span> <span class="fl">77</span>,IMR90_H3K27ac_signal <span class="op">=</span> <span class="fl">77</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               reverse_y_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"IMR90_HiC"</span><span class="op">)</span>,</span>
+<span>               heatmap_fill_col <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">9</span>, <span class="st">"RdYlBu"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t75.png" style="width:100.0%"></div>
+<p>You will see some uncomplete graphic elements beside the heatmap when you change
+into other genomic regions:</p>
+<div class="sourceCode" id="cb120"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">hic_bw</span> <span class="op">%&gt;%</span> </span>
+<span>                 <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fileName</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"IMR90_CTCF_signal"</span>,<span class="st">"IMR90_H3K27ac_signal"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               Input_hic <span class="op">=</span> <span class="va">input_hic</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fileName</span> <span class="op">==</span> <span class="st">"IMR90_HiC"</span><span class="op">)</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr21"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fl">29500000</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fl">30000000</span><span class="op">)</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               draw_chromosome <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               draw_chromosome_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg19_obj</span><span class="op">)</span>,</span>
+<span>               sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"IMR90_HiC"</span>,<span class="st">"IMR90_CTCF_signal"</span>,<span class="st">"IMR90_H3K27ac_signal"</span><span class="op">)</span>,</span>
+<span>               signal_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"chr21:27995000-30305000"</span> <span class="op">=</span> </span>
+<span>                                     <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>IMR90_HiC <span class="op">=</span> <span class="fl">400000</span>,IMR90_CTCF_signal <span class="op">=</span> <span class="fl">77</span>,</span>
+<span>                                       IMR90_H3K27ac_signal <span class="op">=</span> <span class="fl">77</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               heatmap_fill_col <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">9</span>, <span class="st">"YlGnBu"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t76.png" style="width:100.0%"></div>
+<p>Details beside the heatmap. This is because some polygon positions were filtered which
+are outside the specified genomic regions:</p>
+<div class="inline-figure"><img src="./local_images/t77.png" style="width:100.0%"></div>
+<p>You can use <strong>xlimit_range</strong> parameter to zoom a region:</p>
+<div class="sourceCode" id="cb121"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_bw <span class="op">=</span> <span class="va">hic_bw</span> <span class="op">%&gt;%</span> </span>
+<span>                 <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fileName</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"IMR90_CTCF_signal"</span>,<span class="st">"IMR90_H3K27ac_signal"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               Input_hic <span class="op">=</span> <span class="va">input_hic</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fileName</span> <span class="op">==</span> <span class="st">"IMR90_HiC"</span><span class="op">)</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr21"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fl">27995000</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fl">30305000</span><span class="op">)</span>,</span>
+<span>               fixed_column_range <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>               draw_chromosome <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               draw_chromosome_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg19_obj</span><span class="op">)</span>,</span>
+<span>               sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"IMR90_HiC"</span>,<span class="st">"IMR90_CTCF_signal"</span>,<span class="st">"IMR90_H3K27ac_signal"</span><span class="op">)</span>,</span>
+<span>               signal_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"chr21:27995000-30305000"</span> <span class="op">=</span> </span>
+<span>                                     <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>IMR90_CTCF_signal <span class="op">=</span> <span class="fl">77</span>,</span>
+<span>                                       IMR90_H3K27ac_signal <span class="op">=</span> <span class="fl">77</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               heatmap_fill_col <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">9</span>, <span class="st">"YlGnBu"</span><span class="op">)</span>,</span>
+<span>               xlimit_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">29500000</span>,<span class="fl">30000000</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t78.png" style="width:100.0%"></div>
+</div>
+<div id="real-data-practice" class="section level2" number="7.3">
+<h2>
+<span class="header-section-number">7.3</span> Real data practice<a class="anchor" aria-label="anchor" href="#real-data-practice"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>Note</strong>: Using <strong>chromstart</strong> and <strong>chromend</strong> to extarct data from a specified
+genomic region and setting a suitable resolution.</p>
+<p>Here we do a practice with a public Hic data.</p>
+<blockquote>
+<p>Test data can be fetched on <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE200160"><strong>GSE200160</strong></a>.</p>
+</blockquote>
+<hr>
+<p>First extract heatmap data from <strong>.hic</strong> data from a specified genomic region:</p>
+<div class="sourceCode" id="cb122"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># real data</span></span>
+<span><span class="va">hic_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"test-bw2/"</span>,pattern <span class="op">=</span> <span class="st">".hic"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">hic_data</span></span>
+<span><span class="co"># [1] "test-bw2/RPE-doxorubicin_02uM.hic"  "test-bw2/RPE-doxorubicin_034uM.hic"</span></span>
+<span><span class="co"># [3] "test-bw2/RPE-ICRF193_5uM.hic"</span></span>
+<span></span>
+<span><span class="va">hic_df</span> <span class="op">&lt;-</span> <span class="fu">prepareHic</span><span class="op">(</span>hic_path <span class="op">=</span> <span class="va">hic_data</span>,</span>
+<span>                     file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"doxorubicin_02uM"</span>,<span class="st">"doxorubicin_34uM"</span>,</span>
+<span>                                   <span class="st">"ICRF193_5uM"</span><span class="op">)</span>,</span>
+<span>                     chrom <span class="op">=</span> <span class="st">"1"</span>,assembly <span class="op">=</span> <span class="st">"hg19"</span>,</span>
+<span>                     chromstart <span class="op">=</span> <span class="fl">29400000</span>,chromend <span class="op">=</span> <span class="fl">29500000</span>,</span>
+<span>                     resolution <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span></code></pre></div>
+<p>Now plot this region:</p>
+<div class="sourceCode" id="cb123"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># plot</span></span>
+<span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               Input_hic <span class="op">=</span> <span class="va">hic_df</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr1"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">hic_df</span><span class="op">$</span><span class="va">start</span><span class="op">)</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">hic_df</span><span class="op">$</span><span class="va">start</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               draw_chromosome <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               draw_chromosome_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg19_obj</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t79.png" style="width:100.0%"></div>
+<p>Add border colors and change heatmap fill colors:</p>
+<div class="sourceCode" id="cb124"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># plot</span></span>
+<span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               Input_hic <span class="op">=</span> <span class="va">hic_df</span>,</span>
+<span>               query_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>query_chr <span class="op">=</span> <span class="st">"chr1"</span>,</span>
+<span>                                   query_start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">hic_df</span><span class="op">$</span><span class="va">start</span><span class="op">)</span>,</span>
+<span>                                   query_end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">hic_df</span><span class="op">$</span><span class="va">start</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               draw_chromosome <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>               draw_chromosome_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ideogram_obj <span class="op">=</span> <span class="va">hg19_obj</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/t80.png" style="width:100.0%"></div>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="loops-visualization.html"><span class="header-section-number">6</span> Loops visualization</a></div>
+<div class="next"><a href="splice-junction-visualization.html"><span class="header-section-number">8</span> Splice junction visualization</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#hic-heatmap-visualization"><span class="header-section-number">7</span> Hic heatmap visualization</a></li>
+<li><a class="nav-link" href="#data-preperation"><span class="header-section-number">7.1</span> Data preperation</a></li>
+<li><a class="nav-link" href="#basic-plot-1"><span class="header-section-number">7.2</span> Basic plot</a></li>
+<li><a class="nav-link" href="#real-data-practice"><span class="header-section-number">7.3</span> Real data practice</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>RiboProfiler Reference Book</strong>" was written by Jun Zhang. It was last built on 2023-05-19.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

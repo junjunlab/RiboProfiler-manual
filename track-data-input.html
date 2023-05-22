@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 4 Track data input | RiboProfiler Reference Book</title>
+<meta name="author" content="Jun Zhang">
+<meta name="description" content="There are many tools or softwares to visualize NGS(Next Generation Sequencing) data including ChIP-SEQ, ATAC-SEQ, RNA-SEQ, Hic, HiChIP and so on. The R packages Gviz, plotgardener, ggcoverage and...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Chapter 4 Track data input | RiboProfiler Reference Book">
+<meta property="og:type" content="book">
+<meta property="og:description" content="There are many tools or softwares to visualize NGS(Next Generation Sequencing) data including ChIP-SEQ, ATAC-SEQ, RNA-SEQ, Hic, HiChIP and so on. The R packages Gviz, plotgardener, ggcoverage and...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 4 Track data input | RiboProfiler Reference Book">
+<meta name="twitter:description" content="There are many tools or softwares to visualize NGS(Next Generation Sequencing) data including ChIP-SEQ, ATAC-SEQ, RNA-SEQ, Hic, HiChIP and so on. The R packages Gviz, plotgardener, ggcoverage and...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">RiboProfiler Reference Book</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="" href="extract-sequence.html"><span class="header-section-number">2</span> Extract sequence</a></li>
+<li><a class="" href="draw-chromosome-ideograms.html"><span class="header-section-number">3</span> Draw chromosome ideograms</a></li>
+<li><a class="active" href="track-data-input.html"><span class="header-section-number">4</span> Track data input</a></li>
+<li><a class="" href="basic-visualization.html"><span class="header-section-number">5</span> Basic visualization</a></li>
+<li><a class="" href="loops-visualization.html"><span class="header-section-number">6</span> Loops visualization</a></li>
+<li><a class="" href="hic-heatmap-visualization.html"><span class="header-section-number">7</span> Hic heatmap visualization</a></li>
+<li><a class="" href="splice-junction-visualization.html"><span class="header-section-number">8</span> Splice junction visualization</a></li>
+<li><a class="" href="other-funs.html"><span class="header-section-number">9</span> Other funs</a></li>
+<li><a class="" href="frequntlly-asked-questions.html"><span class="header-section-number">10</span> Frequntlly asked questions</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="track-data-input" class="section level1" number="4">
+<h1>
+<span class="header-section-number">4</span> Track data input<a class="anchor" aria-label="anchor" href="#track-data-input"><i class="fas fa-link"></i></a>
+</h1>
+<p>There are many tools or softwares to visualize NGS(Next Generation Sequencing) data including
+<strong>ChIP-SEQ</strong>, <strong>ATAC-SEQ</strong>, <strong>RNA-SEQ</strong>, <strong>Hic</strong>, <strong>HiChIP</strong> and so on. The R packages <a href="https://bioconductor.org/packages/release/bioc/html/Gviz.html"><strong>Gviz</strong></a>, <a href="https://github.com/PhanstielLab/plotgardener"><strong>plotgardener</strong></a>, <a href="https://github.com/showteeth/ggcoverage"><strong>ggcoverage</strong></a> and <a href="https://www.bioconductor.org/packages/release/bioc/html/ggbio.html"><strong>ggbio</strong></a> are some popular tools
+to visualize NGS data in R. Besides, the online or local softwares like <a href="https://software.broadinstitute.org/software/igv/download"><strong>IGV</strong></a>, <a href="http://epigenomegateway.wustl.edu/legacy/"><strong>Wubrowse</strong></a> and <a href="https://genome.ucsc.edu/"><strong>ucsc genome browser</strong></a>. There are still some limitations for some of them to
+make a <strong>High-Quality Graphics for Publication</strong> with less code and less time.
+Here I supply some utilities and functions totally based on <strong>ggplot2</strong> package to visualize
+NGS data in R and create a nice graph with high-quality for publication.</p>
+<p>Though I have written a similar package <a href="https://github.com/junjunlab/transPlotR"><strong>transPlotR</strong></a> which plays some same roles on generating tracks plot. Some limitations and shortcomings come
+to me when I use this package. So I devote myself again to develop and expand the functions.</p>
+<p>The main plot function is <strong>trackVisProMax</strong> function and this is combined with some
+data load input functions for create a track graph.</p>
+<div id="load-signal-data" class="section level2" number="4.1">
+<h2>
+<span class="header-section-number">4.1</span> Load signal data<a class="anchor" aria-label="anchor" href="#load-signal-data"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>bigwig</strong> format is binary of <strong>wig</strong> which’s data size is samller. I recommend use this
+format, <strong>“wig”</strong> and <strong>“bedGraph”</strong> format are also accepted, you should just define <strong>format</strong>
+parameter. <strong>loadBigWig</strong> function can read bigwig data into R which based on <a href="https://bioconductor.org/packages/release/bioc/html/rtracklayer.html"><strong>rtracklayer::import.bw</strong></a>.
+Here are some examples to load your bigwig data:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">BioSeqUtils</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load bigwig files</span></span>
+<span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"test-bw/"</span>,pattern <span class="op">=</span> <span class="st">'.bw'</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">file</span></span>
+<span><span class="co"># [1] "test-bw/1cell-m6A-1.bw" "test-bw/1cell-m6A-2.bw" "test-bw/1cell-RNA-1.bw"</span></span>
+<span><span class="co"># [4] "test-bw/1cell-RNA-2.bw" "test-bw/2cell-m6A-1.bw" "test-bw/2cell-m6A-2.bw"</span></span>
+<span><span class="co"># [7] "test-bw/2cell-RNA-1.bw" "test-bw/2cell-RNA-2.bw"</span></span>
+<span></span>
+<span><span class="co"># select some chromosomes for test</span></span>
+<span><span class="va">bw</span> <span class="op">&lt;-</span> <span class="fu">loadBigWig</span><span class="op">(</span>bw_file <span class="op">=</span> <span class="va">file</span>,chrom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"5"</span>,<span class="st">"15"</span><span class="op">)</span>,format <span class="op">=</span> <span class="st">"bw"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">bw</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#   seqnames   start     end   score    fileName</span></span>
+<span><span class="co"># 1       15       1 3054635 0.00000 1cell-m6A-1</span></span>
+<span><span class="co"># 2       15 3054636 3054640 1.34079 1cell-m6A-1</span></span>
+<span><span class="co"># 3       15 3054641 3054715 2.68159 1cell-m6A-1</span></span></code></pre></div>
+<p>For saving space, we selected <strong><em>chromosome 5</em></strong> and <strong><em>chromosome 15</em></strong> for each file, if you don’t
+specify <strong>chrom</strong> parameter, <strong>loadBigWig</strong> will return all chromosomes. You can
+also specify <strong>file_name</strong> to assign a new name for your each bigwig data.</p>
+</div>
+<div id="load-peaks-data" class="section level2" number="4.2">
+<h2>
+<span class="header-section-number">4.2</span> Load peaks data<a class="anchor" aria-label="anchor" href="#load-peaks-data"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>loadBed</strong> function allows you to read peaks data in R which ias baesd on <a href="https://bioconductor.org/packages/release/bioc/html/rtracklayer.html"><strong>rtracklayer::import.bed</strong></a>.
+Usually we will select the first three columns for downstream analysis. You can
+also specify <strong>file_name</strong> to assign a new name for your each bed data. Here is
+a example to read peaks data:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bedfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"./"</span>,pattern <span class="op">=</span> <span class="st">".bed"</span><span class="op">)</span></span>
+<span><span class="co"># [1] "peaks.bed"  "peaks2.bed"</span></span>
+<span></span>
+<span><span class="va">bed_df</span> <span class="op">&lt;-</span> <span class="fu">loadBed</span><span class="op">(</span><span class="va">bedfile</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">bed_df</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#   seqnames     start       end sampleName y</span></span>
+<span><span class="co"># 1        5 142905501 142905600      peaks 1</span></span>
+<span><span class="co"># 2        5 142903201 142903800      peaks 1</span></span>
+<span><span class="co"># 3       15  61985342  61985900      peaks 1</span></span></code></pre></div>
+</div>
+<div id="load-links-data" class="section level2" number="4.3">
+<h2>
+<span class="header-section-number">4.3</span> Load links data<a class="anchor" aria-label="anchor" href="#load-links-data"><i class="fas fa-link"></i></a>
+</h2>
+<p>Links data often describe two interaction sites on genomic positions. <strong>Hic</strong>
+and <strong>HiChIP</strong> technologies can achive this goal. The data format can be <strong>bed</strong>
+and <strong>bedpe</strong> format. Or you can supply with only 4 columns(<strong>chrom</strong>, <strong>start</strong>,
+<strong>end</strong>, <strong>value</strong>) format data. <strong>loadloops</strong> function allows you to read these format
+data in R. Example shows in the following code:</p>
+<blockquote>
+<p><strong><em>Note:</em></strong> You should supply <strong>file_name</strong> for each file.</p>
+</blockquote>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">loop_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"test-bw2/"</span>,pattern <span class="op">=</span> <span class="st">".bedpe$"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">loop_file</span></span>
+<span><span class="co"># [1] "test-bw2/C1-CTCF.bedpe"    "test-bw2/C1-H3K27ac.bedpe" "test-bw2/M1-CTCF.bedpe"   </span></span>
+<span><span class="co"># [4] "test-bw2/M1-H3K27ac.bedpe"</span></span>
+<span></span>
+<span><span class="va">file_name</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"C1-CTCF"</span>,<span class="st">"C1-H3K27ac"</span>,<span class="st">"M1-CTCF"</span>,<span class="st">"M1-H3K27ac"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># test code</span></span>
+<span><span class="va">loop_data</span> <span class="op">&lt;-</span> <span class="fu">loadloops</span><span class="op">(</span>loop_file <span class="op">=</span> <span class="va">loop_file</span>,file_name <span class="op">=</span> <span class="va">file_name</span>,</span>
+<span>                       sep <span class="op">=</span> <span class="st">" "</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">loop_data</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#   seqnames     start       end    score fileName</span></span>
+<span><span class="co"># 1    chr10 100002774 100022436 0.021354  C1-CTCF</span></span>
+<span><span class="co"># 2    chr10 100002774 100069170 0.068404  C1-CTCF</span></span>
+<span><span class="co"># 3    chr10 100002774 100185646 0.184670  C1-CTCF</span></span></code></pre></div>
+</div>
+<div id="load-hic-related-data" class="section level2" number="4.4">
+<h2>
+<span class="header-section-number">4.4</span> Load Hic related data<a class="anchor" aria-label="anchor" href="#load-hic-related-data"><i class="fas fa-link"></i></a>
+</h2>
+<p>The Hic related data format is multiple includes <strong>.h5</strong>, <strong>.hic</strong>,
+<strong>.cool</strong>, <strong>.mcool</strong> and so on. It mainly depends on what kind of
+soft/tool in the upstream. The usual format is <strong>.hic</strong> and <strong>.cool</strong>.
+So we foucus on these fromat for visualization. You can use <strong>hicConvertFormat</strong>
+command in <a href="https://hicexplorer.readthedocs.io/en/latest/index.html"><strong>HiCExplorer</strong></a>
+software to covert into suitable format if you have other format file.</p>
+<p>Different upstream tools will generate different resolution matrix data,
+please make sure what resolution the Hic data you are using. For <strong>.hic</strong>
+data, you can use <a href="https://github.com/cran/strawr"><strong>strawr::readHicBpResolutions</strong></a>
+function to check avaliable resolutions to use, examples shows here:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("strawr")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/aidenlab/straw/tree/master/R">strawr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># test data</span></span>
+<span><span class="fu">readHicBpResolutions</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"test.hic"</span>, package <span class="op">=</span> <span class="st">"strawr"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># [1] 2500000</span></span>
+<span></span>
+<span><span class="co"># real data</span></span>
+<span><span class="fu">readHicBpResolutions</span><span class="op">(</span><span class="st">"test-bw2/RPE-ICRF193_5uM.hic"</span><span class="op">)</span></span>
+<span><span class="co"># [1] 2500000 1000000  500000  250000  100000   50000   25000   10000    5000</span></span></code></pre></div>
+<p><strong>readHicChroms</strong> function can be used to vies chromosome names for your data:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># test data</span></span>
+<span><span class="fu">readHicChroms</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"test.hic"</span>, package <span class="op">=</span> <span class="st">"strawr"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#   name    length</span></span>
+<span><span class="co"># 1    1 249250621</span></span>
+<span><span class="co"># 2   10 135534747</span></span>
+<span><span class="co"># 3   11 135006516</span></span>
+<span><span class="co"># 4   12 133851895</span></span>
+<span><span class="co"># 5   13 115169878</span></span>
+<span><span class="co"># 6   14 107349540</span></span>
+<span></span>
+<span><span class="co"># real data</span></span>
+<span><span class="fu">readHicChroms</span><span class="op">(</span><span class="st">"test-bw2/RPE-ICRF193_5uM.hic"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#   name    length</span></span>
+<span><span class="co"># 1    1 249250621</span></span>
+<span><span class="co"># 2   10 135534747</span></span>
+<span><span class="co"># 3   11 135006516</span></span>
+<span><span class="co"># 4   12 133851895</span></span>
+<span><span class="co"># 5   13 115169878</span></span>
+<span><span class="co"># 6   14 107349540</span></span></code></pre></div>
+<p><strong>prepareHic</strong> function allows you to read <strong>.hic</strong> and <strong>.cool</strong> data.
+Usually these data are big size and will spend a lot of space and memory.
+Please making sure you have enough soures to deal with it. Here are some
+eamples:</p>
+<hr>
+<blockquote>
+<p>Test data can be fetched on <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE200160"><strong>GSE200160</strong></a>.</p>
+</blockquote>
+<p>For <strong><em>.hic</em></strong> data, we use <strong>plotgardener::readHic</strong> function to read data into R
+and it is has been <strong>upper-triangle</strong> matrix format.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hic_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"test-bw2/"</span>,pattern <span class="op">=</span> <span class="st">".hic"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">hic_data</span></span>
+<span><span class="co"># [1] "test-bw2/RPE-doxorubicin_02uM.hic"  "test-bw2/RPE-doxorubicin_034uM.hic"</span></span>
+<span><span class="co"># [3] "test-bw2/RPE-ICRF193_5uM.hic"</span></span>
+<span></span>
+<span><span class="va">hic_df</span> <span class="op">&lt;-</span> <span class="fu">prepareHic</span><span class="op">(</span>hic_path <span class="op">=</span> <span class="va">hic_data</span>,</span>
+<span>                     file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"doxorubicin_02uM"</span>,<span class="st">"doxorubicin_34uM"</span>,</span>
+<span>                                   <span class="st">"ICRF193_5uM"</span><span class="op">)</span>,</span>
+<span>                     chrom <span class="op">=</span> <span class="st">"1"</span>,assembly <span class="op">=</span> <span class="st">"hg19"</span>,</span>
+<span>                     resolution <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hic_df</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#   seqnames  start   end     score         fileName id</span></span>
+<span><span class="co"># 1     chr1 710000  5000  72.90664 doxorubicin_02uM  1</span></span>
+<span><span class="co"># 2     chr1 715000     0 323.53738 doxorubicin_02uM  2</span></span>
+<span><span class="co"># 3     chr1 715000 10000 212.93642 doxorubicin_02uM  3</span></span></code></pre></div>
+<p>You can extract multiple chromosomes for multiple data:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hic_df</span> <span class="op">&lt;-</span> <span class="fu">prepareHic</span><span class="op">(</span>hic_path <span class="op">=</span> <span class="va">hic_data</span>,</span>
+<span>                     file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"doxorubicin_02uM"</span>,<span class="st">"doxorubicin_34uM"</span>,</span>
+<span>                                   <span class="st">"ICRF193_5uM"</span><span class="op">)</span>,</span>
+<span>                     chrom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"3"</span><span class="op">)</span>,assembly <span class="op">=</span> <span class="st">"hg19"</span>,</span>
+<span>                     resolution <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hic_df</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#   seqnames  start   end     score         fileName id</span></span>
+<span><span class="co"># 1     chr1 710000  5000  72.90664 doxorubicin_02uM  1</span></span>
+<span><span class="co"># 2     chr1 715000     0 323.53738 doxorubicin_02uM  2</span></span>
+<span><span class="co"># 3     chr1 715000 10000 212.93642 doxorubicin_02uM  3</span></span></code></pre></div>
+<p>Besides, you can define a region to extract:</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hic_df</span> <span class="op">&lt;-</span> <span class="fu">prepareHic</span><span class="op">(</span>hic_path <span class="op">=</span> <span class="va">hic_data</span>,</span>
+<span>                     file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"doxorubicin_02uM"</span>,<span class="st">"doxorubicin_34uM"</span>,</span>
+<span>                                   <span class="st">"ICRF193_5uM"</span><span class="op">)</span>,</span>
+<span>                     chrom <span class="op">=</span> <span class="st">"1"</span>,assembly <span class="op">=</span> <span class="st">"hg19"</span>,</span>
+<span>                     chromstart <span class="op">=</span> <span class="fl">20000000</span>, chromend <span class="op">=</span> <span class="fl">47500000</span>,</span>
+<span>                     resolution <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hic_df</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#   seqnames    start  end     score         fileName id</span></span>
+<span><span class="co"># 1     chr1 19995000    0  96.48324 doxorubicin_02uM  1</span></span>
+<span><span class="co"># 2     chr1 20000000 5000  38.00954 doxorubicin_02uM  2</span></span>
+<span><span class="co"># 3     chr1 20005000    0 102.91180 doxorubicin_02uM  3</span></span></code></pre></div>
+<hr>
+<blockquote>
+<p>Test data can be fetched on <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE222637"><strong>GSE222637</strong></a>.</p>
+</blockquote>
+<p>For <strong>.cool</strong> data format, <strong>prepareHic</strong> runs slowly and spend much memory:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hic_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"test-bw3/"</span>,pattern <span class="op">=</span> <span class="st">".cool"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">hic_data</span></span>
+<span><span class="co"># [1] "test-bw3/HiC_Adril-1_10kb.cool" "test-bw3/HiC_Ctrl-1_10kb.cool"</span></span>
+<span></span>
+<span><span class="va">hic_df</span> <span class="op">&lt;-</span> <span class="fu">prepareHic</span><span class="op">(</span>hic_path <span class="op">=</span> <span class="va">hic_data</span>,</span>
+<span>                     chrom <span class="op">=</span> <span class="st">"chr1"</span>,</span>
+<span>                     resolution <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hic_df</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#   seqnames    start      end score         fileName id</span></span>
+<span><span class="co"># 1     chr1    -5000        0     4 HiC_Adril-1_10kb  1</span></span>
+<span><span class="co"># 2     chr1    80000    85000     1 HiC_Adril-1_10kb  2</span></span>
+<span><span class="co"># 3     chr1 59660000 59665000     1 HiC_Adril-1_10kb  3</span></span></code></pre></div>
+</div>
+<div id="extract-junction-data" class="section level2" number="4.5">
+<h2>
+<span class="header-section-number">4.5</span> Extract junction data<a class="anchor" aria-label="anchor" href="#extract-junction-data"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>loadJunction</strong> can be used to load junctions data from your own <strong>bed</strong> format
+data which records differential splice sites information from other tools identified
+or from your <strong>bam</strong> file. The latter we use <strong>megadepth::bam_to_junctions</strong> to
+extract all junctions data and return a data frame format. More details see
+<a href="https://bioconductor.org/packages/release/bioc/vignettes/megadepth/inst/doc/megadepth.html#1_Basics"><strong>megadepth</strong></a>. Here we show examples:</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bam_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"F:/junc-test/"</span>,</span>
+<span>                       pattern <span class="op">=</span> <span class="st">".bam$"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">bam_file</span></span>
+<span><span class="co"># [1] "F:/junc-test/C1.sorted.bam" "F:/junc-test/WT.sorted.bam"</span></span>
+<span></span>
+<span><span class="va">junc_df</span> <span class="op">&lt;-</span> <span class="fu">loadJunction</span><span class="op">(</span>data_path <span class="op">=</span> <span class="va">bam_file</span>,</span>
+<span>                        file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"C1"</span>,<span class="st">"WT"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">junc_df</span> <span class="op">&lt;-</span> <span class="va">junc_df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">score</span> <span class="op">&gt;=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">junc_df</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#   seqnames   start     end score fileName</span></span>
+<span><span class="co"># 1        1 3154117 3159706     1       C1</span></span>
+<span><span class="co"># 2        1 3207318 3213608     1       C1</span></span>
+<span><span class="co"># 3        1 4492669 4493099     8       C1</span></span></code></pre></div>
+<p>The score stands for read count of junctions. A little time you will spend if you
+extarct all junctions site from bam files. I recommend you featch the significant
+junction sites information from other softwares for visualization.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="draw-chromosome-ideograms.html"><span class="header-section-number">3</span> Draw chromosome ideograms</a></div>
+<div class="next"><a href="basic-visualization.html"><span class="header-section-number">5</span> Basic visualization</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#track-data-input"><span class="header-section-number">4</span> Track data input</a></li>
+<li><a class="nav-link" href="#load-signal-data"><span class="header-section-number">4.1</span> Load signal data</a></li>
+<li><a class="nav-link" href="#load-peaks-data"><span class="header-section-number">4.2</span> Load peaks data</a></li>
+<li><a class="nav-link" href="#load-links-data"><span class="header-section-number">4.3</span> Load links data</a></li>
+<li><a class="nav-link" href="#load-hic-related-data"><span class="header-section-number">4.4</span> Load Hic related data</a></li>
+<li><a class="nav-link" href="#extract-junction-data"><span class="header-section-number">4.5</span> Extract junction data</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>RiboProfiler Reference Book</strong>" was written by Jun Zhang. It was last built on 2023-05-19.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

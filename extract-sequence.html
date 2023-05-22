@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 2 Extract sequence | RiboProfiler Reference Book</title>
+<meta name="author" content="Jun Zhang">
+<meta name="description" content="The main reason for this package name BioSeqUtils is that I write some utilities to extract multiple feature sequences from annotation file, like transcript, UTR, CDS. Also it’s my experience to...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Chapter 2 Extract sequence | RiboProfiler Reference Book">
+<meta property="og:type" content="book">
+<meta property="og:description" content="The main reason for this package name BioSeqUtils is that I write some utilities to extract multiple feature sequences from annotation file, like transcript, UTR, CDS. Also it’s my experience to...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 2 Extract sequence | RiboProfiler Reference Book">
+<meta name="twitter:description" content="The main reason for this package name BioSeqUtils is that I write some utilities to extract multiple feature sequences from annotation file, like transcript, UTR, CDS. Also it’s my experience to...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">RiboProfiler Reference Book</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="active" href="extract-sequence.html"><span class="header-section-number">2</span> Extract sequence</a></li>
+<li><a class="" href="draw-chromosome-ideograms.html"><span class="header-section-number">3</span> Draw chromosome ideograms</a></li>
+<li><a class="" href="track-data-input.html"><span class="header-section-number">4</span> Track data input</a></li>
+<li><a class="" href="basic-visualization.html"><span class="header-section-number">5</span> Basic visualization</a></li>
+<li><a class="" href="loops-visualization.html"><span class="header-section-number">6</span> Loops visualization</a></li>
+<li><a class="" href="hic-heatmap-visualization.html"><span class="header-section-number">7</span> Hic heatmap visualization</a></li>
+<li><a class="" href="splice-junction-visualization.html"><span class="header-section-number">8</span> Splice junction visualization</a></li>
+<li><a class="" href="other-funs.html"><span class="header-section-number">9</span> Other funs</a></li>
+<li><a class="" href="frequntlly-asked-questions.html"><span class="header-section-number">10</span> Frequntlly asked questions</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="extract-sequence" class="section level1" number="2">
+<h1>
+<span class="header-section-number">2</span> Extract sequence<a class="anchor" aria-label="anchor" href="#extract-sequence"><i class="fas fa-link"></i></a>
+</h1>
+<p>The main reason for this package name <strong>BioSeqUtils</strong> is that I write some utilities
+to extract multiple feature sequences from annotation file, like <strong>transcript</strong>,
+<strong>UTR</strong>, <strong>CDS</strong>. Also it’s my experience to practice with R language. The following
+are examples show how to use.</p>
+<div id="data-loading" class="section level2" number="2.1">
+<h2>
+<span class="header-section-number">2.1</span> Data loading<a class="anchor" aria-label="anchor" href="#data-loading"><i class="fas fa-link"></i></a>
+</h2>
+<p>First we can load gtf and genome file from local of your own using <strong>loadGenomeGTF</strong>
+and return a <strong>GenomeGTF</strong> object:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># devtools::install_github("junjunlab/BioSeqUtils")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">BioSeqUtils</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># make object</span></span>
+<span><span class="va">mytest</span> <span class="op">&lt;-</span> <span class="fu">loadGenomeGTF</span><span class="op">(</span>gtfPath <span class="op">=</span> <span class="st">"hg38.ncbiRefSeq.gtf.gz"</span>,</span>
+<span>                        genomePath <span class="op">=</span> <span class="st">"hg38.fa.gz"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## GenomeGTF object for Extracting sequences.</span></span>
+<span><span class="co">## GTF file is loaded.</span></span>
+<span><span class="co">## genome file is loaded.</span></span>
+<span><span class="co">## representTrans file is NULL.</span></span>
+<span><span class="co">## intron slot is NULL.</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/ex1.png" style="width:100.0%"></div>
+</div>
+<div id="get-features-information" class="section level2" number="2.2">
+<h2>
+<span class="header-section-number">2.2</span> Get features information<a class="anchor" aria-label="anchor" href="#get-features-information"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>getTransInfo</strong> will summarize all the gene’s transcript length information of
+different features. <strong>selecType</strong> controls the filtering rule, <strong>lcds</strong> mode means
+that sorting the CDS length and then transcript length to select the top transcript
+with <strong>topN</strong> parameter. <strong>lt</strong> mode means that sorting the transcript length to select
+the top transcript. You can get all transcript information when you set <strong>topN=0</strong>.
+Here are some examles:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># all gene</span></span>
+<span><span class="va">gene</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">mytest</span><span class="op">@</span><span class="va">gtf</span><span class="op">$</span><span class="va">gene_name</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># get transcript info</span></span>
+<span><span class="va">rt</span> <span class="op">&lt;-</span> <span class="fu">getTransInfo</span><span class="op">(</span>object <span class="op">=</span> <span class="va">mytest</span>,geneName <span class="op">=</span> <span class="va">gene</span>,</span>
+<span>                   selecType <span class="op">=</span> <span class="st">"lcds"</span>,topN <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">rt</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co"># # A tibble: 3 × 11</span></span>
+<span><span class="co"># # Groups:   gene_name, gene_id [3]</span></span>
+<span><span class="co">#   gene_name gene_id  transcript_id   exon   CDS `3UTR` `5UTR` gtype cdsst cdsed tname</span></span>
+<span><span class="co">#   &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;</span></span>
+<span><span class="co"># 1 A1BG      A1BG     NM_130786.4     3382  1485   1839     55 CD       56  1541 A1BG|A1BG|NM_130786.4|56|1541|3382|CD</span></span>
+<span><span class="co"># 2 A1BG-AS1  A1BG-AS1 NR_015380.2     2130     0      0      0 NC        1  2130 A1BG-AS1|A1BG-AS1|NR_015380.2|1|2130|2130|NC</span></span>
+<span><span class="co"># 3 A1CF      A1CF     NM_001198819.2  9481  1806   7320    352 CD      353  2159 A1CF|A1CF|NM_001198819.2|353|2159|9481|CD</span></span></code></pre></div>
+</div>
+<div id="extract-sequnence" class="section level2" number="2.3">
+<h2>
+<span class="header-section-number">2.3</span> Extract sequnence<a class="anchor" aria-label="anchor" href="#extract-sequnence"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>getFeatureFromGenome</strong> function can be used to extract multiple feature sequence
+which can be <strong>5UTR</strong>, <strong>3UTR</strong>, <strong>exon</strong>, <strong>intron</strong>. Setting the <strong>geneSeq=T</strong>
+to get genomic sequence. <strong>up.extend</strong> and <strong>dn.extend</strong> can extend your target
+sequence when you extract.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">longesttrans</span> <span class="op">&lt;-</span> <span class="fu">getFeatureFromGenome</span><span class="op">(</span><span class="va">mytest</span>,transId <span class="op">=</span> <span class="va">rt</span><span class="op">$</span><span class="va">transcript_id</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>,type <span class="op">=</span> <span class="st">"exon"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">longesttrans</span></span>
+<span><span class="co"># DNAStringSet object of length 57285:</span></span>
+<span><span class="co">#           width seq                                                                names</span></span>
+<span><span class="co">#     [1]    3382 ATTGCTGCAGACGCTCACCCCAGACACTCACT...ATTTTGCACACTTTAAAATATTGGGTTGTTT A1BG|A1BG|NM_1307...</span></span>
+<span><span class="co">#     [2]    2130 ATTTTTAGTAGAGACGGGGTTTCGTCATGTTG...TGAAATACCTAGTGTGGTTTCTATTTCCTGA A1BG-AS1|A1BG-AS1...</span></span>
+<span><span class="co">#     [3]    9481 ATAATCAAGGAAACCTTTTCCGGGTGGGGATC...AGTGCCATTATAAAGTTTTAAAAATTATCAA A1CF|A1CF|NM_0011...</span></span>
+<span><span class="co">#     [4]    4953 GGGACCAGATGGATTGTAGGGAGTAGGGTACA...TGATGAATAAACACTTTTTCTGGTCAATGTC A2M|A2M|XM_006719...</span></span>
+<span><span class="co">#     [5]    2300 CATCAGCCCAGCCTGCAAGGAGGCGCCACCGG...GCGGCCCTCTCCAATAAATGTGTTTTTCTAT A2M-AS1|A2M-AS1|N...</span></span>
+<span><span class="co">#     ...     ... ...</span></span>
+<span><span class="co"># [57281]    8143 GGAGTCTGCGCTCTGGTTCGGGCTGCGGCTGC...TTTTTTGCCTAAATAAATGTTATAAATTTTA ZYG11B|ZYG11B|NM_...</span></span>
+<span><span class="co"># [57282]     118 GTGTTACAAGTGAGAGGACTGTGGGAAGCCCC...TGAGAACTGCCTTCCTTCTGGACCCACGACC ZYXP1|ZYXP1|ZYXP1...</span></span>
+<span><span class="co"># [57283]    9136 AGGAAGCCGGAAGCCGCAGGGGCCGCCGTCGT...AGAGCATGCACGAGCCCCATTTATCAGAGTC ZZEF1|ZZEF1|XM_01...</span></span>
+<span><span class="co"># [57284]    6475 ACCTGGAAGCGCCGCGGCGCCGCTATCGAGCT...TGTGCTATATAAAACTATTTCTTATTGTGGA ZZZ3|ZZZ3|NM_0013...</span></span>
+<span><span class="co"># [57285]    2206 GATTAGAGCCTCCCACAGGTGCTCCCCAATTT...GCCCAGTAATAAAGTTTTATGATCTTTTAAA bA255A11.4|bA255A...</span></span>
+<span></span>
+<span><span class="co"># output</span></span>
+<span><span class="fu">Biostrings</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Biostrings/man/XStringSet-io.html">writeXStringSet</a></span><span class="op">(</span><span class="va">longesttrans</span>,filepath <span class="op">=</span> <span class="st">"testlongest.fa"</span>,format <span class="op">=</span> <span class="st">"fasta"</span><span class="op">)</span></span></code></pre></div>
+<p><strong>getFeatureFromGenome</strong> works slowly when applying to thousands of sequences. So
+I wrote a python script named <strong>pyExtractSeq</strong> to do the same thing which has a huge
+speed improvement. You can use it directly in R. The following is the comparison:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># get exon sequence</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="va">longesttrans</span> <span class="op">&lt;-</span> <span class="fu">getFeatureFromGenome</span><span class="op">(</span><span class="va">mytest</span>,</span>
+<span>                                                 transId <span class="op">=</span> <span class="va">rt2</span><span class="op">$</span><span class="va">transcript_id</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5000</span><span class="op">]</span>,</span>
+<span>                                                 type <span class="op">=</span> <span class="st">"exon"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># getFeatureFromGenome is running [==================================] 100% in  5m</span></span>
+<span><span class="co"># 用户   系统   流逝</span></span>
+<span><span class="co"># 216.31  10.47 299.44</span></span>
+<span></span>
+<span><span class="co"># using python code</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu">pyExtractSeq</span><span class="op">(</span>gtf_file <span class="op">=</span> <span class="st">"./hg38.ncbiRefSeq.gtf"</span>,</span>
+<span>                         genome_file <span class="op">=</span> <span class="st">"./hg38.fa"</span>,</span>
+<span>                         transcript_id <span class="op">=</span> <span class="va">rt2</span><span class="op">$</span><span class="va">transcript_id</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5000</span><span class="op">]</span>,</span>
+<span>                         new_id <span class="op">=</span> <span class="va">rt2</span><span class="op">$</span><span class="va">tname</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5000</span><span class="op">]</span>,</span>
+<span>                         type <span class="op">=</span> <span class="st">"exon"</span>,</span>
+<span>                         out_file <span class="op">=</span> <span class="st">"output_test.fasta"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># 用户  系统  流逝</span></span>
+<span><span class="co"># 5.13  0.83 14.19</span></span></code></pre></div>
+</div>
+<div id="get-inrton-information" class="section level2" number="2.4">
+<h2>
+<span class="header-section-number">2.4</span> Get inrton information<a class="anchor" aria-label="anchor" href="#get-inrton-information"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>getIntronInfo</strong> allows you to get a inrton coordinate information which is
+similar to gtf format.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># get intron info</span></span>
+<span><span class="fu">getIntronInfo</span><span class="op">(</span><span class="va">mytest</span>,geneName <span class="op">=</span> <span class="st">"MYC"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#   seqnames     start       end width strand                source</span></span>
+<span><span class="co"># 1     chr8 127736624 127738247  1624      + ncbiRefSeq.2022-10-28</span></span>
+<span><span class="co"># 2     chr8 127739020 127740395  1376      + ncbiRefSeq.2022-10-28</span></span>
+<span><span class="co"># 3     chr8 127736624 127738250  1627      + ncbiRefSeq.2022-10-28</span></span>
+<span><span class="co"># 4     chr8 127739020 127740395  1376      + ncbiRefSeq.2022-10-28</span></span>
+<span><span class="co">#     type score phase gene_id  transcript_id gene_name exon_number</span></span>
+<span><span class="co"># 1 intron    NA    NA     MYC    NM_002467.6       MYC           1</span></span>
+<span><span class="co"># 2 intron    NA    NA     MYC    NM_002467.6       MYC           2</span></span>
+<span><span class="co"># 3 intron    NA    NA     MYC NM_001354870.1       MYC           1</span></span>
+<span><span class="co"># 4 intron    NA    NA     MYC NM_001354870.1       MYC           2</span></span>
+<span><span class="co">#            exon_id</span></span>
+<span><span class="co"># 1    NM_002467.6.1</span></span>
+<span><span class="co"># 2    NM_002467.6.2</span></span>
+<span><span class="co"># 3 NM_001354870.1.1</span></span>
+<span><span class="co"># 4 NM_001354870.1.2</span></span>
+<span></span>
+<span><span class="co"># define transcript_id</span></span>
+<span><span class="fu">getIntronInfo</span><span class="op">(</span><span class="va">mytest</span>,geneName <span class="op">=</span> <span class="st">"MYC"</span>,transId <span class="op">=</span> <span class="st">"NM_002467.6"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#   seqnames     start       end width strand                source</span></span>
+<span><span class="co"># 1     chr8 127736624 127738247  1624      + ncbiRefSeq.2022-10-28</span></span>
+<span><span class="co"># 2     chr8 127739020 127740395  1376      + ncbiRefSeq.2022-10-28</span></span>
+<span><span class="co">#     type score phase gene_id transcript_id gene_name exon_number</span></span>
+<span><span class="co"># 1 intron    NA    NA     MYC   NM_002467.6       MYC           1</span></span>
+<span><span class="co"># 2 intron    NA    NA     MYC   NM_002467.6       MYC           2</span></span>
+<span><span class="co">#         exon_id</span></span>
+<span><span class="co"># 1 NM_002467.6.1</span></span>
+<span><span class="co"># 2 NM_002467.6.2</span></span>
+<span></span>
+<span><span class="co"># define geneid</span></span>
+<span><span class="fu">getIntronInfo</span><span class="op">(</span><span class="va">mytest</span>,geneId <span class="op">=</span> <span class="st">"MYC"</span>,transId <span class="op">=</span> <span class="st">"NM_002467.6"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#   seqnames     start       end width strand                source</span></span>
+<span><span class="co"># 1     chr8 127736624 127738247  1624      + ncbiRefSeq.2022-10-28</span></span>
+<span><span class="co"># 2     chr8 127739020 127740395  1376      + ncbiRefSeq.2022-10-28</span></span>
+<span><span class="co">#     type score phase gene_id transcript_id gene_name exon_number</span></span>
+<span><span class="co"># 1 intron    NA    NA     MYC   NM_002467.6       MYC           1</span></span>
+<span><span class="co"># 2 intron    NA    NA     MYC   NM_002467.6       MYC           2</span></span>
+<span><span class="co">#         exon_id</span></span>
+<span><span class="co"># 1 NM_002467.6.1</span></span>
+<span><span class="co"># 2 NM_002467.6.2</span></span>
+<span></span>
+<span><span class="co"># multiple genes</span></span>
+<span><span class="fu">getIntronInfo</span><span class="op">(</span><span class="va">mytest</span>,geneName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"MYC"</span>,<span class="st">"H19"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># getIntronInfo is running [=========================================] 100% in  0s</span></span>
+<span><span class="co">#                seqnames     start       end width strand                source   type score phase gene_id  transcript_id</span></span>
+<span><span class="co"># 1  chr11_ML143358v1_fix    188317    188397    81      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19    NR_002196.2</span></span>
+<span><span class="co"># 2  chr11_ML143358v1_fix    188521    188600    80      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19    NR_002196.2</span></span>
+<span><span class="co"># 3  chr11_ML143358v1_fix    188714    188808    95      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19    NR_002196.2</span></span>
+<span><span class="co"># 4  chr11_ML143358v1_fix    188944    189039    96      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19    NR_002196.2</span></span>
+<span><span class="co"># 5  chr11_ML143358v1_fix    188311    188397    87      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19    NR_131223.1</span></span>
+<span><span class="co"># 6  chr11_ML143358v1_fix    188521    188600    80      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19    NR_131223.1</span></span>
+<span><span class="co"># 7  chr11_ML143358v1_fix    188714    188808    95      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19    NR_131223.1</span></span>
+<span><span class="co"># 8  chr11_ML143358v1_fix    188944    189039    96      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19    NR_131223.1</span></span>
+<span><span class="co"># 9  chr11_ML143358v1_fix    188317    188397    81      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19    NR_131224.1</span></span>
+<span><span class="co"># 10 chr11_ML143358v1_fix    188521    188600    80      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19    NR_131224.1</span></span>
+<span><span class="co"># 11 chr11_ML143358v1_fix    188714    188808    95      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19    NR_131224.1</span></span>
+<span><span class="co"># 12 chr11_ML143358v1_fix    188944    193739  4796      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19    NR_131224.1</span></span>
+<span><span class="co"># 13                chr11   1995795   1995875    81      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19  NR_002196.2_2</span></span>
+<span><span class="co"># 14                chr11   1995999   1996078    80      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19  NR_002196.2_2</span></span>
+<span><span class="co"># 15                chr11   1996192   1996286    95      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19  NR_002196.2_2</span></span>
+<span><span class="co"># 16                chr11   1996422   1996517    96      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19  NR_002196.2_2</span></span>
+<span><span class="co"># 17                chr11   1995789   1995875    87      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19  NR_131223.1_2</span></span>
+<span><span class="co"># 18                chr11   1995999   1996078    80      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19  NR_131223.1_2</span></span>
+<span><span class="co"># 19                chr11   1996192   1996286    95      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19  NR_131223.1_2</span></span>
+<span><span class="co"># 20                chr11   1996422   1996517    96      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19  NR_131223.1_2</span></span>
+<span><span class="co"># 21                chr11   1995795   1995875    81      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19  NR_131224.1_2</span></span>
+<span><span class="co"># 22                chr11   1995999   1996078    80      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19  NR_131224.1_2</span></span>
+<span><span class="co"># 23                chr11   1996192   1996286    95      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19  NR_131224.1_2</span></span>
+<span><span class="co"># 24                chr11   1996422   2001217  4796      - ncbiRefSeq.2022-10-28 intron    NA    NA     H19  NR_131224.1_2</span></span>
+<span><span class="co"># 25                 chr8 127736624 127738247  1624      + ncbiRefSeq.2022-10-28 intron    NA    NA     MYC    NM_002467.6</span></span>
+<span><span class="co"># 26                 chr8 127739020 127740395  1376      + ncbiRefSeq.2022-10-28 intron    NA    NA     MYC    NM_002467.6</span></span>
+<span><span class="co"># 27                 chr8 127736624 127738250  1627      + ncbiRefSeq.2022-10-28 intron    NA    NA     MYC NM_001354870.1</span></span>
+<span><span class="co"># 28                 chr8 127739020 127740395  1376      + ncbiRefSeq.2022-10-28 intron    NA    NA     MYC NM_001354870.1</span></span>
+<span><span class="co">#    gene_name exon_number          exon_id</span></span>
+<span><span class="co"># 1        H19           4    NR_002196.2.4</span></span>
+<span><span class="co"># 2        H19           3    NR_002196.2.3</span></span>
+<span><span class="co"># 3        H19           2    NR_002196.2.2</span></span>
+<span><span class="co"># 4        H19           1    NR_002196.2.1</span></span>
+<span><span class="co"># 5        H19           4    NR_131223.1.4</span></span>
+<span><span class="co"># 6        H19           3    NR_131223.1.3</span></span>
+<span><span class="co"># 7        H19           2    NR_131223.1.2</span></span>
+<span><span class="co"># 8        H19           1    NR_131223.1.1</span></span>
+<span><span class="co"># 9        H19           4    NR_131224.1.4</span></span>
+<span><span class="co"># 10       H19           3    NR_131224.1.3</span></span>
+<span><span class="co"># 11       H19           2    NR_131224.1.2</span></span>
+<span><span class="co"># 12       H19           1    NR_131224.1.1</span></span>
+<span><span class="co"># 13       H19           4  NR_002196.2_2.4</span></span>
+<span><span class="co"># 14       H19           3  NR_002196.2_2.3</span></span>
+<span><span class="co"># 15       H19           2  NR_002196.2_2.2</span></span>
+<span><span class="co"># 16       H19           1  NR_002196.2_2.1</span></span>
+<span><span class="co"># 17       H19           4  NR_131223.1_2.4</span></span>
+<span><span class="co"># 18       H19           3  NR_131223.1_2.3</span></span>
+<span><span class="co"># 19       H19           2  NR_131223.1_2.2</span></span>
+<span><span class="co"># 20       H19           1  NR_131223.1_2.1</span></span>
+<span><span class="co"># 21       H19           4  NR_131224.1_2.4</span></span>
+<span><span class="co"># 22       H19           3  NR_131224.1_2.3</span></span>
+<span><span class="co"># 23       H19           2  NR_131224.1_2.2</span></span>
+<span><span class="co"># 24       H19           1  NR_131224.1_2.1</span></span>
+<span><span class="co"># 25       MYC           1    NM_002467.6.1</span></span>
+<span><span class="co"># 26       MYC           2    NM_002467.6.2</span></span>
+<span><span class="co"># 27       MYC           1 NM_001354870.1.1</span></span>
+<span><span class="co"># 28       MYC           2 NM_001354870.1.2</span></span>
+<span></span>
+<span><span class="co"># multiple transcript_ids</span></span>
+<span><span class="fu">getIntronInfo</span><span class="op">(</span><span class="va">mytest</span>,transId <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"NR_002196.2"</span>,<span class="st">"NM_002467.6"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#               seqnames     start       end width strand                source   type</span></span>
+<span><span class="co"># 1 chr11_ML143358v1_fix    188317    188397    81      - ncbiRefSeq.2022-10-28 intron</span></span>
+<span><span class="co"># 2 chr11_ML143358v1_fix    188521    188600    80      - ncbiRefSeq.2022-10-28 intron</span></span>
+<span><span class="co"># 3 chr11_ML143358v1_fix    188714    188808    95      - ncbiRefSeq.2022-10-28 intron</span></span>
+<span><span class="co"># 4 chr11_ML143358v1_fix    188944    189039    96      - ncbiRefSeq.2022-10-28 intron</span></span>
+<span><span class="co"># 5                 chr8 127736624 127738247  1624      + ncbiRefSeq.2022-10-28 intron</span></span>
+<span><span class="co"># 6                 chr8 127739020 127740395  1376      + ncbiRefSeq.2022-10-28 intron</span></span>
+<span><span class="co">#   score phase gene_id transcript_id gene_name exon_number       exon_id</span></span>
+<span><span class="co"># 1    NA    NA     H19   NR_002196.2       H19           4 NR_002196.2.4</span></span>
+<span><span class="co"># 2    NA    NA     H19   NR_002196.2       H19           3 NR_002196.2.3</span></span>
+<span><span class="co"># 3    NA    NA     H19   NR_002196.2       H19           2 NR_002196.2.2</span></span>
+<span><span class="co"># 4    NA    NA     H19   NR_002196.2       H19           1 NR_002196.2.1</span></span>
+<span><span class="co"># 5    NA    NA     MYC   NM_002467.6       MYC           1 NM_002467.6.1</span></span>
+<span><span class="co"># 6    NA    NA     MYC   NM_002467.6       MYC           2 NM_002467.6.2</span></span></code></pre></div>
+</div>
+<div id="extract-promoters" class="section level2" number="2.5">
+<h2>
+<span class="header-section-number">2.5</span> Extract promoters<a class="anchor" aria-label="anchor" href="#extract-promoters"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>getPromoters</strong> allows you to extract promoter sequence for gene:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># get promoters</span></span>
+<span><span class="va">pro</span> <span class="op">&lt;-</span> <span class="fu">getPromoters</span><span class="op">(</span><span class="va">mytest</span>,geneName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"AAC1"</span>,<span class="st">"THI74"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pro</span></span>
+<span><span class="co"># DNAStringSet object of length 2:</span></span>
+<span><span class="co">#     width seq                                                                  names</span></span>
+<span><span class="co"># [1]  2000 ATCGCGGTAAGCAGTCCCTGGAGACCATTTTAC...TAGAGGCAAAAAATAAAAAGTAAGCAGGAGAA THI74|YDR438W|YDR...</span></span>
+<span><span class="co"># [2]  2000 CGGCTTTAAACCTGATGACGAAATTGGATTGTG...TTCTTTTCTATTTTTCCTTTTTACAGCAGTAA AAC1|YMR056C|YMR0...</span></span>
+<span></span>
+<span><span class="co"># same code</span></span>
+<span><span class="co"># pro &lt;- getPromoters(mytest,geneName = c("AAC1","THI74"),</span></span>
+<span><span class="co">#                     up.extend = 2000,</span></span>
+<span><span class="co">#                     dn.extend = 0)</span></span></code></pre></div>
+</div>
+<div id="extract-non-redundant-transcript-length" class="section level2" number="2.6">
+<h2>
+<span class="header-section-number">2.6</span> Extract non-redundant transcript length<a class="anchor" aria-label="anchor" href="#extract-non-redundant-transcript-length"><i class="fas fa-link"></i></a>
+</h2>
+<p>As we knonw, a gene have multiple isoforms. So how should we quantify the gene expression
+with standard gene length. The <strong>featureCounts</strong> command from <strong>subread</strong> package is
+used to quantify gene expression with using non-redundant exon length. <strong>getNonRedundantLength</strong>
+can do the same thing:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># make object</span></span>
+<span><span class="va">mytest</span> <span class="op">&lt;-</span> <span class="fu">loadGenomeGTF</span><span class="op">(</span>gtfPath <span class="op">=</span> <span class="st">"hg38.ncbiRefSeq.gtf.gz"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## GenomeGTF object for Extracting sequences.</span></span>
+<span><span class="co">## GTF file is loaded.</span></span>
+<span><span class="co">## genome file is NULL.</span></span>
+<span><span class="co">## representTrans file is NULL.</span></span>
+<span><span class="co">## intron slot is NULL.</span></span>
+<span></span>
+<span><span class="co"># select 300 genes</span></span>
+<span><span class="va">gene</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">mytest</span><span class="op">@</span><span class="va">gtf</span><span class="op">$</span><span class="va">gene_name</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">len</span> <span class="op">&lt;-</span> <span class="fu">getNonRedundantLength</span><span class="op">(</span>object <span class="op">=</span> <span class="va">mytest</span>,geneName <span class="op">=</span> <span class="va">gene</span><span class="op">)</span></span>
+<span><span class="co"># getNonRedundantLength is running [=================================] 100% in 19s</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">len</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#   gene_name gene_id exonLength</span></span>
+<span><span class="co"># 1      TRNP    TRNP         68</span></span>
+<span><span class="co"># 2      TRNT    TRNT         66</span></span>
+<span><span class="co"># 3      CYTB    CYTB       1141</span></span>
+<span><span class="co"># 4      TRNE    TRNE         69</span></span>
+<span><span class="co"># 5       ND6     ND6        525</span></span>
+<span><span class="co"># 6       ND5     ND5       1812</span></span></code></pre></div>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="index.html"><span class="header-section-number">1</span> About</a></div>
+<div class="next"><a href="draw-chromosome-ideograms.html"><span class="header-section-number">3</span> Draw chromosome ideograms</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#extract-sequence"><span class="header-section-number">2</span> Extract sequence</a></li>
+<li><a class="nav-link" href="#data-loading"><span class="header-section-number">2.1</span> Data loading</a></li>
+<li><a class="nav-link" href="#get-features-information"><span class="header-section-number">2.2</span> Get features information</a></li>
+<li><a class="nav-link" href="#extract-sequnence"><span class="header-section-number">2.3</span> Extract sequnence</a></li>
+<li><a class="nav-link" href="#get-inrton-information"><span class="header-section-number">2.4</span> Get inrton information</a></li>
+<li><a class="nav-link" href="#extract-promoters"><span class="header-section-number">2.5</span> Extract promoters</a></li>
+<li><a class="nav-link" href="#extract-non-redundant-transcript-length"><span class="header-section-number">2.6</span> Extract non-redundant transcript length</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>RiboProfiler Reference Book</strong>" was written by Jun Zhang. It was last built on 2023-05-19.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

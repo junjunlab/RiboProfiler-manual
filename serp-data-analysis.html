@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 6 SeRP data analysis | RiboProfiler Reference Book</title>
+<meta name="author" content="Jun Zhang">
+<meta name="description" content="6.1 Introduction We show a entire example to analysis SeRP data which from Cotranslational assembly of protein complexes in eukaryotes revealed by ribosome profiling and the related GSE number is...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Chapter 6 SeRP data analysis | RiboProfiler Reference Book">
+<meta property="og:type" content="book">
+<meta property="og:description" content="6.1 Introduction We show a entire example to analysis SeRP data which from Cotranslational assembly of protein complexes in eukaryotes revealed by ribosome profiling and the related GSE number is...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 6 SeRP data analysis | RiboProfiler Reference Book">
+<meta name="twitter:description" content="6.1 Introduction We show a entire example to analysis SeRP data which from Cotranslational assembly of protein complexes in eukaryotes revealed by ribosome profiling and the related GSE number is...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">RiboProfiler Reference Book</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="" href="workflow.html"><span class="header-section-number">2</span> Workflow</a></li>
+<li><a class="" href="align-on-genome.html"><span class="header-section-number">3</span> Align on genome</a></li>
+<li><a class="" href="align-on-transcriptome.html"><span class="header-section-number">4</span> Align on transcriptome</a></li>
+<li><a class="" href="selective-ribosome-profiling.html"><span class="header-section-number">5</span> Selective ribosome profiling</a></li>
+<li><a class="active" href="serp-data-analysis.html"><span class="header-section-number">6</span> SeRP data analysis</a></li>
+<li><a class="" href="running-on-linux.html"><span class="header-section-number">7</span> Running on linux</a></li>
+<li><a class="" href="track_plot-supplement.html"><span class="header-section-number">8</span> Track_plot supplement</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="serp-data-analysis" class="section level1" number="6">
+<h1>
+<span class="header-section-number">6</span> SeRP data analysis<a class="anchor" aria-label="anchor" href="#serp-data-analysis"><i class="fas fa-link"></i></a>
+</h1>
+<div id="introduction" class="section level2" number="6.1">
+<h2>
+<span class="header-section-number">6.1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction"><i class="fas fa-link"></i></a>
+</h2>
+<p>We show a entire example to analysis SeRP data which from <a href="https://www.nature.com/articles/s41467-022-28878-5"><strong>Cotranslational assembly of protein complexes in
+eukaryotes revealed by ribosome profiling</strong></a> and the related
+GSE number is <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi"><strong>GSE116570</strong></a>. You can download the raw fastq files through other ways.</p>
+<hr>
+<p>Here shows the simple data processing describtion:</p>
+<div class="inline-figure"><img src="local_images/s3.png" style="width:500px;border:2px solid black;"></div>
+<hr>
+</div>
+<div id="extract-yeast-longest-transcript-sequence" class="section level2" number="6.2">
+<h2>
+<span class="header-section-number">6.2</span> Extract yeast longest transcript sequence<a class="anchor" aria-label="anchor" href="#extract-yeast-longest-transcript-sequence"><i class="fas fa-link"></i></a>
+</h2>
+<p>Condidering most transcripts have no <strong>UTRs(untranslated regions)</strong> of <strong><em>Saccharomyces cerevisiae</em></strong>.So we extend 50 bases upstream and downstream for each transcript. We choose to map the reads on transcriptome. Now
+we use <strong>BioSeqUtils</strong> to extract fasta:</p>
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">BioSeqUtils</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">RiboProfiler</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># get longest transcript</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># make object</span></span>
+<span><span class="va">mytest</span> <span class="op">&lt;-</span> <span class="fu">loadGenomeGTF</span><span class="op">(</span>gtfPath <span class="op">=</span> <span class="st">"Saccharomyces_cerevisiae.R64-1-1.105.gtf"</span>,</span>
+<span>                        genomePath <span class="op">=</span> <span class="st">"Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa"</span>,</span>
+<span>                        filterProtein <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="co">## GenomeGTF object for Extracting sequences.</span></span>
+<span><span class="co">## GTF file is loaded.</span></span>
+<span><span class="co">## genome file is loaded.</span></span>
+<span><span class="co">## representTrans file is NULL.</span></span>
+<span><span class="co">## intron slot is NULL.</span></span>
+<span></span>
+<span><span class="co"># select all genes</span></span>
+<span><span class="va">gene</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">mytest</span><span class="op">@</span><span class="va">gtf</span><span class="op">$</span><span class="va">gene_name</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># return all transcript info</span></span>
+<span><span class="va">all</span> <span class="op">&lt;-</span> <span class="fu">getTransInfo</span><span class="op">(</span>object <span class="op">=</span> <span class="va">mytest</span>,geneName <span class="op">=</span> <span class="va">gene</span>,selecType <span class="op">=</span> <span class="st">"lcds"</span>,topN <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># extend sequence</span></span>
+<span><span class="va">extend</span> <span class="op">&lt;-</span> <span class="fu">getFeatureFromGenome</span><span class="op">(</span><span class="va">mytest</span>,geneName <span class="op">=</span> <span class="va">all</span><span class="op">$</span><span class="va">gene_name</span>,</span>
+<span>                               type <span class="op">=</span> <span class="st">"exon"</span>,</span>
+<span>                               up.extend <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>                               dn.extend <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># output</span></span>
+<span><span class="fu">Biostrings</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Biostrings/man/XStringSet-io.html">writeXStringSet</a></span><span class="op">(</span><span class="va">extend</span>,filepath <span class="op">=</span> <span class="st">"sac_longest_trans.fa"</span>,format <span class="op">=</span> <span class="st">"fasta"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span><span class="op">(</span><span class="st">"head sac_longest_trans.fa"</span><span class="op">)</span></span>
+<span><span class="co"># &gt;AAC1|YMR056C|YMR056C_mRNA|51|978|1030|CD</span></span>
+<span><span class="co"># CAGATTCTCGTATCTGTTATTCTTTTCTATTTTTCCTTTTTACAGCAGTAATGTCTCACACAGAAACACAGACTCAGCAG</span></span>
+<span><span class="co"># TCACACTTCGGTGTGGACTTCCTTATGGGCGGCGTTTCTGCTGCCATTGCGAAGACGGGTGCCGCTCCCATTGAACGGGT</span></span>
+<span><span class="co"># GAAACTGTTGATGCAGAATCAAGAAGAGATGCTTAAACAGGGCTCGTTGGATACACGGTACAAGGGAATTTTAGATTGCT</span></span>
+<span><span class="co"># TCAAGAGGACTGCGACTCATGAAGGTATTGTGTCGTTCTGGAGGGGTAACACCGCCAATGTTCTCCGGTATTTCCCCACG</span></span>
+<span><span class="co"># CAGGCGCTGAATTTTGCCTTCAAAGACAAAATTAAGTCGTTGTTGAGTTACGACAGAGAGCGCGATGGGTATGCCAAGTG</span></span>
+<span><span class="co"># GTTTGCTGGAAATCTTTTCTCTGGTGGAGCGGCTGGTGGTTTGTCGCTTCTATTTGTATATTCCTTGGACTACGCAAGGA</span></span>
+<span><span class="co"># CGCGGCTTGCAGCGGATGCTAGGGGTTCTAAGTCAACCTCGCAAAGACAGTTTAATGGATTGCTAGACGTGTATAAGAAG</span></span>
+<span><span class="co"># ACACTGAAAACGGACGGGTTGTTGGGTCTGTACCGTGGGTTTGTGCCCTCAGTTCTGGGTATCATTGTCTACAGAGGTCT</span></span>
+<span><span class="co"># GTACTTTGGCTTGTACGATTCTTTCAAGCCTGTGCTGTTGACGGGGGCTCTAGAGGGGTCCTTTGTTGCCTCTTTCCTAT</span></span>
+<span><span class="co"># [1] 0</span></span></code></pre></div>
+</div>
+<div id="build-index-for-trna-rrna-and-reference" class="section level2" number="6.3">
+<h2>
+<span class="header-section-number">6.3</span> Build index for tRNA, rRNA and reference<a class="anchor" aria-label="anchor" href="#build-index-for-trna-rrna-and-reference"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># build index</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span></span>
+<span><span class="co"># download mouse rRNA and tRNA</span></span>
+<span><span class="fu">fetch_trRNA_from_NCBI</span><span class="op">(</span>species <span class="op">=</span> <span class="st">"Saccharomyces cerevisiae"</span><span class="op">)</span></span>
+<span><span class="co"># ┌──────────────────────────────────────────────────────────────┐</span></span>
+<span><span class="co"># │                                                              │</span></span>
+<span><span class="co"># │   Download tRNA and rRNA sequences from NCBI has finished!   │</span></span>
+<span><span class="co"># │                                                              │</span></span>
+<span><span class="co"># └──────────────────────────────────────────────────────────────┘</span></span>
+<span></span>
+<span><span class="co"># build index</span></span>
+<span><span class="fu">trRNA_index_build</span><span class="op">(</span>trRNA_file <span class="op">=</span> <span class="st">"Saccharomyces_cerevisiae_trRNA.fa"</span>,</span>
+<span>                  prefix <span class="op">=</span> <span class="st">"sac_trRNA"</span><span class="op">)</span></span>
+<span><span class="co"># ┌────────────────────────────────────────────────────┐</span></span>
+<span><span class="co"># │                                                    │</span></span>
+<span><span class="co"># │   Building index for tRNA and rRNA has finished!   │</span></span>
+<span><span class="co"># │                                                    │</span></span>
+<span><span class="co"># └────────────────────────────────────────────────────┘</span></span>
+<span></span>
+<span><span class="fu">reference_index_build</span><span class="op">(</span>reference_file <span class="op">=</span> <span class="st">"sac_longest_trans.fa"</span>,</span>
+<span>                      prefix <span class="op">=</span> <span class="st">"sac_ref"</span>,</span>
+<span>                      threads <span class="op">=</span> <span class="fl">24</span><span class="op">)</span></span>
+<span><span class="co"># ┌────────────────────────────────────────────────┐</span></span>
+<span><span class="co"># │                                                │</span></span>
+<span><span class="co"># │   Building index for reference has finished!   │</span></span>
+<span><span class="co"># │                                                │</span></span>
+<span><span class="co"># └────────────────────────────────────────────────┘</span></span></code></pre></div>
+</div>
+<div id="trim-adapters-for-raw-fastqs" class="section level2" number="6.4">
+<h2>
+<span class="header-section-number">6.4</span> Trim adapters for raw fastqs<a class="anchor" aria-label="anchor" href="#trim-adapters-for-raw-fastqs"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># trim adaptors</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"2.trim-data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># raw fastq files</span></span>
+<span><span class="va">fq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"1.raw-data/"</span>,pattern <span class="op">=</span> <span class="st">".gz$"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rmd1</span> <span class="op">&lt;-</span> <span class="fu">batch_adpator_remove</span><span class="op">(</span>fastq_file1 <span class="op">=</span> <span class="va">fq</span>,</span>
+<span>                             output_dir <span class="op">=</span> <span class="st">"2.trim-data/"</span>,</span>
+<span>                             output_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">fq</span>,split <span class="op">=</span> <span class="st">"\\.|/"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">3</span><span class="op">)</span>,</span>
+<span>                             fastp_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>minReadLength <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>                                                 maxReadLength <span class="op">=</span> <span class="fl">35</span>,</span>
+<span>                                                 adapterSequenceRead1 <span class="op">=</span> <span class="st">"CTGTAGGCACCATCAATTCGTATGCCGTCTT"</span>,</span>
+<span>                                                 thread <span class="op">=</span> <span class="fl">16</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="remove-trna-and-rrna" class="section level2" number="6.5">
+<h2>
+<span class="header-section-number">6.5</span> Remove tRNA and rRNA<a class="anchor" aria-label="anchor" href="#remove-trna-and-rrna"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># remove trRNA sequence</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"3.rmtrRNA-data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># loop for remove trRNA sequence</span></span>
+<span><span class="va">clean_fq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"2.trim-data/"</span>,pattern <span class="op">=</span> <span class="st">".fastq.gz"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">output_sam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"3.rmtrRNA-data/"</span>,<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">clean_fq</span>,split <span class="op">=</span> <span class="st">"_R1.fastq.gz|/"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">2</span><span class="op">)</span>,</span>
+<span>                    <span class="st">".sam"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span><span class="va">rm_trRNAfq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"3.rmtrRNA-data/"</span>,<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">clean_fq</span>,split <span class="op">=</span> <span class="st">"_R1.fastq.gz|/"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">2</span><span class="op">)</span>,</span>
+<span>                    <span class="st">"_rmtrRNA.fq"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># x = 1</span></span>
+<span><span class="co"># batch align</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">clean_fq</span><span class="op">)</span>,<span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="fu">bowtie2_align</span><span class="op">(</span>index <span class="op">=</span> <span class="st">"0.index-data/rtRNA-index/sac_trRNA"</span>,</span>
+<span>                fq_file1 <span class="op">=</span> <span class="va">clean_fq</span><span class="op">[</span><span class="va">x</span><span class="op">]</span>,</span>
+<span>                output_file <span class="op">=</span> <span class="va">output_sam</span><span class="op">[</span><span class="va">x</span><span class="op">]</span>,</span>
+<span>                threads <span class="op">=</span> <span class="fl">24</span>,</span>
+<span>                bowtie2_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"--un "</span>,<span class="va">rm_trRNAfq</span><span class="op">[</span><span class="va">x</span><span class="op">]</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">tmp</span></span>
+<span><span class="co"># ▶ 3.rmtrRNA-data/SRR7471227.sam has been processed!</span></span>
+<span><span class="co"># ▶ 3.rmtrRNA-data/SRR7471228.sam has been processed!</span></span>
+<span><span class="co"># ▶ 3.rmtrRNA-data/SRR7471229.sam has been processed!</span></span>
+<span><span class="co"># ...</span></span>
+<span></span>
+<span><span class="co"># remove tmp sam</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"3.rmtrRNA-data/"</span>,pattern <span class="op">=</span> <span class="st">".sam$"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># plot mapping info</span></span>
+<span><span class="va">map_info</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"3.rmtrRNA-data/"</span>,pattern <span class="op">=</span> <span class="st">"mapinfo.txt"</span>,full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">plot_mapinfo</span><span class="op">(</span>mapinfo_file <span class="op">=</span> <span class="va">map_info</span>,</span>
+<span>             file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">clean_fq</span>,split <span class="op">=</span> <span class="st">"\\.|/|_R1"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># plot_mapinfo(mapinfo_file = map_info,</span></span>
+<span><span class="co">#              file_name = sapply(strsplit(clean_fq,split = "\\.|/|_R1"), "[",3),</span></span>
+<span><span class="co">#              plot_type = "table")</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/s4.png" style="width:100.0%"></div>
+</div>
+<div id="map-to-transcriptome-1" class="section level2" number="6.6">
+<h2>
+<span class="header-section-number">6.6</span> Map to transcriptome<a class="anchor" aria-label="anchor" href="#map-to-transcriptome-1"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># map to transcriptome</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"4.map-data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># batch map to genome</span></span>
+<span><span class="va">fq_file1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"3.rmtrRNA-data/"</span>,pattern <span class="op">=</span> <span class="st">".fq"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">output_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'FAS1-trans-rep1'</span>,<span class="st">'FAS1-inter-rep1'</span>,<span class="st">'FAS1-trans-rep2'</span>,<span class="st">'FAS1-inter-rep2'</span>,</span>
+<span>                 <span class="st">'FAS2-trans-rep1'</span>,<span class="st">'FAS2-inter-rep1'</span>,<span class="st">'FAS2-trans-rep2'</span>,<span class="st">'FAS2-inter-rep2'</span>,</span>
+<span>                 <span class="st">'FAS1-MPTdel-trans-rep1'</span>,<span class="st">'FAS1-MPTdel-inter-rep1'</span>,<span class="st">'FAS1-MPTdel-trans-rep2'</span>,</span>
+<span>                 <span class="st">'FAS1-MPTdel-trans-rep3'</span>,<span class="st">'FAS1-MPTdel-inter-rep2'</span>,<span class="st">'FAS1-MPTdel-inter-rep3'</span>,</span>
+<span>                 <span class="st">'FAS2-MPTdel-trans-rep1'</span>,<span class="st">'FAS2-MPTdel-inter-rep1'</span>,<span class="st">'FAS2-MPTdel-trans-rep2'</span>,<span class="st">'FAS2-MPTdel-inter-rep2'</span>,</span>
+<span>                 <span class="st">'GUS1-trans-rep1'</span>,<span class="st">'GUS1-inter-rep1'</span>,<span class="st">'GUS1-trans-rep2'</span>,<span class="st">'GUS1-inter-rep2'</span>,</span>
+<span>                 <span class="st">'MES1-trans-rep1'</span>,<span class="st">'MES1-inter-rep1'</span>,<span class="st">'MES1-trans-rep2'</span>,<span class="st">'MES1-inter-rep2'</span>,</span>
+<span>                 <span class="st">'ARC1-trans-rep1'</span>,<span class="st">'ARC1-inter-rep1'</span>,<span class="st">'ARC1-trans-rep2'</span>,<span class="st">'ARC1-inter-rep2'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">batch_hisat_align</span><span class="op">(</span>index <span class="op">=</span> <span class="st">"0.index-data/ref-index/sac_ref"</span>,</span>
+<span>                  fq_file1 <span class="op">=</span> <span class="va">fq_file1</span>,</span>
+<span>                  output_dir <span class="op">=</span> <span class="st">"4.map-data/"</span>,</span>
+<span>                  output_file <span class="op">=</span> <span class="va">output_file</span>,</span>
+<span>                  threads <span class="op">=</span> <span class="fl">24</span>,hisat2_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>k <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># ▶ FAS1-trans-rep1 has been processed!</span></span>
+<span><span class="co"># ▶ FAS1-inter-rep1 has been processed!</span></span>
+<span><span class="co"># ▶ FAS1-trans-rep2 has been processed!</span></span>
+<span><span class="co"># ...</span></span>
+<span></span>
+<span><span class="co"># plot mapping info</span></span>
+<span><span class="va">map_info_geome</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"4.map-data/"</span>,pattern <span class="op">=</span> <span class="st">"mapinfo.txt"</span>,full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">plot_mapinfo</span><span class="op">(</span>mapinfo_file <span class="op">=</span> <span class="va">map_info_geome</span>,</span>
+<span>             file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">map_info_geome</span>,split <span class="op">=</span> <span class="st">"_mapinfo.txt|/"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># plot_mapinfo(mapinfo_file = map_info_geome,</span></span>
+<span><span class="co">#              file_name = sapply(strsplit(map_info_geome,split = "_mapinfo.txt|/"), "[",2),</span></span>
+<span><span class="co">#              plot_type = "table")</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/s5.png" style="width:100.0%"></div>
+</div>
+<div id="ribo-qc-check" class="section level2" number="6.7">
+<h2>
+<span class="header-section-number">6.7</span> Ribo QC check<a class="anchor" aria-label="anchor" href="#ribo-qc-check"><i class="fas fa-link"></i></a>
+</h2>
+<p>The similar analysis steps like before:</p>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"5.analysis-data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"5.analysis-data"</span><span class="op">)</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># 1_prepare gene annotation file</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># ...</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># 2_prepare Ribo QC data</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="va">sam_file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"../4.map-data/"</span>,pattern <span class="op">=</span> <span class="st">"*sam$"</span>,full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">sample_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"../4.map-data/"</span>,pattern <span class="op">=</span> <span class="st">"*sam$"</span><span class="op">)</span>,</span>
+<span>                               split <span class="op">=</span> <span class="st">".sam"</span><span class="op">)</span>, <span class="st">"["</span>,<span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># run</span></span>
+<span><span class="fu">pre_qc_data</span><span class="op">(</span>sam_file <span class="op">=</span> <span class="va">sam_file</span>,</span>
+<span>            out_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">sample_name</span>,<span class="st">".qc.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
+<span>            mapping_type <span class="op">=</span> <span class="st">"transcriptome"</span>,</span>
+<span>            seq_type <span class="op">=</span> <span class="st">"singleEnd"</span><span class="op">)</span></span>
+<span><span class="co"># ../4.map-data/ARC1-inter-rep1.sam has been processed!</span></span>
+<span><span class="co"># ../4.map-data/ARC1-inter-rep2.sam has been processed!</span></span>
+<span><span class="co"># ../4.map-data/ARC1-trans-rep1.sam has been processed!</span></span>
+<span><span class="co"># ...</span></span>
+<span></span>
+<span><span class="co"># load qc data</span></span>
+<span><span class="va">qc_df</span> <span class="op">&lt;-</span> <span class="fu">load_qc_data</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">qc_df</span> <span class="op">&lt;-</span> <span class="va">qc_df</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">length</span> <span class="op">&gt;=</span> <span class="fl">20</span> <span class="op">&amp;</span> <span class="va">length</span> <span class="op">&lt;=</span> <span class="fl">35</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">qc_df</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#   length framest relst framesp relsp feature counts          sample group</span></span>
+<span><span class="co"># 1     29       1   826       0 -1689       3      1 ARC1-inter-rep1    NA</span></span>
+<span><span class="co"># 2     24       1   151       0  -306       3      4 ARC1-inter-rep1    NA</span></span>
+<span><span class="co"># 3     26       1  3118       0  -714       3      1 ARC1-inter-rep1    NA</span></span>
+<span></span>
+<span><span class="va">qc_df</span><span class="op">$</span><span class="va">length</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">qc_df</span><span class="op">$</span><span class="va">length</span><span class="op">)</span></span>
+<span><span class="va">qc_df</span><span class="op">$</span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">qc_df</span><span class="op">$</span><span class="va">sample</span>,</span>
+<span>                       levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'FAS1-trans-rep1'</span>,<span class="st">'FAS1-trans-rep2'</span>,</span>
+<span>                                  <span class="st">'FAS2-trans-rep1'</span>,<span class="st">'FAS2-trans-rep2'</span>,</span>
+<span>                                  <span class="st">'FAS1-MPTdel-trans-rep1'</span>,<span class="st">'FAS1-MPTdel-trans-rep2'</span>,<span class="st">'FAS1-MPTdel-trans-rep3'</span>,</span>
+<span>                                  <span class="st">'FAS2-MPTdel-trans-rep1'</span>,<span class="st">'FAS2-MPTdel-trans-rep2'</span>,</span>
+<span>                                  <span class="st">'GUS1-trans-rep1'</span>,<span class="st">'GUS1-trans-rep2'</span>,</span>
+<span>                                  <span class="st">'MES1-trans-rep1'</span>,<span class="st">'MES1-trans-rep2'</span>,</span>
+<span>                                  <span class="st">'ARC1-trans-rep1'</span>,<span class="st">'ARC1-trans-rep2'</span>,</span>
+<span>                                  <span class="st">'FAS1-inter-rep1'</span>,<span class="st">'FAS1-inter-rep2'</span>,</span>
+<span>                                  <span class="st">'FAS2-inter-rep1'</span>,<span class="st">'FAS2-inter-rep2'</span>,</span>
+<span>                                  <span class="st">'FAS1-MPTdel-inter-rep1'</span>,<span class="st">'FAS1-MPTdel-inter-rep2'</span>,<span class="st">'FAS1-MPTdel-inter-rep3'</span>,</span>
+<span>                                  <span class="st">'FAS2-MPTdel-inter-rep1'</span>,<span class="st">'FAS2-MPTdel-inter-rep2'</span>,</span>
+<span>                                  <span class="st">'GUS1-inter-rep1'</span>,<span class="st">'GUS1-inter-rep2'</span>,</span>
+<span>                                  <span class="st">'MES1-inter-rep1'</span>,<span class="st">'MES1-inter-rep2'</span>,</span>
+<span>                                  <span class="st">'ARC1-inter-rep1'</span>,<span class="st">'ARC1-inter-rep2'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Length distribution:</p>
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># length distribution</span></span>
+<span><span class="fu">qc_plot</span><span class="op">(</span>qc_data <span class="op">=</span> <span class="va">qc_df</span>,type <span class="op">=</span> <span class="st">"length"</span>,facet_wrap_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/s6.png" style="width:100.0%"></div>
+<p>Frames with length distribution:</p>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># length with frame</span></span>
+<span><span class="fu">qc_plot</span><span class="op">(</span>qc_data <span class="op">=</span> <span class="va">qc_df</span>,type <span class="op">=</span> <span class="st">"length_frame"</span>,facet_wrap_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/s7.png" style="width:100.0%"></div>
+<p>Different region features:</p>
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># region features</span></span>
+<span><span class="fu">qc_plot</span><span class="op">(</span>qc_data <span class="op">=</span> <span class="va">qc_df</span>,type <span class="op">=</span> <span class="st">"feature"</span>,facet_wrap_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/s8.png" style="width:100.0%"></div>
+<p>All frames ratio:</p>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># all frames</span></span>
+<span><span class="fu">qc_plot</span><span class="op">(</span>qc_data <span class="op">=</span> <span class="va">qc_df</span>,type <span class="op">=</span> <span class="st">"frame"</span>,facet_wrap_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/s9.png" style="width:100.0%"></div>
+<p>Realtive to start codon with periodicity:</p>
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># relative to start/stop site 5x9</span></span>
+<span><span class="fu">rel_to_start_stop</span><span class="op">(</span>qc_data <span class="op">=</span> <span class="va">qc_df</span>,type <span class="op">=</span> <span class="st">"relst"</span>,</span>
+<span>                  facet_wrap_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># rel_to_start_stop(qc_data = qc_df,type = "relsp",</span></span>
+<span><span class="co">#                   facet_wrap_list = list(ncol = 5,scales = "fixed"))</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/s10.png" style="width:100.0%"></div>
+</div>
+<div id="calculate-ribosome-density" class="section level2" number="6.8">
+<h2>
+<span class="header-section-number">6.8</span> Calculate ribosome density<a class="anchor" aria-label="anchor" href="#calculate-ribosome-density"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># calculate Ribo density</span></span>
+<span><span class="fu">pre_ribo_density_data</span><span class="op">(</span>sam_file <span class="op">=</span> <span class="va">sam_file</span>,</span>
+<span>                      out_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">sample_name</span>,<span class="st">".density.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
+<span>                      mapping_type <span class="op">=</span> <span class="st">"transcriptome"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ../4.map-data/ARC1-inter-rep1.sam has been processed!</span></span>
+<span><span class="co"># ../4.map-data/ARC1-inter-rep2.sam has been processed!</span></span>
+<span><span class="co"># ../4.map-data/ARC1-trans-rep1.sam has been processed!</span></span>
+<span><span class="co"># ...</span></span></code></pre></div>
+</div>
+<div id="enrichment-analysis" class="section level2" number="6.9">
+<h2>
+<span class="header-section-number">6.9</span> Enrichment analysis<a class="anchor" aria-label="anchor" href="#enrichment-analysis"><i class="fas fa-link"></i></a>
+</h2>
+<hr>
+<div id="calculate-enrichment-ratio" class="section level3" number="6.9.1">
+<h3>
+<span class="header-section-number">6.9.1</span> calculate enrichment ratio<a class="anchor" aria-label="anchor" href="#calculate-enrichment-ratio"><i class="fas fa-link"></i></a>
+</h3>
+<p>This step calculate the density ratio of <strong><em>factor-bound translatome</em></strong> and <strong><em>total translatome</em></strong>.
+<strong>pre_enrichment_data</strong> will calculate enrichment for each transcript positions:</p>
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"5.analysis-data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">total</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"2.density-data/"</span>,</span>
+<span>               <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'FAS1-trans-rep1'</span>,<span class="st">'FAS1-trans-rep2'</span>,</span>
+<span>                 <span class="st">'FAS2-trans-rep1'</span>,<span class="st">'FAS2-trans-rep2'</span>,</span>
+<span>                 <span class="st">'FAS1-MPTdel-trans-rep1'</span>,<span class="st">'FAS1-MPTdel-trans-rep2'</span>,<span class="st">'FAS1-MPTdel-trans-rep3'</span>,</span>
+<span>                 <span class="st">'FAS2-MPTdel-trans-rep1'</span>,<span class="st">'FAS2-MPTdel-trans-rep2'</span>,</span>
+<span>                 <span class="st">'GUS1-trans-rep1'</span>,<span class="st">'GUS1-trans-rep2'</span>,</span>
+<span>                 <span class="st">'MES1-trans-rep1'</span>,<span class="st">'MES1-trans-rep2'</span>,</span>
+<span>                 <span class="st">'ARC1-trans-rep1'</span>,<span class="st">'ARC1-trans-rep2'</span><span class="op">)</span>,</span>
+<span>               <span class="st">".density.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ip</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"2.density-data/"</span>,</span>
+<span>            <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'FAS1-inter-rep1'</span>,<span class="st">'FAS1-inter-rep2'</span>,</span>
+<span>              <span class="st">'FAS2-inter-rep1'</span>,<span class="st">'FAS2-inter-rep2'</span>,</span>
+<span>              <span class="st">'FAS1-MPTdel-inter-rep1'</span>,<span class="st">'FAS1-MPTdel-inter-rep2'</span>,<span class="st">'FAS1-MPTdel-inter-rep3'</span>,</span>
+<span>              <span class="st">'FAS2-MPTdel-inter-rep1'</span>,<span class="st">'FAS2-MPTdel-inter-rep2'</span>,</span>
+<span>              <span class="st">'GUS1-inter-rep1'</span>,<span class="st">'GUS1-inter-rep2'</span>,</span>
+<span>              <span class="st">'MES1-inter-rep1'</span>,<span class="st">'MES1-inter-rep2'</span>,</span>
+<span>              <span class="st">'ARC1-inter-rep1'</span>,<span class="st">'ARC1-inter-rep2'</span><span class="op">)</span>,</span>
+<span>            <span class="st">".density.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># calculate enrich ratio</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"3.enrich-data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># output</span></span>
+<span><span class="va">out_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"3.enrich-data/"</span>,</span>
+<span>                  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"FAS1-rep1"</span>,<span class="st">"FAS1-rep2"</span>,<span class="st">"FAS2-rep1"</span>,<span class="st">"FAS2-rep2"</span>,</span>
+<span>                    <span class="st">"FAS1-MPTdel-rep1"</span>,<span class="st">"FAS1-MPTdel-rep2"</span>,<span class="st">"FAS1-MPTdel-rep3"</span>,</span>
+<span>                    <span class="st">"FAS2-MPTdel-rep1"</span>,<span class="st">"FAS2-MPTdel-rep2"</span>,</span>
+<span>                    <span class="st">"GUS1-rep1"</span>,<span class="st">"GUS1-rep2"</span>,<span class="st">"MES1-rep1"</span>,<span class="st">"MES1-rep2"</span>,<span class="st">"ARC1-rep1"</span>,<span class="st">"ARC1-rep2"</span><span class="op">)</span>,</span>
+<span>                  <span class="st">".enrich.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># run</span></span>
+<span><span class="fu">pre_enrichment_data</span><span class="op">(</span>riboIP_file <span class="op">=</span> <span class="va">ip</span>,</span>
+<span>                    riboInput_file <span class="op">=</span> <span class="va">total</span>,</span>
+<span>                    output_file <span class="op">=</span> <span class="va">out_file</span><span class="op">)</span></span>
+<span><span class="co"># 3.enrich-data/FAS1-rep1.enrich.txt has been processed!</span></span>
+<span><span class="co"># 3.enrich-data/FAS1-rep2.enrich.txt has been processed!</span></span>
+<span><span class="co"># 3.enrich-data/FAS2-rep1.enrich.txt has been processed!</span></span>
+<span><span class="co"># ...</span></span></code></pre></div>
+<hr>
+</div>
+<div id="track-plot-2" class="section level3" number="6.9.2">
+<h3>
+<span class="header-section-number">6.9.2</span> track plot<a class="anchor" aria-label="anchor" href="#track-plot-2"><i class="fas fa-link"></i></a>
+</h3>
+<p>First we show the raw seRP figure from paper:</p>
+<div class="inline-figure"><img src="local_images/s12.png" style="width:500px;border:2px solid black;"></div>
+<hr>
+<p>You can still use <strong>track_plot</strong> to visualize the output:</p>
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># load data and visualize</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="va">df_fasx</span> <span class="op">&lt;-</span> <span class="fu">load_enrich_data</span><span class="op">(</span>enrich_data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"3.enrich-data/ARC1-rep1.enrich.txt"</span>,</span>
+<span>                                            <span class="st">"3.enrich-data/ARC1-rep2.enrich.txt"</span>,</span>
+<span>                                            <span class="st">"3.enrich-data/GUS1-rep1.enrich.txt"</span>,</span>
+<span>                                            <span class="st">"3.enrich-data/GUS1-rep2.enrich.txt"</span>,</span>
+<span>                                            <span class="st">"3.enrich-data/MES1-rep1.enrich.txt"</span>,</span>
+<span>                                            <span class="st">"3.enrich-data/MES1-rep2.enrich.txt"</span><span class="op">)</span>,</span>
+<span>                            gene_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'ARC1'</span>,<span class="st">'GUS1'</span>,<span class="st">'MES1'</span><span class="op">)</span>,</span>
+<span>                            sample_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ARC1"</span>,<span class="st">"ARC1"</span>,<span class="st">"GUS1"</span>,<span class="st">"GUS1"</span>,<span class="st">"MES1"</span>,<span class="st">"MES1"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">df_fasx</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co"># # A tibble: 3 × 7</span></span>
+<span><span class="co"># # Groups:   gene_name, trans_id, codon_pos, type [1]</span></span>
+<span><span class="co">#   gene_name trans_id     codon_pos type  sample density density_sd</span></span>
+<span><span class="co">#   &lt;chr&gt;     &lt;chr&gt;            &lt;int&gt; &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co"># 1 ARC1      YGL105W_mRNA         1 ribo  ARC1     0.690     0.976</span></span>
+<span><span class="co"># 2 ARC1      YGL105W_mRNA         1 ribo  GUS1     0.796     0.0103</span></span>
+<span><span class="co"># 3 ARC1      YGL105W_mRNA         1 ribo  MES1     0.868     0.888</span></span>
+<span></span>
+<span><span class="co"># plot 6x10</span></span>
+<span><span class="fu">track_plot</span><span class="op">(</span>plot_type <span class="op">=</span> <span class="st">"interactome"</span>,</span>
+<span>           signal_data <span class="op">=</span> <span class="va">df_fasx</span>,</span>
+<span>           gene_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'GUS1'</span>,<span class="st">'ARC1'</span>,<span class="st">'MES1'</span><span class="op">)</span>,</span>
+<span>           sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'GUS1'</span>,<span class="st">'MES1'</span>,<span class="st">'ARC1'</span><span class="op">)</span>,</span>
+<span>           line_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'GUS1'</span> <span class="op">=</span> <span class="st">'#4883C6'</span>,<span class="st">'ARC1'</span> <span class="op">=</span> <span class="st">'#AA356A'</span>,<span class="st">'MES1'</span> <span class="op">=</span> <span class="st">'#D52C30'</span><span class="op">)</span>,</span>
+<span>           remove_trans_panel_border <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/s11.png" style="width:100.0%"></div>
+</div>
+<div id="enrichment-with-slide-window" class="section level3" number="6.9.3">
+<h3>
+<span class="header-section-number">6.9.3</span> enrichment with slide window<a class="anchor" aria-label="anchor" href="#enrichment-with-slide-window"><i class="fas fa-link"></i></a>
+</h3>
+<p>In the article, author used <strong><em>a slide window with 20nt</em></strong> to smooth the enrichment density:</p>
+<div class="inline-figure"><img src="local_images/s13.png" style="width:500px;border:2px solid black;"></div>
+<p>You can also do this with <strong>pre_slideWindow_enrichment_data</strong> function.</p>
+<hr>
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># calculate enrich ratio</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"4.swEnrich-data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">total</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"2.density-data/"</span>,</span>
+<span>               <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'GUS1-trans-rep1'</span>,<span class="st">'GUS1-trans-rep2'</span>,</span>
+<span>                 <span class="st">'MES1-trans-rep1'</span>,<span class="st">'MES1-trans-rep2'</span>,</span>
+<span>                 <span class="st">'ARC1-trans-rep1'</span>,<span class="st">'ARC1-trans-rep2'</span><span class="op">)</span>,</span>
+<span>               <span class="st">".density.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ip</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"2.density-data/"</span>,</span>
+<span>            <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'GUS1-inter-rep1'</span>,<span class="st">'GUS1-inter-rep2'</span>,</span>
+<span>              <span class="st">'MES1-inter-rep1'</span>,<span class="st">'MES1-inter-rep2'</span>,</span>
+<span>              <span class="st">'ARC1-inter-rep1'</span>,<span class="st">'ARC1-inter-rep2'</span><span class="op">)</span>,</span>
+<span>            <span class="st">".density.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># output</span></span>
+<span><span class="va">out_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"4.swEnrich-data/"</span>,</span>
+<span>                  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GUS1-rep1"</span>,<span class="st">"GUS1-rep2"</span>,<span class="st">"MES1-rep1"</span>,<span class="st">"MES1-rep2"</span>,<span class="st">"ARC1-rep1"</span>,<span class="st">"ARC1-rep2"</span><span class="op">)</span>,</span>
+<span>                  <span class="st">".enrich.txt"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># run</span></span>
+<span><span class="fu">pre_slideWindow_enrichment_data</span><span class="op">(</span>riboIP_file <span class="op">=</span> <span class="va">ip</span>,</span>
+<span>                                riboInput_file <span class="op">=</span> <span class="va">total</span>,</span>
+<span>                                gene_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'GUS1'</span>,<span class="st">'ARC1'</span>,<span class="st">'MES1'</span><span class="op">)</span>,</span>
+<span>                                output_file <span class="op">=</span> <span class="va">out_file</span><span class="op">)</span></span></code></pre></div>
+<p>Visualize data:</p>
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># load data and visualize</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"4.swEnrich-data/"</span>,<span class="st">"*.txt"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">file</span></span>
+<span><span class="co"># [1] "4.swEnrich-data/ARC1-rep1.enrich.txt" "4.swEnrich-data/ARC1-rep2.enrich.txt"</span></span>
+<span><span class="co"># [3] "4.swEnrich-data/GUS1-rep1.enrich.txt" "4.swEnrich-data/GUS1-rep2.enrich.txt"</span></span>
+<span><span class="co"># [5] "4.swEnrich-data/MES1-rep1.enrich.txt" "4.swEnrich-data/MES1-rep2.enrich.txt"</span></span>
+<span></span>
+<span><span class="va">df_sw</span> <span class="op">&lt;-</span> <span class="fu">load_enrich_data</span><span class="op">(</span>data_type <span class="op">=</span> <span class="st">"sw"</span>,</span>
+<span>                            enrich_data <span class="op">=</span> <span class="va">file</span>,</span>
+<span>                            sample_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ARC1"</span>,<span class="st">"ARC1"</span>,<span class="st">"GUS1"</span>,<span class="st">"GUS1"</span>,<span class="st">"MES1"</span>,<span class="st">"MES1"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">df_sw</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="op">]</span><span class="op">)</span></span>
+<span><span class="co"># # A tibble: 3 × 7</span></span>
+<span><span class="co"># # Groups:   gene_name, trans_id, codon_pos, type [1]</span></span>
+<span><span class="co"># gene_name trans_id     codon_pos type  sample density density_sd</span></span>
+<span><span class="co"># &lt;chr&gt;     &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co"># 1 ARC1      YGL105W_mRNA         1 ribo  ARC1      1.82     0.152</span></span>
+<span><span class="co"># 2 ARC1      YGL105W_mRNA         1 ribo  GUS1      1.49     0.0293</span></span>
+<span><span class="co"># 3 ARC1      YGL105W_mRNA         1 ribo  MES1      2.09     1.33</span></span>
+<span></span>
+<span><span class="co"># plot 6x10</span></span>
+<span><span class="fu">track_plot</span><span class="op">(</span>plot_type <span class="op">=</span> <span class="st">"interactome"</span>,</span>
+<span>           signal_data <span class="op">=</span> <span class="va">df_sw</span>,</span>
+<span>           gene_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'GUS1'</span>,<span class="st">'ARC1'</span>,<span class="st">'MES1'</span><span class="op">)</span>,</span>
+<span>           sample_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'GUS1'</span>,<span class="st">'MES1'</span>,<span class="st">'ARC1'</span><span class="op">)</span>,</span>
+<span>           line_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'GUS1'</span> <span class="op">=</span> <span class="st">'#4883C6'</span>,<span class="st">'ARC1'</span> <span class="op">=</span> <span class="st">'#AA356A'</span>,<span class="st">'MES1'</span> <span class="op">=</span> <span class="st">'#D52C30'</span><span class="op">)</span>,</span>
+<span>           remove_trans_panel_border <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="local_images/s14.png" style="width:100.0%"></div>
+<p>This looks much better!</p>
+
+</div>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="selective-ribosome-profiling.html"><span class="header-section-number">5</span> Selective ribosome profiling</a></div>
+<div class="next"><a href="running-on-linux.html"><span class="header-section-number">7</span> Running on linux</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#serp-data-analysis"><span class="header-section-number">6</span> SeRP data analysis</a></li>
+<li><a class="nav-link" href="#introduction"><span class="header-section-number">6.1</span> Introduction</a></li>
+<li><a class="nav-link" href="#extract-yeast-longest-transcript-sequence"><span class="header-section-number">6.2</span> Extract yeast longest transcript sequence</a></li>
+<li><a class="nav-link" href="#build-index-for-trna-rrna-and-reference"><span class="header-section-number">6.3</span> Build index for tRNA, rRNA and reference</a></li>
+<li><a class="nav-link" href="#trim-adapters-for-raw-fastqs"><span class="header-section-number">6.4</span> Trim adapters for raw fastqs</a></li>
+<li><a class="nav-link" href="#remove-trna-and-rrna"><span class="header-section-number">6.5</span> Remove tRNA and rRNA</a></li>
+<li><a class="nav-link" href="#map-to-transcriptome-1"><span class="header-section-number">6.6</span> Map to transcriptome</a></li>
+<li><a class="nav-link" href="#ribo-qc-check"><span class="header-section-number">6.7</span> Ribo QC check</a></li>
+<li><a class="nav-link" href="#calculate-ribosome-density"><span class="header-section-number">6.8</span> Calculate ribosome density</a></li>
+<li>
+<a class="nav-link" href="#enrichment-analysis"><span class="header-section-number">6.9</span> Enrichment analysis</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#calculate-enrichment-ratio"><span class="header-section-number">6.9.1</span> calculate enrichment ratio</a></li>
+<li><a class="nav-link" href="#track-plot-2"><span class="header-section-number">6.9.2</span> track plot</a></li>
+<li><a class="nav-link" href="#enrichment-with-slide-window"><span class="header-section-number">6.9.3</span> enrichment with slide window</a></li>
+</ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>RiboProfiler Reference Book</strong>" was written by Jun Zhang. It was last built on 2023-05-22.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 7 Running on linux | RiboProfiler Reference Book</title>
+<meta name="author" content="Jun Zhang">
+<meta name="description" content="7.1 Introduction Some bioinformatics software may require frequent updates, and the corresponding R packages may not be updated in a timely manner or may not be maintained by anyone at all....">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Chapter 7 Running on linux | RiboProfiler Reference Book">
+<meta property="og:type" content="book">
+<meta property="og:description" content="7.1 Introduction Some bioinformatics software may require frequent updates, and the corresponding R packages may not be updated in a timely manner or may not be maintained by anyone at all....">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 7 Running on linux | RiboProfiler Reference Book">
+<meta name="twitter:description" content="7.1 Introduction Some bioinformatics software may require frequent updates, and the corresponding R packages may not be updated in a timely manner or may not be maintained by anyone at all....">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">RiboProfiler Reference Book</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="" href="workflow.html"><span class="header-section-number">2</span> Workflow</a></li>
+<li><a class="" href="align-on-genome.html"><span class="header-section-number">3</span> Align on genome</a></li>
+<li><a class="" href="align-on-transcriptome.html"><span class="header-section-number">4</span> Align on transcriptome</a></li>
+<li><a class="" href="selective-ribosome-profiling.html"><span class="header-section-number">5</span> Selective ribosome profiling</a></li>
+<li><a class="" href="serp-data-analysis.html"><span class="header-section-number">6</span> SeRP data analysis</a></li>
+<li><a class="active" href="running-on-linux.html"><span class="header-section-number">7</span> Running on linux</a></li>
+<li><a class="" href="track_plot-supplement.html"><span class="header-section-number">8</span> Track_plot supplement</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="running-on-linux" class="section level1" number="7">
+<h1>
+<span class="header-section-number">7</span> Running on linux<a class="anchor" aria-label="anchor" href="#running-on-linux"><i class="fas fa-link"></i></a>
+</h1>
+<div id="introduction-1" class="section level2" number="7.1">
+<h2>
+<span class="header-section-number">7.1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>Some bioinformatics software may require frequent updates, and the corresponding R packages may not be updated in a timely manner or may not be maintained by anyone at all. Therefore, it is best to use relatively new software for upstream data analysis. One issue is that switching between <strong>Linux systems</strong> and <strong>RStudio</strong> can become inconvenient. If you are using RStudio on a <strong>server</strong> or <strong>Linux</strong> system, a good approach is to use the R functions <strong><em>system</em></strong> or <strong><em>system2</em></strong> to call software within the Linux system. This allows us to perform upstream data analysis directly within RStudio.</p>
+<hr>
+<p><strong>Conda</strong> is an open-source package management system and environment management system that helps you to install and manage software packages and dependencies in various programming languages, including <strong><em>Python, R, Ruby, Lua, Java, and others</em></strong>. Conda allows you to create <strong>isolated environments</strong> for different projects with their own set of packages and dependencies, so that each project can have its own environment without interfering with other projects.</p>
+<p>Conda also provides a central repository of pre-built packages called “conda-forge”, where users can find and install packages easily. With conda, you can easily install, update, and remove packages and dependencies with a simple command-line interface or through graphical interfaces like Anaconda Navigator or <strong>Miniconda</strong>.</p>
+<hr>
+<p>So we can call softwares which are installed in conda environment and use in Rstudio directly. The following chapter we describe how do this in Rstudio and do the <strong>Ribo-seq upstream data analysis</strong>.</p>
+</div>
+<div id="prepare-conda-environment" class="section level2" number="7.2">
+<h2>
+<span class="header-section-number">7.2</span> Prepare conda environment<a class="anchor" aria-label="anchor" href="#prepare-conda-environment"><i class="fas fa-link"></i></a>
+</h2>
+<p>First you need install <a href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py39_23.3.1-0-Linux-x86_64.sh"><strong><em>Miniconda</em></strong></a>:</p>
+<pre class="shell"><code>$ wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py39_23.3.1-0-Linux-x86_64.sh
+$ bash Miniconda3-py39_23.3.1-0-Linux-x86_64.sh</code></pre>
+<p>Add some channels for conda:</p>
+<pre class="shell"><code>$ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+$ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+$ conda config --add channels bioconda</code></pre>
+<p>Then create and activate your environment:</p>
+<pre class="shell"><code>$ conda create -n rnaseq
+$ conda activate rnaseq</code></pre>
+<p>Last install softwares in this environment what you like:</p>
+<pre class="shell"><code>$ conda install fastqc bowtie2 hisat2 samtools adapterremoval</code></pre>
+</div>
+<div id="qc-for-fastq-files" class="section level2" number="7.3">
+<h2>
+<span class="header-section-number">7.3</span> Qc for fastq files<a class="anchor" aria-label="anchor" href="#qc-for-fastq-files"><i class="fas fa-link"></i></a>
+</h2>
+<p>We call <strong><em>fastqc</em></strong> in conda <strong>rnaseq</strong> environment and check raw fastq files. <strong><em>call_cmd</em></strong> function allow you to give quoted command and excute them:</p>
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># fastqc for fastq</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"2.fastqc-data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fastqc</span> <span class="op">&lt;-</span> <span class="st">"/root/miniconda3/envs/rnaseq/bin/fastqc"</span></span>
+<span></span>
+<span><span class="fu">call_cmd</span><span class="op">(</span><span class="va">fastqc</span>,<span class="st">"-h"</span><span class="op">)</span></span>
+<span><span class="co"># FastQC - A high throughput sequence QC analysis tool</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># SYNOPSIS</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># fastqc seqfile1 seqfile2 .. seqfileN</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># fastqc [-o output dir] [--(no)extract] [-f fastq|bam|sam] </span></span>
+<span><span class="co"># [-c contaminant file] seqfile1 .. seqfileN</span></span>
+<span><span class="co"># ...</span></span>
+<span></span>
+<span><span class="va">fastq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"../1.mapping_to_genome/1.raw-data/"</span>,<span class="st">"*.gz"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
+<span><span class="va">fastq</span></span>
+<span><span class="co"># [1] "../1.mapping_to_genome/1.raw-data//SRR12594201.fastq.gz"</span></span>
+<span><span class="co"># [2] "../1.mapping_to_genome/1.raw-data//SRR12594205.fastq.gz"</span></span>
+<span></span>
+<span><span class="co"># get absolute path</span></span>
+<span><span class="va">fq_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span><span class="op">(</span><span class="va">fastq</span><span class="op">)</span></span>
+<span><span class="va">fq_path</span></span>
+<span><span class="co"># [1] "/mnt/f/reanalysis_from_papers/7.ribo-package-test/1.mapping_to_genome/1.raw-data/SRR12594201.fastq.gz"</span></span>
+<span><span class="co"># [2] "/mnt/f/reanalysis_from_papers/7.ribo-package-test/1.mapping_to_genome/1.raw-data/SRR12594205.fastq.gz"</span></span>
+<span></span>
+<span><span class="co"># run qc</span></span>
+<span><span class="fu">call_cmd</span><span class="op">(</span><span class="va">fastqc</span>,<span class="st">"-t 12"</span>,<span class="st">"-q"</span>,<span class="st">"-o 2.fastqc-data/"</span>,<span class="va">fq_path</span><span class="op">)</span></span>
+<span><span class="co"># application/gzip</span></span>
+<span><span class="co"># application/gzip</span></span>
+<span></span>
+<span><span class="co"># check files</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"2.fastqc-data"</span><span class="op">)</span></span>
+<span><span class="co"># [1] "SRR12594201_fastqc.html" "SRR12594201_fastqc.zip"  "SRR12594205_fastqc.html" "SRR12594205_fastqc.zip"</span></span></code></pre></div>
+</div>
+<div id="trim-adapters" class="section level2" number="7.4">
+<h2>
+<span class="header-section-number">7.4</span> Trim adapters<a class="anchor" aria-label="anchor" href="#trim-adapters"><i class="fas fa-link"></i></a>
+</h2>
+<p>Rmove adapters using <strong><em>AdapterRemoval</em></strong>:</p>
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># trim adapters</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"3.trim-data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">AdapterRemoval</span> <span class="op">&lt;-</span> <span class="st">"/root/miniconda3/envs/rnaseq/bin/AdapterRemoval"</span></span>
+<span></span>
+<span><span class="fu">call_cmd</span><span class="op">(</span><span class="va">AdapterRemoval</span>,<span class="st">"-h"</span><span class="op">)</span></span>
+<span><span class="co"># AdapterRemoval ver. 2.3.3</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># This program searches for and removes remnant adapter sequences from</span></span>
+<span><span class="co"># your read data.  The program can analyze both single end and paired end</span></span>
+<span><span class="co"># data.  For detailed explanation of the parameters, please refer to the</span></span>
+<span><span class="co"># man page.  For comments, suggestions  and feedback please contact Stinus</span></span>
+<span><span class="co"># Lindgreen (stinus@binf.ku.dk) and Mikkel Schubert (MikkelSch@gmail.com).</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># If you use the program, please cite the paper:</span></span>
+<span><span class="co">#   Schubert, Lindgreen, and Orlando (2016). AdapterRemoval v2: rapid</span></span>
+<span><span class="co"># adapter trimming, identification, and read merging.</span></span>
+<span><span class="co"># BMC Research Notes, 12;9(1):88.</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># http://bmcresnotes.biomedcentral.com/articles/10.1186/s13104-016-1900-2</span></span>
+<span><span class="co"># ...</span></span>
+<span></span>
+<span><span class="co"># run trim</span></span>
+<span><span class="co"># x = 1</span></span>
+<span><span class="va">output_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"3.trim-data/"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test1"</span>,<span class="st">"test2"</span><span class="op">)</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="fu">call_cmd</span><span class="op">(</span><span class="va">AdapterRemoval</span>,<span class="st">"--threads 12"</span>,</span>
+<span>           <span class="st">"--adapter1 CTGTAGGCACCATCAAT"</span>,</span>
+<span>           <span class="st">"--trim5p 6"</span>,<span class="st">"--trim3p 4"</span>,<span class="st">"--minlength 15"</span>,</span>
+<span>           <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"--file1"</span>,<span class="va">fq_path</span><span class="op">[</span><span class="va">x</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>           <span class="st">"--gzip"</span>,</span>
+<span>           <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"--basename"</span>,<span class="va">output_name</span><span class="op">[</span><span class="va">x</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">tmp</span></span>
+<span><span class="co"># Trimming single ended reads ...</span></span>
+<span><span class="co"># Opening FASTQ file '/mnt/f/reanalysis_from_papers/7.ribo-package-test/1.mapping_to_genome/1.raw-data/SRR12594201.fastq.gz', line numbers start at 1</span></span>
+<span><span class="co"># Processed a total of 27,170,397 reads in 3:07.2s; 145,000 reads per second on average ...</span></span>
+<span><span class="co"># Trimming single ended reads ...</span></span>
+<span><span class="co"># Opening FASTQ file '/mnt/f/reanalysis_from_papers/7.ribo-package-test/1.mapping_to_genome/1.raw-data/SRR12594205.fastq.gz', line numbers start at 1</span></span>
+<span><span class="co"># Processed a total of 26,741,698 reads in 2:27.8s; 180,000 reads per second on average ...</span></span>
+<span></span>
+<span><span class="co"># check clean fastqs</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"3.trim-data/"</span><span class="op">)</span></span>
+<span><span class="co"># [1] "test1.discarded.gz" "test1.settings"     "test1.truncated.gz"</span></span>
+<span><span class="co"># [4] "test2.discarded.gz" "test2.settings"     "test2.truncated.gz"</span></span></code></pre></div>
+</div>
+<div id="remove-trna-and-rrna-contamination" class="section level2" number="7.5">
+<h2>
+<span class="header-section-number">7.5</span> Remove tRNA and rRNA contamination<a class="anchor" aria-label="anchor" href="#remove-trna-and-rrna-contamination"><i class="fas fa-link"></i></a>
+</h2>
+<p>We use <strong><em>bowtie2</em></strong> to align reads on trRNA index:</p>
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># remove rRNA and tRNA contamination</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"4.rmtrRNA-data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">bowtie2</span> <span class="op">&lt;-</span> <span class="st">"/root/miniconda3/envs/rnaseq/bin/bowtie2"</span></span>
+<span></span>
+<span><span class="fu">call_cmd</span><span class="op">(</span><span class="va">bowtie2</span>,<span class="st">"-h"</span><span class="op">)</span></span>
+<span><span class="co"># Bowtie 2 version 2.5.1 by Ben Langmead (langmea@cs.jhu.edu, www.cs.jhu.edu/~langmea)</span></span>
+<span><span class="co"># Usage: </span></span>
+<span><span class="co">#   bowtie2 [options]* -x &lt;bt2-idx&gt; {-1 &lt;m1&gt; -2 &lt;m2&gt; | -U &lt;r&gt; | --interleaved &lt;i&gt; | -b &lt;bam&gt;} [-S &lt;sam&gt;]</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># &lt;bt2-idx&gt;  Index filename prefix (minus trailing .X.bt2).</span></span>
+<span><span class="co"># NOTE: Bowtie 1 and Bowtie 2 indexes are not compatible.</span></span>
+<span><span class="co"># &lt;m1&gt;       Files with #1 mates, paired with files in &lt;m2&gt;.</span></span>
+<span><span class="co"># Could be gzip'ed (extension: .gz) or bzip2'ed (extension: .bz2).</span></span>
+<span><span class="co"># &lt;m2&gt;       Files with #2 mates, paired with files in &lt;m1&gt;.</span></span>
+<span><span class="co"># Could be gzip'ed (extension: .gz) or bzip2'ed (extension: .bz2).</span></span>
+<span><span class="co"># ...</span></span>
+<span></span>
+<span><span class="co"># run mapping</span></span>
+<span><span class="va">clean_fq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"3.trim-data/"</span>,<span class="st">"*.truncated.gz"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">output_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"4.rmtrRNA-data/"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test1_rmtrRNA.fq.gz"</span>,<span class="st">"test2_rmtrRNA.fq.gz"</span><span class="op">)</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="fu">call_cmd</span><span class="op">(</span><span class="va">bowtie2</span>,</span>
+<span>           <span class="st">"-x ../1.mapping_to_genome/0.index-data/rtRNA-index/GRCm38_trRNA"</span>,</span>
+<span>           <span class="st">"--threads 12"</span>,</span>
+<span>           <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"--un-gz"</span>,<span class="va">output_name</span><span class="op">[</span><span class="va">x</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>           <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"-U"</span>,<span class="va">clean_fq</span><span class="op">[</span><span class="va">x</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>           <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"-S "</span>,<span class="va">output_name</span><span class="op">[</span><span class="va">x</span><span class="op">]</span>,<span class="st">".sam"</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># remove tmp files</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"4.rmtrRNA-data/"</span>,<span class="st">"*.sam"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">tmp</span></span>
+<span></span>
+<span><span class="co"># 27154794 reads; of these:</span></span>
+<span><span class="co">#   27154794 (100.00%) were unpaired; of these:</span></span>
+<span><span class="co">#     11156550 (41.09%) aligned 0 times</span></span>
+<span><span class="co">#     277586 (1.02%) aligned exactly 1 time</span></span>
+<span><span class="co">#     15720658 (57.89%) aligned &gt;1 times</span></span>
+<span><span class="co"># 58.91% overall alignment rate</span></span>
+<span><span class="co"># 26706601 reads; of these:</span></span>
+<span><span class="co">#   26706601 (100.00%) were unpaired; of these:</span></span>
+<span><span class="co">#     4396448 (16.46%) aligned 0 times</span></span>
+<span><span class="co">#     171860 (0.64%) aligned exactly 1 time</span></span>
+<span><span class="co">#     22138293 (82.89%) aligned &gt;1 times</span></span>
+<span><span class="co"># 83.54% overall alignment rate</span></span>
+<span></span>
+<span><span class="co"># check files</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"4.rmtrRNA-data/"</span>,<span class="st">"*.gz"</span><span class="op">)</span></span>
+<span><span class="co"># [1] "test1_rmtrRNA.fq.gz" "test2_rmtrRNA.fq.gz"</span></span></code></pre></div>
+</div>
+<div id="align-reads-on-genome" class="section level2" number="7.6">
+<h2>
+<span class="header-section-number">7.6</span> Align reads on genome<a class="anchor" aria-label="anchor" href="#align-reads-on-genome"><i class="fas fa-link"></i></a>
+</h2>
+<p>We use <strong><em>hisat2</em></strong> align the clean reads on genome:</p>
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ==============================================================================</span></span>
+<span><span class="co"># mapping on genome</span></span>
+<span><span class="co"># ==============================================================================</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"5.map-data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">hisat2</span> <span class="op">&lt;-</span> <span class="st">"/root/miniconda3/envs/rnaseq/bin/hisat2"</span></span>
+<span><span class="va">samtools</span> <span class="op">&lt;-</span> <span class="st">"/root/miniconda3/envs/rnaseq/bin/samtools"</span></span>
+<span></span>
+<span><span class="fu">call_cmd</span><span class="op">(</span><span class="va">hisat2</span>,<span class="st">"-h"</span><span class="op">)</span></span>
+<span><span class="co"># HISAT2 version 2.2.1 by Daehwan Kim (infphilo@gmail.com, www.ccb.jhu.edu/people/infphilo)</span></span>
+<span><span class="co"># Usage: </span></span>
+<span><span class="co">#   hisat2 [options]* -x &lt;ht2-idx&gt; {-1 &lt;m1&gt; -2 &lt;m2&gt; | -U &lt;r&gt;} [-S &lt;sam&gt;]</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># &lt;ht2-idx&gt;  Index filename prefix (minus trailing .X.ht2).</span></span>
+<span><span class="co"># &lt;m1&gt;       Files with #1 mates, paired with files in &lt;m2&gt;.</span></span>
+<span><span class="co"># Could be gzip'ed (extension: .gz) or bzip2'ed (extension: .bz2).</span></span>
+<span><span class="co"># &lt;m2&gt;       Files with #2 mates, paired with files in &lt;m1&gt;.</span></span>
+<span><span class="co"># Could be gzip'ed (extension: .gz) or bzip2'ed (extension: .bz2).</span></span>
+<span><span class="co"># ...</span></span>
+<span></span>
+<span><span class="co"># run mapping</span></span>
+<span><span class="va">clean_fq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"4.rmtrRNA-data/"</span>,<span class="st">"*.gz"</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">output_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"5.map-data/"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test1.bam"</span>,<span class="st">"test2.bam"</span><span class="op">)</span>,sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="fu">call_cmd</span><span class="op">(</span><span class="va">hisat2</span>,</span>
+<span>           <span class="st">"-x ../1.mapping_to_genome/0.index-data/ref-index/GRCm38_ref"</span>,</span>
+<span>           <span class="st">"--threads 12"</span>,</span>
+<span>           <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"-U"</span>,<span class="va">clean_fq</span><span class="op">[</span><span class="va">x</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>           <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"|"</span>,<span class="va">samtools</span>,<span class="st">"sort"</span>,<span class="st">"-@ 6 -o"</span>,<span class="va">output_name</span><span class="op">[</span><span class="va">x</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">tmp</span></span>
+<span><span class="co"># 11156550 reads; of these:</span></span>
+<span><span class="co">#   11156550 (100.00%) were unpaired; of these:</span></span>
+<span><span class="co">#     3307706 (29.65%) aligned 0 times</span></span>
+<span><span class="co">#     5063068 (45.38%) aligned exactly 1 time</span></span>
+<span><span class="co">#     2785776 (24.97%) aligned &gt;1 times</span></span>
+<span><span class="co"># 70.35% overall alignment rate</span></span>
+<span><span class="co"># [bam_sort_core] merging from 0 files and 6 in-memory blocks...</span></span>
+<span><span class="co"># 4396448 reads; of these:</span></span>
+<span><span class="co">#   4396448 (100.00%) were unpaired; of these:</span></span>
+<span><span class="co">#     1699590 (38.66%) aligned 0 times</span></span>
+<span><span class="co">#     1140442 (25.94%) aligned exactly 1 time</span></span>
+<span><span class="co">#     1556416 (35.40%) aligned &gt;1 times</span></span>
+<span><span class="co"># 61.34% overall alignment rate</span></span>
+<span><span class="co"># [bam_sort_core] merging from 0 files and 6 in-memory blocks...</span></span></code></pre></div>
+<p>Make index for bam files:</p>
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># index for bam</span></span>
+<span><span class="fu">call_cmd</span><span class="op">(</span><span class="st">"ls"</span>,<span class="st">"5.map-data/*.bam"</span>,<span class="st">"| xargs -i"</span>,<span class="va">samtools</span>,<span class="st">"index -@ 12 {}"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check files</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"5.map-data/"</span>,<span class="st">"*"</span><span class="op">)</span></span>
+<span><span class="co"># [1] "test1.bam"     "test1.bam.bai" "test2.bam"     "test2.bam.bai"</span></span></code></pre></div>
+<hr>
+<p>As you see, you can call linux softwares easily in Rstudio and do not need to turn into linux system and write
+command line. This is great.</p>
+<p><strong>Just try it now and see what you can do.</strong></p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="serp-data-analysis.html"><span class="header-section-number">6</span> SeRP data analysis</a></div>
+<div class="next"><a href="track_plot-supplement.html"><span class="header-section-number">8</span> Track_plot supplement</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#running-on-linux"><span class="header-section-number">7</span> Running on linux</a></li>
+<li><a class="nav-link" href="#introduction-1"><span class="header-section-number">7.1</span> Introduction</a></li>
+<li><a class="nav-link" href="#prepare-conda-environment"><span class="header-section-number">7.2</span> Prepare conda environment</a></li>
+<li><a class="nav-link" href="#qc-for-fastq-files"><span class="header-section-number">7.3</span> Qc for fastq files</a></li>
+<li><a class="nav-link" href="#trim-adapters"><span class="header-section-number">7.4</span> Trim adapters</a></li>
+<li><a class="nav-link" href="#remove-trna-and-rrna-contamination"><span class="header-section-number">7.5</span> Remove tRNA and rRNA contamination</a></li>
+<li><a class="nav-link" href="#align-reads-on-genome"><span class="header-section-number">7.6</span> Align reads on genome</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>RiboProfiler Reference Book</strong>" was written by Jun Zhang. It was last built on 2023-05-22.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

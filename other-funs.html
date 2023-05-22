@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 9 Other funs | RiboProfiler Reference Book</title>
+<meta name="author" content="Jun Zhang">
+<meta name="description" content="9.1 Transcript coordinate transformation Mostly we draw transcript structures on genomic coordinates which contain intron sequence. Sometimes you just want to compare multiple transcripts for a...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta property="og:title" content="Chapter 9 Other funs | RiboProfiler Reference Book">
+<meta property="og:type" content="book">
+<meta property="og:description" content="9.1 Transcript coordinate transformation Mostly we draw transcript structures on genomic coordinates which contain intron sequence. Sometimes you just want to compare multiple transcripts for a...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 9 Other funs | RiboProfiler Reference Book">
+<meta name="twitter:description" content="9.1 Transcript coordinate transformation Mostly we draw transcript structures on genomic coordinates which contain intron sequence. Sometimes you just want to compare multiple transcripts for a...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">RiboProfiler Reference Book</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="" href="extract-sequence.html"><span class="header-section-number">2</span> Extract sequence</a></li>
+<li><a class="" href="draw-chromosome-ideograms.html"><span class="header-section-number">3</span> Draw chromosome ideograms</a></li>
+<li><a class="" href="track-data-input.html"><span class="header-section-number">4</span> Track data input</a></li>
+<li><a class="" href="basic-visualization.html"><span class="header-section-number">5</span> Basic visualization</a></li>
+<li><a class="" href="loops-visualization.html"><span class="header-section-number">6</span> Loops visualization</a></li>
+<li><a class="" href="hic-heatmap-visualization.html"><span class="header-section-number">7</span> Hic heatmap visualization</a></li>
+<li><a class="" href="splice-junction-visualization.html"><span class="header-section-number">8</span> Splice junction visualization</a></li>
+<li><a class="active" href="other-funs.html"><span class="header-section-number">9</span> Other funs</a></li>
+<li><a class="" href="frequntlly-asked-questions.html"><span class="header-section-number">10</span> Frequntlly asked questions</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="other-funs" class="section level1" number="9">
+<h1>
+<span class="header-section-number">9</span> Other funs<a class="anchor" aria-label="anchor" href="#other-funs"><i class="fas fa-link"></i></a>
+</h1>
+<div id="transcript-coordinate-transformation" class="section level2" number="9.1">
+<h2>
+<span class="header-section-number">9.1</span> Transcript coordinate transformation<a class="anchor" aria-label="anchor" href="#transcript-coordinate-transformation"><i class="fas fa-link"></i></a>
+</h2>
+<p>Mostly we draw transcript structures on genomic coordinates which contain intron
+sequence. Sometimes you just want to compare multiple transcripts for a gene with
+removing introns. <strong>transCoordTransform</strong> allows you to transform the genomic coordinate
+into absolute coordinate from gtf file.</p>
+<p>Here are the examples:</p>
+<div class="sourceCode" id="cb133"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># gtf</span></span>
+<span><span class="va">raw_gtf</span> <span class="op">&lt;-</span> <span class="fu">rtracklayer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rtracklayer/man/GFFFile-class.html">import.gff</a></span><span class="op">(</span><span class="st">"test-bw2/hg19.ncbiRefSeq.gtf.gz"</span>,format <span class="op">=</span> <span class="st">"gtf"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">p1</span> <span class="op">&lt;-</span></span>
+<span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_gtf <span class="op">=</span> <span class="va">raw_gtf</span>,</span>
+<span>               Input_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"MYC"</span>,<span class="st">"NANOG"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p1</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/tf1.png" style="width:100.0%"></div>
+<p>Transforming coordinate:</p>
+<div class="sourceCode" id="cb134"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tgene</span> <span class="op">&lt;-</span> <span class="va">raw_gtf</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">gene_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"MYC"</span>,<span class="st">"NANOG"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">trans_gtf</span> <span class="op">&lt;-</span> <span class="fu">transCoordTransform</span><span class="op">(</span>gtf_file <span class="op">=</span> <span class="va">tgene</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">trans_gtf</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#   seqnames start  end width strand                source       type score</span></span>
+<span><span class="co"># 1    chr12     1 2049  6660      + ncbiRefSeq.2021-05-17 transcript    NA</span></span>
+<span><span class="co"># 2    chr12     1  364   364      + ncbiRefSeq.2021-05-17       exon    NA</span></span>
+<span><span class="co"># 3    chr12   365  627   263      + ncbiRefSeq.2021-05-17       exon    NA</span></span>
+<span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span></span>
+<span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_gtf <span class="op">=</span> <span class="va">trans_gtf</span>,</span>
+<span>               Input_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"MYC"</span>,<span class="st">"NANOG"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p2</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/tf2.png" style="width:100.0%"></div>
+<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p1</span><span class="op">/</span><span class="va">p2</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/tf3.png" style="width:100.0%"></div>
+<div class="sourceCode" id="cb136"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p3</span> <span class="op">&lt;-</span> </span>
+<span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_gtf <span class="op">=</span> <span class="va">trans_gtf</span>,</span>
+<span>               Input_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"MYC"</span>,<span class="st">"NANOG"</span><span class="op">)</span>,</span>
+<span>               trans_exon_col_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">type</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p1</span><span class="op">/</span><span class="va">p2</span><span class="op">/</span><span class="va">p3</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/tf4.png" style="width:100.0%"></div>
+</div>
+<div id="track-overlap" class="section level2" number="9.2">
+<h2>
+<span class="header-section-number">9.2</span> Track overlap<a class="anchor" aria-label="anchor" href="#track-overlap"><i class="fas fa-link"></i></a>
+</h2>
+<p>For some experiments, you got IP(immunoprecipitation) and Input group, maybe you
+need to put them together to compare difference of signals. One way we can assign
+a new <strong>fileName</strong> column and set fill colors with your experiment groups. Examples
+showed here:</p>
+<hr>
+<p>First we assign new columns for bigwig data:</p>
+<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">BioSeqUtils</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load bigwig files</span></span>
+<span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"test-bw/"</span>,pattern <span class="op">=</span> <span class="st">'.bw'</span>,full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">file</span></span>
+<span><span class="co"># [1] "test-bw/1cell-m6A-1.bw" "test-bw/1cell-m6A-2.bw" "test-bw/1cell-RNA-1.bw"</span></span>
+<span><span class="co"># [4] "test-bw/1cell-RNA-2.bw" "test-bw/2cell-m6A-1.bw" "test-bw/2cell-m6A-2.bw"</span></span>
+<span><span class="co"># [7] "test-bw/2cell-RNA-1.bw" "test-bw/2cell-RNA-2.bw"</span></span>
+<span></span>
+<span><span class="co"># select some chromosomes for test</span></span>
+<span><span class="va">bw</span> <span class="op">&lt;-</span> <span class="fu">loadBigWig</span><span class="op">(</span><span class="va">file</span>,chrom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"5"</span>,<span class="st">"15"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">bw</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#   seqnames   start     end   score    fileName</span></span>
+<span><span class="co"># 1       15       1 3054635 0.00000 1cell-m6A-1</span></span>
+<span><span class="co"># 2       15 3054636 3054640 1.34079 1cell-m6A-1</span></span>
+<span><span class="co"># 3       15 3054641 3054715 2.68159 1cell-m6A-1</span></span>
+<span></span>
+<span><span class="va">bw_new</span> <span class="op">&lt;-</span> <span class="va">bw</span></span>
+<span><span class="va">bw_new</span><span class="op">$</span><span class="va">new_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">bw_new</span><span class="op">$</span><span class="va">fileName</span>,split <span class="op">=</span> <span class="st">"-"</span><span class="op">)</span>,<span class="st">"["</span>,<span class="fl">1</span><span class="op">)</span>,</span>
+<span>                         <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">bw_new</span><span class="op">$</span><span class="va">fileName</span>,split <span class="op">=</span> <span class="st">"-"</span><span class="op">)</span>,<span class="st">"["</span>,<span class="fl">3</span><span class="op">)</span>,sep <span class="op">=</span> <span class="st">"-"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">bw_new</span><span class="op">$</span><span class="va">exptype</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">bw_new</span><span class="op">$</span><span class="va">fileName</span>,split <span class="op">=</span> <span class="st">"-"</span><span class="op">)</span>,<span class="st">"["</span>,<span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">bw_new</span><span class="op">$</span><span class="va">fileName</span> <span class="op">&lt;-</span> <span class="va">bw_new</span><span class="op">$</span><span class="va">new_name</span></span>
+<span></span>
+<span><span class="co"># order</span></span>
+<span><span class="va">bw</span><span class="op">$</span><span class="va">exptype</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">bw</span><span class="op">$</span><span class="va">exptype</span>,levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"m6A"</span>,<span class="st">"RNA"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">bw_new</span><span class="op">)</span></span>
+<span><span class="co">#   seqnames   start     end   score fileName new_name exptype</span></span>
+<span><span class="co"># 1       15       1 3054635 0.00000  1cell-1  1cell-1     m6A</span></span>
+<span><span class="co"># 2       15 3054636 3054640 1.34079  1cell-1  1cell-1     m6A</span></span>
+<span><span class="co"># 3       15 3054641 3054715 2.68159  1cell-1  1cell-1     m6A</span></span>
+<span><span class="co"># 4       15 3054716 3054720 1.34079  1cell-1  1cell-1     m6A</span></span>
+<span><span class="co"># 5       15 3054721 3060760 0.00000  1cell-1  1cell-1     m6A</span></span>
+<span><span class="co"># 6       15 3060761 3060765 1.34079  1cell-1  1cell-1     m6A</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># gtf</span></span>
+<span><span class="va">gtf</span> <span class="op">&lt;-</span> <span class="fu">rtracklayer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rtracklayer/man/GFFFile-class.html">import.gff</a></span><span class="op">(</span><span class="st">"Mus_musculus.GRCm38.102.gtf"</span>,format <span class="op">=</span> <span class="st">"gtf"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Plot for all samples:</p>
+<div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               Input_bw <span class="op">=</span> <span class="va">bw</span>,</span>
+<span>               Input_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Utp3"</span>,<span class="st">"Chpf2"</span>,<span class="st">"Dmp1"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/ol1.png" style="width:100.0%"></div>
+<p>Plot for overlap tracks, we can see the difference of ip(m6A) and input(RNA) better:</p>
+<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># plot</span></span>
+<span><span class="fu">trackVisProMax</span><span class="op">(</span>Input_gtf <span class="op">=</span> <span class="va">gtf</span>,</span>
+<span>               Input_bw <span class="op">=</span> <span class="va">bw_new</span>,</span>
+<span>               Input_gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Utp3"</span>,<span class="st">"Chpf2"</span>,<span class="st">"Dmp1"</span><span class="op">)</span>,</span>
+<span>               signal_layer_bw_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">exptype</span>,color <span class="op">=</span> <span class="va">exptype</span><span class="op">)</span>,</span>
+<span>                                             show.legend <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="./local_images/ol2.png" style="width:100.0%"></div>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="splice-junction-visualization.html"><span class="header-section-number">8</span> Splice junction visualization</a></div>
+<div class="next"><a href="frequntlly-asked-questions.html"><span class="header-section-number">10</span> Frequntlly asked questions</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#other-funs"><span class="header-section-number">9</span> Other funs</a></li>
+<li><a class="nav-link" href="#transcript-coordinate-transformation"><span class="header-section-number">9.1</span> Transcript coordinate transformation</a></li>
+<li><a class="nav-link" href="#track-overlap"><span class="header-section-number">9.2</span> Track overlap</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>RiboProfiler Reference Book</strong>" was written by Jun Zhang. It was last built on 2023-05-19.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>
